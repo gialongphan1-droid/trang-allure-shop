@@ -24,7 +24,6 @@ export default defineConfig({
         target: 'http://localhost:5000',
         changeOrigin: true,
       },
-      // ✅ THÊM DÒNG NÀY ĐỂ PROXY SITEMAP
       '/sitemap.xml': {
         target: 'http://localhost:5000',
         changeOrigin: true,
@@ -34,12 +33,33 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'redux-vendor': ['@reduxjs/toolkit', 'react-redux'],
-          'ui-vendor': ['@radix-ui/react-slot', 'class-variance-authority', 'clsx', 'tailwind-merge'],
-          'chart-vendor': ['recharts'],
-          'utils-vendor': ['axios', 'react-hook-form', 'yup', 'slugify', 'date-fns'],
+        manualChunks: (id) => {
+          if (id.includes('node_modules/react') || 
+              id.includes('node_modules/react-dom') || 
+              id.includes('node_modules/react-router-dom')) {
+            return 'react-vendor';
+          }
+          if (id.includes('node_modules/@reduxjs/toolkit') || 
+              id.includes('node_modules/react-redux')) {
+            return 'redux-vendor';
+          }
+          if (id.includes('node_modules/@radix-ui') || 
+              id.includes('node_modules/class-variance-authority') || 
+              id.includes('node_modules/clsx') || 
+              id.includes('node_modules/tailwind-merge')) {
+            return 'ui-vendor';
+          }
+          if (id.includes('node_modules/recharts')) {
+            return 'chart-vendor';
+          }
+          if (id.includes('node_modules/axios') || 
+              id.includes('node_modules/react-hook-form') || 
+              id.includes('node_modules/yup') || 
+              id.includes('node_modules/slugify') || 
+              id.includes('node_modules/date-fns')) {
+            return 'utils-vendor';
+          }
+          return null;
         },
       },
     },
