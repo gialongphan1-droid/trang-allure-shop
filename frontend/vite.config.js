@@ -30,6 +30,10 @@ export default defineConfig({
       },
     },
   },
+  // ✅ THÊM PHẦN CSS MINIFY
+  css: {
+    minify: false,  // Tắt minify CSS
+  },
   build: {
     rollupOptions: {
       output: {
