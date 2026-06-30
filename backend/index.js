@@ -11,6 +11,7 @@ const { protect } = require('./middleware/auth');
 const upload = require('./middleware/upload');
 
 // Import routes
+const sitemapRoutes = require('./routes/public/sitemap');
 const publicProductRoutes = require('./routes/public/products');
 const publicCategoryRoutes = require('./routes/public/categories');
 const publicBannerRoutes = require('./routes/public/banners');
@@ -48,6 +49,7 @@ const limiter = rateLimit({
 });
 
 // Middleware - Compression phải được đặt TRƯỚC các route
+app.use('/', sitemapRoutes); // Đặt trước các route khác
 app.use(compression()); // THÊM DÒNG NÀY
 app.use(helmet());
 app.use(cors({
