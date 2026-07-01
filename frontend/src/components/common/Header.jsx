@@ -24,16 +24,14 @@ const Header = () => {
 	const hasChecked = useRef(false);
 	const { isDark, toggleTheme } = useTheme();
 
-	// Kiểm tra trạng thái đăng nhập admin
+	// ✅ KIỂM TRA TRẠNG THÁI ĐĂNG NHẬP ADMIN (ĐÃ TỐI ƯU)
 	useEffect(() => {
 		if (hasChecked.current) return;
 		hasChecked.current = true;
 
 		const checkAdminStatus = async () => {
-			// ✅ KIỂM TRA COOKIE TRƯỚC - KHÔNG GỌI API NẾU CHƯA ĐĂNG NHẬP
-			const hasToken = document.cookie
-				.split(";")
-				.some((c) => c.trim().startsWith("token="));
+			// ✅ KIỂM TRA COOKIE TRƯỚC - KHÔNG GỌI API NẾU CHƯA CÓ TOKEN
+			const hasToken = document.cookie.split(';').some(c => c.trim().startsWith('token='));
 			if (!hasToken) {
 				setIsAdmin(false);
 				setAdminName("");

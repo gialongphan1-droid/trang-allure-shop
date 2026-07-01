@@ -7,12 +7,12 @@ const generateAccessToken = (admin) => {
   return jwt.sign(
     { id: admin._id, email: admin.email },
     process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN || '15m' } // 15 phút
+    { expiresIn: process.env.JWT_EXPIRES_IN || '15m' }
   );
 };
 
 const generateRefreshToken = () => {
-  return crypto.randomBytes(64).toString('hex'); // Token ngẫu nhiên
+  return crypto.randomBytes(64).toString('hex');
 };
 
 // ============ ĐĂNG NHẬP ============
@@ -30,34 +30,31 @@ exports.login = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'Email hoặc mật khẩu không đúng' });
     }
 
-    // Cập nhật thông tin đăng nhập
     admin.lastLogin = new Date();
     admin.userAgent = req.headers['user-agent'] || null;
     admin.ipAddress = req.ip || req.connection?.remoteAddress || null;
 
-    // Tạo access token và refresh token
     const accessToken = generateAccessToken(admin);
     const refreshToken = generateRefreshToken();
 
-    // Hash refresh token trước khi lưu vào DB
     const hashedRefreshToken = crypto.createHash('sha256').update(refreshToken).digest('hex');
     admin.refreshToken = hashedRefreshToken;
-    admin.refreshTokenExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 ngày
+    admin.refreshTokenExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     await admin.save();
 
-    // Set cookie
+    // ✅ sameSite: 'lax' để cookie hoạt động trên production
     res.cookie('token', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 15 * 60 * 1000, // 15 phút
+      sameSite: 'lax',
+      maxAge: 15 * 60 * 1000,
     });
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngày
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.json({
@@ -74,7 +71,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
-// ============ REFRESH TOKEN (ROTATION) ============
+// ============ REFRESH TOKEN ============
 exports.refreshToken = async (req, res, next) => {
   try {
     const refreshToken = req.cookies?.refreshToken;
@@ -90,11 +87,9 @@ exports.refreshToken = async (req, res, next) => {
     });
 
     if (!admin) {
-      // Phát hiện token bị đánh cắp hoặc hết hạn
       return res.status(401).json({ success: false, message: 'Refresh token không hợp lệ' });
     }
 
-    // ✅ ROTATION: Tạo token mới, vô hiệu hóa token cũ
     const newAccessToken = generateAccessToken(admin);
     const newRefreshToken = generateRefreshToken();
     const newHashedToken = crypto.createHash('sha256').update(newRefreshToken).digest('hex');
@@ -103,18 +98,18 @@ exports.refreshToken = async (req, res, next) => {
     admin.refreshTokenExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     await admin.save();
 
-    // Set cookie mới
+    // ✅ sameSite: 'lax'
     res.cookie('token', newAccessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax',
       maxAge: 15 * 60 * 1000,
     });
 
     res.cookie('refreshToken', newRefreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
