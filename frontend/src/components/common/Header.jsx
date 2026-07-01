@@ -24,18 +24,18 @@ const Header = () => {
 	const hasChecked = useRef(false);
 	const { isDark, toggleTheme } = useTheme();
 
-	// ✅ KIỂM TRA TRẠNG THÁI ĐĂNG NHẬP ADMIN (ĐÃ TỐI ƯU)
+	// ✅ SỬA ĐÚNG: CHỈ GỌI API KHI CÓ TOKEN
 	useEffect(() => {
 		if (hasChecked.current) return;
 		hasChecked.current = true;
 
 		const checkAdminStatus = async () => {
-			// ✅ KIỂM TRA COOKIE TRƯỚC - KHÔNG GỌI API NẾU CHƯA CÓ TOKEN
+			// ✅ QUAN TRỌNG: Kiểm tra cookie token trước khi gọi API
 			const hasToken = document.cookie.split(';').some(c => c.trim().startsWith('token='));
 			if (!hasToken) {
 				setIsAdmin(false);
 				setAdminName("");
-				return;
+				return;  // ❌ KHÔNG GỌI API
 			}
 
 			try {
