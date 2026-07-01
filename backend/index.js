@@ -26,19 +26,35 @@ const app = express();
 // Kết nối database
 connectDB();
 
-// Rate limiting
+// ============ HEALTH CHECK (KHÔNG RATE LIMIT) ============
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+  });
+});
+
+// ============ CẤU HÌNH RATE LIMIT ============
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 phút
-  max: 100, // 100 request mỗi IP
+  max: 200, // Tăng từ 100 lên 200
   message: 'Quá nhiều request, vui lòng thử lại sau',
   skip: (req) => {
+    // 1. Bỏ qua rate limit cho UptimeRobot
+    const userAgent = req.headers['user-agent'] || '';
+    if (userAgent.includes('UptimeRobot')) {
+      return true;
+    }
+    
+    // 2. Bỏ qua rate limit cho admin đã đăng nhập
     const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
     if (token) {
       try {
         const jwt = require('jsonwebtoken');
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (decoded && decoded.id) {
-          return true; // Bỏ qua rate limit cho admin đã đăng nhập
+          return true;
         }
       } catch (error) {
         return false;
@@ -83,7 +99,7 @@ app.use(
 // ============ MIDDLEWARE ============
 app.use(compression());
 
-// ✅ CẤU HÌNH CORS CHO PHÉP NHIỀU ORIGINS
+// Cấu hình CORS cho phép nhiều origins
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
@@ -96,10 +112,7 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Cho phép request không có origin (như Postman, mobile app)
     if (!origin) return callback(null, true);
-    
-    // Kiểm tra xem origin có trong danh sách cho phép không
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -115,19 +128,12 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
+
+// Áp dụng rate limit cho tất cả API (TRỪ health check đã đặt ở trên)
 app.use('/api', limiter);
 
 // ============ SITEMAP ============
 app.use('/', sitemapRoutes);
-
-// ============ HEALTH CHECK ============
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development',
-  });
-});
 
 // ============ UPLOAD ẢNH ============
 app.post('/api/admin/upload', protect, upload.single('image'), async (req, res) => {
@@ -165,4 +171,5 @@ app.listen(PORT, () => {
   console.log(`🔗 API URL: http://localhost:${PORT}/api`);
   console.log(`🗺️  Sitemap: http://localhost:${PORT}/sitemap.xml`);
   console.log(`✅ CORS allowed origins:`, allowedOrigins);
+  console.log(`✅ Rate limit: ${limiter.max} requests per ${limiter.windowMs/60000} minutes`);
 });
