@@ -29,8 +29,17 @@ export const bannerApi = {
 };
 
 export const adminApi = {
-  login: (data) => axiosClient.post('/admin/auth/login', data),
-  logout: () => axiosClient.post('/admin/auth/logout'),
-  getMe: () => axiosClient.get('/admin/auth/me'),
-  getDashboardStats: () => axiosClient.get('/admin/dashboard/stats'),
+  login: (data) => {
+    console.log('📤 Sending login request:', data.email);
+    return axiosClient.post('/admin/auth/login', data);
+  },
+  logout: () => {
+    return axiosClient.post('/admin/auth/logout');
+  },
+  getMe: () => {
+    return axiosClient.get('/admin/auth/me');
+  },
+  getDashboardStats: () => {
+    return axiosClient.get('/admin/dashboard/stats');
+  },
 };

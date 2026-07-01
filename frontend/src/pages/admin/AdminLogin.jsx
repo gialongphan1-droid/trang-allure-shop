@@ -23,13 +23,25 @@ const AdminLogin = () => {
     setLoading(true);
 
     try {
-      await adminApi.login({ email, password });
-      toast({
-        title: '🎉 Đăng nhập thành công!',
-        description: 'Chào mừng bạn trở lại!',
-      });
-      navigate('/admin/dashboard');
+      const response = await adminApi.login({ email, password });
+      console.log('✅ Login response:', response);
+      
+      // ✅ KIỂM TRA RESPONSE CÓ DATA KHÔNG
+      if (response.success && response.data) {
+        toast({
+          title: '🎉 Đăng nhập thành công!',
+          description: 'Chào mừng bạn trở lại!',
+        });
+        
+        // ✅ ĐỢI 1 CHÚT ĐỂ COOKIE ĐƯỢC SET
+        setTimeout(() => {
+          navigate('/admin/dashboard');
+        }, 300);
+      } else {
+        setError('Đăng nhập thất bại, vui lòng thử lại');
+      }
     } catch (err) {
+      console.error('❌ Login error:', err);
       setError(err.message || 'Email hoặc mật khẩu không đúng');
       toast({
         title: '❌ Đăng nhập thất bại',
@@ -43,7 +55,6 @@ const AdminLogin = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 transition-colors bg-background text-foreground">
-      {/* Dark Mode Toggle */}
       <button
         onClick={toggleTheme}
         className="absolute p-2 transition rounded-full top-4 right-4 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -105,7 +116,7 @@ const AdminLogin = () => {
         </form>
 
         <div className="mt-6 text-sm text-center text-gray-500 dark:text-gray-400">
-          <p>Liên hệ quản trị viên nếu quên mật khẩu</p>
+        <p>Liên hệ quản trị viên nếu quên mật khẩu</p>
         </div>
       </div>
     </div>
