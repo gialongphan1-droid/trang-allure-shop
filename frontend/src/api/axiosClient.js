@@ -52,7 +52,7 @@ axiosClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // ✅ Nếu refresh token bị lỗi → không retry
+    // ✅ QUAN TRỌNG: Nếu chính refresh-token bị 401 → KHÔNG RETRY
     if (error.response?.status === 401 && originalRequest.url === '/admin/auth/refresh-token') {
       if (window.location.pathname.startsWith('/admin')) {
         window.location.href = '/admin/login';
@@ -60,8 +60,9 @@ axiosClient.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // ✅ Xử lý token hết hạn (401)
+    // ✅ Xử lý các request khác bị 401
     if (error.response?.status === 401 && !originalRequest._retry) {
+      // Nếu đang refresh, xếp hàng chờ
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -77,9 +78,11 @@ axiosClient.interceptors.response.use(
 
       try {
         await axiosClient.post('/admin/auth/refresh-token');
+        // Refresh thành công
         processQueue(null);
         return axiosClient(originalRequest);
       } catch (refreshError) {
+        // Refresh thất bại → chuyển login
         processQueue(refreshError);
         if (window.location.pathname.startsWith('/admin')) {
           window.location.href = '/admin/login';
@@ -87,12 +90,6 @@ axiosClient.interceptors.response.use(
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
-      }
-    }
-
-    if (error.response?.status === 401 && originalRequest._retry) {
-      if (window.location.pathname.startsWith('/admin')) {
-        window.location.href = '/admin/login';
       }
     }
 
