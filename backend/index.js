@@ -82,10 +82,36 @@ app.use(
 
 // ============ MIDDLEWARE ============
 app.use(compression());
+
+// ✅ CẤU HÌNH CORS CHO PHÉP NHIỀU ORIGINS
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://trang-allure-shop.vercel.app',
+  'https://trang-allure-shop-r61a.vercel.app',
+  'https://trangallure.shop',
+  'https://www.trangallure.shop',
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: function (origin, callback) {
+    // Cho phép request không có origin (như Postman, mobile app)
+    if (!origin) return callback(null, true);
+    
+    // Kiểm tra xem origin có trong danh sách cho phép không
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`❌ CORS blocked: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
 }));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
@@ -138,4 +164,5 @@ app.listen(PORT, () => {
   console.log(`📌 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 API URL: http://localhost:${PORT}/api`);
   console.log(`🗺️  Sitemap: http://localhost:${PORT}/sitemap.xml`);
+  console.log(`✅ CORS allowed origins:`, allowedOrigins);
 });
