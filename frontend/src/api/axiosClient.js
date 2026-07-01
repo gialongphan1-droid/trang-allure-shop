@@ -11,14 +11,13 @@ const axiosClient = axios.create({
 
 let isRefreshing = false;
 let failedQueue = [];
-let refreshError = null;
 
-const processQueue = (error, token = null) => {
+const processQueue = (error) => {
   failedQueue.forEach(prom => {
     if (error) {
       prom.reject(error);
     } else {
-      prom.resolve(token);
+      prom.resolve();
     }
   });
   failedQueue = [];
@@ -53,19 +52,17 @@ axiosClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Nếu lỗi 401 và chưa thử refresh
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      // Nếu đang refresh và request hiện tại KHÔNG phải là refresh-token
-      if (originalRequest.url === '/admin/auth/refresh-token') {
-        // Không gọi lại refresh token, chuyển hướng đến login
-        if (window.location.pathname.startsWith('/admin')) {
-          window.location.href = '/admin/login';
-        }
-        return Promise.reject(error);
+    // ✅ Nếu refresh token bị lỗi → không retry
+    if (error.response?.status === 401 && originalRequest.url === '/admin/auth/refresh-token') {
+      if (window.location.pathname.startsWith('/admin')) {
+        window.location.href = '/admin/login';
       }
+      return Promise.reject(error);
+    }
 
+    // ✅ Xử lý token hết hạn (401)
+    if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        // Nếu đang refresh, đợi kết quả
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         }).then(() => {
@@ -79,13 +76,11 @@ axiosClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await axiosClient.post('/admin/auth/refresh-token');
-        // Refresh thành công
-        processQueue(null, response.data);
+        await axiosClient.post('/admin/auth/refresh-token');
+        processQueue(null);
         return axiosClient(originalRequest);
       } catch (refreshError) {
-        // Refresh thất bại - chuyển hướng đến login
-        processQueue(refreshError, null);
+        processQueue(refreshError);
         if (window.location.pathname.startsWith('/admin')) {
           window.location.href = '/admin/login';
         }
@@ -95,7 +90,6 @@ axiosClient.interceptors.response.use(
       }
     }
 
-    // Nếu đã thử refresh mà vẫn 401, chuyển hướng login
     if (error.response?.status === 401 && originalRequest._retry) {
       if (window.location.pathname.startsWith('/admin')) {
         window.location.href = '/admin/login';

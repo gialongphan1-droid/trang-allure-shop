@@ -8,11 +8,17 @@ const adminSchema = new mongoose.Schema(
     password: { type: String, required: true, select: false },
     avatar: { type: String, default: null },
     lastLogin: { type: Date, default: null },
+    // ✅ Thêm refresh token và thời gian hết hạn
+    refreshToken: { type: String, select: false, default: null },
+    refreshTokenExpiresAt: { type: Date, default: null },
+    // ✅ Theo dõi thiết bị đăng nhập
+    userAgent: { type: String, default: null },
+    ipAddress: { type: String, default: null },
   },
   { timestamps: true }
 );
 
-// ✅ THÊM pre-save hook
+// Hash password trước khi lưu
 adminSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);
@@ -20,7 +26,7 @@ adminSchema.pre('save', async function(next) {
   next();
 });
 
-// ✅ THÊM comparePassword method
+// So sánh password
 adminSchema.methods.comparePassword = async function(password) {
   return await bcrypt.compare(password, this.password);
 };

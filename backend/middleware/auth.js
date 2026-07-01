@@ -16,13 +16,23 @@ exports.protect = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const admin = await Admin.findById(decoded.id).select('-password');
+    const admin = await Admin.findById(decoded.id).select('-password -refreshToken');
+
     if (!admin) {
       return res.status(401).json({ success: false, message: 'Admin không tồn tại' });
     }
+
     req.admin = admin;
     next();
   } catch (error) {
-    return res.status(401).json({ success: false, message: 'Token không hợp lệ hoặc đã hết hạn' });
+    // ✅ Phân biệt lỗi token hết hạn để frontend refresh
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({
+        success: false,
+        message: 'Token đã hết hạn',
+        code: 'TOKEN_EXPIRED'
+      });
+    }
+    return res.status(401).json({ success: false, message: 'Token không hợp lệ' });
   }
 };

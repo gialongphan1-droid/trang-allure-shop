@@ -9,6 +9,8 @@ const connectDB = require("./config/database");
 const errorHandler = require("./middleware/errorHandler");
 const { protect } = require("./middleware/auth");
 const upload = require("./middleware/upload");
+// ✅ THÊM DÒNG NÀY ĐỂ SỬ DỤNG COOKIE PARSER (nếu chưa có)
+const cookieParser = require('cookie-parser');
 
 // Import routes
 const publicProductRoutes = require("./routes/public/products");
@@ -134,6 +136,7 @@ app.use(cookieParser());
 
 // Áp dụng rate limit cho tất cả API (TRỪ health check đã đặt ở trên)
 app.use("/api", limiter);
+app.use(cookieParser()); // Đảm bảo đã có dòng này
 
 // ============ SITEMAP ============
 app.use("/", sitemapRoutes);

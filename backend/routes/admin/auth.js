@@ -4,7 +4,7 @@ const {
   login,
   logout,
   getMe,
-  refreshToken, // THÊM DÒNG NÀY
+  refreshToken,
 } = require('../../controllers/admin/authController');
 const { protect } = require('../../middleware/auth');
 const {
@@ -15,6 +15,6 @@ const {
 router.post('/login', validateAdminLogin, handleValidationErrors, login);
 router.post('/logout', protect, logout);
 router.get('/me', protect, getMe);
-router.post('/refresh-token', refreshToken); // THÊM DÒNG NÀY
+router.post('/refresh-token', refreshToken); // ✅ ĐÃ CÓ
 
 module.exports = router;
