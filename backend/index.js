@@ -38,7 +38,7 @@ app.get('/api/health', (req, res) => {
 // ============ CẤU HÌNH RATE LIMIT ============
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 phút
-  max: 200, // Tăng từ 100 lên 200
+  max: 500, 
   message: 'Quá nhiều request, vui lòng thử lại sau',
   skip: (req) => {
     // 1. Bỏ qua rate limit cho UptimeRobot

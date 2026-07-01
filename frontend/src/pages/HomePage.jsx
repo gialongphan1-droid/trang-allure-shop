@@ -30,14 +30,24 @@ const HomePage = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const timerRef = useRef(null);
 
+  // ✅ TỐI ƯU: Gọi API tuần tự để tránh quá tải
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
 
-    console.log('🔄 Fetching data...');
-    dispatch(fetchProducts({ limit: 8, sort: "-createdAt" }));
-    dispatch(fetchCategories());
-    fetchBanners();
+    const fetchData = async () => {
+      console.log('🔄 Fetching data sequentially...');
+      try {
+        // Gọi tuần tự thay vì song song
+        await dispatch(fetchProducts({ limit: 8, sort: "-createdAt" }));
+        await dispatch(fetchCategories());
+        await fetchBanners();
+      } catch (error) {
+        console.error('❌ Error fetching data:', error);
+      }
+    };
+    
+    fetchData();
   }, [dispatch]);
 
   const fetchBanners = async () => {
@@ -48,6 +58,11 @@ const HomePage = () => {
       setBanners(response.data || []);
     } catch (error) {
       console.error("❌ Lỗi tải banner:", error);
+      toast({
+        title: "Lỗi tải banner",
+        description: error.message || "Không thể tải banner",
+        variant: "destructive",
+      });
     } finally {
       setBannerLoading(false);
     }
@@ -89,6 +104,7 @@ const HomePage = () => {
     setTimeout(() => setIsTransitioning(false), 700);
   }, [isTransitioning, currentBannerIndex, banners.length]);
 
+  // ✅ TỐI ƯU: Auto-slide banner
   useEffect(() => {
     if (banners.length <= 1) return;
     
@@ -315,11 +331,9 @@ const HomePage = () => {
                           {product.brand || ""}
                         </p>
                         <div className="flex items-center justify-center gap-2 mt-1">
-                          {/* GIÁ BÁN - LUÔN HIỂN THỊ */}
                           <span className="text-base font-bold text-brand-primary dark:text-brand-primary md:text-lg">
                             {new Intl.NumberFormat("vi-VN").format(product.price)}đ
                           </span>
-                          {/* GIÁ GỐC - CHỈ HIỂN THỊ NẾU CÓ originalPrice VÀ LỚN HƠN price */}
                           {product.originalPrice && product.originalPrice > product.price && (
                             <span className="text-xs text-gray-400 line-through dark:text-gray-500 md:text-sm">
                               {new Intl.NumberFormat("vi-VN").format(product.originalPrice)}đ

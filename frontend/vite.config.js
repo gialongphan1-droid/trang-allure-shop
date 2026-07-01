@@ -18,12 +18,23 @@ export default defineConfig({
       },
     },
   },
-  // ⭐ QUAN TRỌNG: TẮT MINIFY CSS
   css: {
     minify: false,
   },
   build: {
-    // Không có rollupOptions, không có manualChunks
-    chunkSizeWarningLimit: 1000,
+    // Tăng giới hạn cảnh báo lên 2000 KB để không bị làm phiền
+    chunkSizeWarningLimit: 2000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Tách các thư viện lớn thành chunk riêng
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'redux-vendor': ['@reduxjs/toolkit', 'react-redux'],
+          'ui-vendor': ['@radix-ui/react-slot', 'class-variance-authority'],
+          'chart-vendor': ['recharts'],
+          'utils-vendor': ['axios', 'react-hook-form', 'yup', 'slugify'],
+        },
+      },
+    },
   },
 });
