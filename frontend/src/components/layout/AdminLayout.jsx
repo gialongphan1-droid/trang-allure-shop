@@ -34,6 +34,18 @@ const AdminLayout = () => {
   const { toast } = useToast();
   const { isDark, toggleTheme } = useTheme();
 
+  // ✅ KIỂM TRA AUTH KHI COMPONENT MOUNT
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await adminApi.getMe();
+      } catch (error) {
+        navigate('/admin/login');
+      }
+    };
+    checkAuth();
+  }, [navigate]);
+
   useEffect(() => {
     const checkScreen = () => {
       setIsMobile(window.innerWidth < 768);
@@ -164,7 +176,6 @@ const AdminLayout = () => {
             </div>
             
             <div className="flex items-center gap-3">
-              {/* Dark Mode Toggle */}
               <button
                 onClick={toggleTheme}
                 className="p-2 transition rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"

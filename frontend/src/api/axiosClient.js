@@ -52,7 +52,7 @@ axiosClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // ✅ Nếu chính refresh-token bị 401 → KHÔNG RETRY, chuyển login
+    // ✅ Nếu chính refresh-token bị 401 → KHÔNG RETRY
     if (error.response?.status === 401 && originalRequest.url === '/admin/auth/refresh-token') {
       if (window.location.pathname.startsWith('/admin')) {
         window.location.href = '/admin/login';

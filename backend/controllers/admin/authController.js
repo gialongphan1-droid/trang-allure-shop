@@ -19,13 +19,17 @@ const generateRefreshToken = () => {
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    console.log('🔐 Login attempt:', email);
 
     const admin = await Admin.findOne({ email }).select('+password');
     if (!admin) {
+      console.log('❌ Admin not found');
       return res.status(401).json({ success: false, message: 'Email hoặc mật khẩu không đúng' });
     }
 
     const isMatch = await admin.comparePassword(password);
+    console.log('🔑 Password match:', isMatch);
+
     if (!isMatch) {
       return res.status(401).json({ success: false, message: 'Email hoặc mật khẩu không đúng' });
     }
@@ -42,7 +46,6 @@ exports.login = async (req, res, next) => {
     admin.refreshTokenExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     await admin.save();
 
-    // ✅ sameSite: 'lax' để cookie hoạt động trên production
     res.cookie('token', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -67,6 +70,7 @@ exports.login = async (req, res, next) => {
       },
     });
   } catch (error) {
+    console.error('❌ Login error:', error);
     next(error);
   }
 };
@@ -98,7 +102,6 @@ exports.refreshToken = async (req, res, next) => {
     admin.refreshTokenExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     await admin.save();
 
-    // ✅ sameSite: 'lax'
     res.cookie('token', newAccessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

@@ -13,6 +13,7 @@ import AdminProducts from './pages/admin/AdminProducts';
 import AdminCategories from './pages/admin/AdminCategories';
 import AdminBanners from './pages/admin/AdminBanners';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import ProtectedRoute from './components/common/ProtectedRoute';
 
 function App() {
   return (
@@ -20,51 +21,18 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<MainLayout />}>
-          <Route 
-            index 
-            element={
-              <ErrorBoundary>
-                <HomePage />
-              </ErrorBoundary>
-            } 
-          />
-          <Route 
-            path="san-pham" 
-            element={
-              <ErrorBoundary>
-                <ProductList />
-              </ErrorBoundary>
-            } 
-          />
-          <Route 
-            path="san-pham/:slug" 
-            element={
-              <ErrorBoundary>
-                <ProductDetail />
-              </ErrorBoundary>
-            } 
-          />
-          <Route 
-            path="danh-muc/:slug" 
-            element={
-              <ErrorBoundary>
-                <CategoryPage />
-              </ErrorBoundary>
-            } 
-          />
-          <Route 
-            path="lien-he" 
-            element={
-              <ErrorBoundary>
-                <ContactPage />
-              </ErrorBoundary>
-            } 
-          />
+          <Route index element={<ErrorBoundary><HomePage /></ErrorBoundary>} />
+          <Route path="san-pham" element={<ErrorBoundary><ProductList /></ErrorBoundary>} />
+          <Route path="san-pham/:slug" element={<ErrorBoundary><ProductDetail /></ErrorBoundary>} />
+          <Route path="danh-muc/:slug" element={<ErrorBoundary><CategoryPage /></ErrorBoundary>} />
+          <Route path="lien-he" element={<ErrorBoundary><ContactPage /></ErrorBoundary>} />
         </Route>
         
-        {/* Admin Routes */}
+        {/* Admin Login */}
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminLayout />}>
+        
+        {/* Admin Routes - Protected */}
+        <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="categories" element={<AdminCategories />} />

@@ -12,9 +12,8 @@ const adminSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// ĐÃ XÓA HOÀN TOÀN HOOK pre('save') GÂY LỖI
+// ✅ ĐÃ XÓA pre('save') HOOK GÂY LỖI
 
-// Phương thức so sánh mật khẩu vẫn được giữ nguyên
 adminSchema.methods.comparePassword = async function(password) {
   return await bcrypt.compare(password, this.password);
 };
