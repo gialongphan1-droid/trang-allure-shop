@@ -23,6 +23,9 @@ const sitemapRoutes = require("./routes/public/sitemap");
 
 const app = express();
 
+// ============ TRUST PROXY (CHO RENDER) ============
+app.set('trust proxy', 1);  
+
 // Kết nối database
 connectDB();
 
