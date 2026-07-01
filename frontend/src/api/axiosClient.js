@@ -9,6 +9,21 @@ const axiosClient = axios.create({
   },
 });
 
+let isRefreshing = false;
+let failedQueue = [];
+let refreshError = null;
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach(prom => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
 axiosClient.interceptors.request.use(
   (config) => {
     console.log('📤 Request:', config.method.toUpperCase(), config.url);
@@ -33,26 +48,55 @@ axiosClient.interceptors.response.use(
       const cacheKey = response.config._cacheKey || `${response.config.url}${JSON.stringify(response.config.params || {})}`;
       cache.set(cacheKey, response.data, 30000);
     }
-    // Trả về response.data để các API function nhận được dữ liệu trực tiếp
     return response.data;
   },
   async (error) => {
     const originalRequest = error.config;
 
+    // Nếu lỗi 401 và chưa thử refresh
     if (error.response?.status === 401 && !originalRequest._retry) {
+      // Nếu đang refresh và request hiện tại KHÔNG phải là refresh-token
+      if (originalRequest.url === '/admin/auth/refresh-token') {
+        // Không gọi lại refresh token, chuyển hướng đến login
+        if (window.location.pathname.startsWith('/admin')) {
+          window.location.href = '/admin/login';
+        }
+        return Promise.reject(error);
+      }
+
+      if (isRefreshing) {
+        // Nếu đang refresh, đợi kết quả
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then(() => {
+          return axiosClient(originalRequest);
+        }).catch((err) => {
+          return Promise.reject(err);
+        });
+      }
+
       originalRequest._retry = true;
+      isRefreshing = true;
+
       try {
-        await axiosClient.post('/admin/auth/refresh-token');
+        const response = await axiosClient.post('/admin/auth/refresh-token');
+        // Refresh thành công
+        processQueue(null, response.data);
         return axiosClient(originalRequest);
       } catch (refreshError) {
+        // Refresh thất bại - chuyển hướng đến login
+        processQueue(refreshError, null);
         if (window.location.pathname.startsWith('/admin')) {
           window.location.href = '/admin/login';
         }
         return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
 
-    if (error.response?.status === 401) {
+    // Nếu đã thử refresh mà vẫn 401, chuyển hướng login
+    if (error.response?.status === 401 && originalRequest._retry) {
       if (window.location.pathname.startsWith('/admin')) {
         window.location.href = '/admin/login';
       }
