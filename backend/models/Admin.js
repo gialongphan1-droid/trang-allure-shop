@@ -8,29 +8,13 @@ const adminSchema = new mongoose.Schema(
     password: { type: String, required: true, select: false },
     avatar: { type: String, default: null },
     lastLogin: { type: Date, default: null },
-    refreshToken: { type: String, select: false, default: null },
-    refreshTokenExpiresAt: { type: Date, default: null },
-    userAgent: { type: String, default: null },
-    ipAddress: { type: String, default: null },
   },
   { timestamps: true }
 );
 
-// ============ PRE-SAVE HOOK (HASH PASSWORD) ============
-adminSchema.pre('save', function(next) {
-  try {
-    if (!this.isModified('password')) {
-      return next();
-    }
-    const salt = bcrypt.genSaltSync(10);
-    this.password = bcrypt.hashSync(this.password, salt);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
+// ĐÃ XÓA HOÀN TOÀN HOOK pre('save') GÂY LỖI
 
-// ============ COMPARE PASSWORD ============
+// Phương thức so sánh mật khẩu vẫn được giữ nguyên
 adminSchema.methods.comparePassword = async function(password) {
   return await bcrypt.compare(password, this.password);
 };
