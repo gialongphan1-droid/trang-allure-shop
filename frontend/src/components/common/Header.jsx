@@ -30,6 +30,16 @@ const Header = () => {
 		hasChecked.current = true;
 
 		const checkAdminStatus = async () => {
+			// ✅ KIỂM TRA COOKIE TRƯỚC - KHÔNG GỌI API NẾU CHƯA ĐĂNG NHẬP
+			const hasToken = document.cookie
+				.split(";")
+				.some((c) => c.trim().startsWith("token="));
+			if (!hasToken) {
+				setIsAdmin(false);
+				setAdminName("");
+				return;
+			}
+
 			try {
 				const response = await adminApi.getMe();
 				if (response.success && response.data) {
