@@ -31,7 +31,6 @@ const HomePage = () => {
 	const timerRef = useRef(null);
 
 	// ✅ TỐI ƯU: Gọi API tuần tự để tránh quá tải
-	// frontend/src/pages/HomePage.jsx
 	useEffect(() => {
 		if (hasFetched.current) return;
 		hasFetched.current = true;
@@ -213,6 +212,9 @@ const HomePage = () => {
 												alt={banner.title || "Banner"}
 												loading="lazy"
 												className="object-cover w-full h-56 sm:h-72 md:h-96"
+												width="1200"
+												height="400"
+												decoding="async"
 											/>
 											{banner.title && (
 												<div className="absolute inset-0 flex items-center justify-center bg-black/30">
@@ -357,6 +359,9 @@ const HomePage = () => {
 														alt={product.name}
 														loading="lazy"
 														className="object-cover w-full h-full"
+														width="400"
+														height="400"
+														decoding="async"
 													/>
 												) : (
 													<span className="text-6xl">💄</span>
