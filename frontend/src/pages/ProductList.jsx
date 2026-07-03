@@ -253,6 +253,9 @@ const ProductList = () => {
                           alt={product.name}
                           loading="lazy"
                           className="object-cover w-full h-full"
+                          width="400"
+                          height="400"
+                          decoding="async"
                         />
                       ) : (
                         <span className="text-6xl">💄</span>
