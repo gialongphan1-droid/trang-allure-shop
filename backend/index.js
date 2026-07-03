@@ -23,8 +23,9 @@ const sitemapRoutes = require("./routes/public/sitemap");
 
 const app = express();
 
-// ============ TRUST PROXY (CHO RENDER) ============
-app.set('trust proxy', 1);  
+// ============ TRUST PROXY (CHỈ CHO RENDER) ============
+// Nếu deploy lên Vercel, có thể bỏ dòng này hoặc giữ cũng không sao
+app.set('trust proxy', 1);
 
 // Kết nối database
 connectDB();
@@ -85,8 +86,14 @@ app.use(
 				scriptSrc: ["'self'"],
 				styleSrc: ["'self'", "'unsafe-inline'"],
 				fontSrc: ["'self'", "data:"],
+				// ✅ THÊM NHIỀU ORIGIN CHO connectSrc
 				connectSrc: [
 					"'self'",
+					"http://localhost:5173",
+					"http://localhost:5174",
+					"https://trangallure.shop",
+					"https://www.trangallure.shop",
+					"https://trang-allure-shop.vercel.app",
 					process.env.FRONTEND_URL || "http://localhost:5173",
 				],
 				frameAncestors: ["'none'"],
@@ -105,37 +112,38 @@ app.use(compression());
 
 // ============ CẤU HÌNH CORS ============
 const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:5174',
-  'https://trang-allure-shop.vercel.app',
-  'https://trang-allure-shop-r61a.vercel.app',
-  'https://trangallure.shop',
-  'https://www.trangallure.shop',
-  process.env.FRONTEND_URL
+	"http://localhost:5173",
+	"http://localhost:5174",
+	"https://trang-allure-shop.vercel.app",
+	"https://trang-allure-shop-r61a.vercel.app",
+	"https://trangallure.shop",
+	"https://www.trangallure.shop",
+	process.env.FRONTEND_URL,
 ].filter(Boolean);
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.warn(`❌ CORS blocked: ${origin}`);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
-}));
+app.use(
+	cors({
+		origin: function (origin, callback) {
+			if (!origin) return callback(null, true);
+			if (allowedOrigins.includes(origin)) {
+				callback(null, true);
+			} else {
+				console.warn(`❌ CORS blocked: ${origin}`);
+				callback(new Error("Not allowed by CORS"));
+			}
+		},
+		credentials: true,
+		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+		allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+	})
+);
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
-app.use(cookieParser());
+app.use(cookieParser()); // ✅ CHỈ 1 LẦN
 
 // Áp dụng rate limit cho tất cả API (TRỪ health check đã đặt ở trên)
 app.use("/api", limiter);
-app.use(cookieParser()); // Đảm bảo đã có dòng này
 
 // ============ SITEMAP ============
 app.use("/", sitemapRoutes);
@@ -157,7 +165,7 @@ app.post(
 			console.error("Upload error:", error);
 			res.status(500).json({ success: false, message: error.message });
 		}
-	},
+	}
 );
 
 // ============ PUBLIC ROUTES ============
@@ -175,15 +183,20 @@ app.use("/api/admin/dashboard", protect, adminDashboardRoutes);
 // ============ ERROR HANDLER ============
 app.use(errorHandler);
 
-// ============ START SERVER ============
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-	console.log(`🚀 Server đang chạy trên cổng ${PORT}`);
-	console.log(`📌 Environment: ${process.env.NODE_ENV || "development"}`);
-	console.log(`🔗 API URL: http://localhost:${PORT}/api`);
-	console.log(`🗺️  Sitemap: http://localhost:${PORT}/sitemap.xml`);
-	console.log(`✅ CORS allowed origins:`, allowedOrigins);
-	console.log(
-		`✅ Rate limit: ${limiter.max} requests per ${limiter.windowMs / 60000} minutes`,
-	);
-});
+// ============ EXPORT APP CHO VERCEL ============
+module.exports = app;
+
+// ============ START SERVER (CHỈ KHI CHẠY LOCAL) ============
+if (require.main === module) {
+	const PORT = process.env.PORT || 5000;
+	app.listen(PORT, () => {
+		console.log(`🚀 Server đang chạy trên cổng ${PORT}`);
+		console.log(`📌 Environment: ${process.env.NODE_ENV || "development"}`);
+		console.log(`🔗 API URL: http://localhost:${PORT}/api`);
+		console.log(`🗺️  Sitemap: http://localhost:${PORT}/sitemap.xml`);
+		console.log(`✅ CORS allowed origins:`, allowedOrigins);
+		console.log(
+			`✅ Rate limit: ${limiter.max} requests per ${limiter.windowMs / 60000} minutes`
+		);
+	});
+}
