@@ -11,7 +11,7 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
 
   const compressImage = async (file) => {
     const options = {
-      maxSizeMB: 1, // Giảm xuống 1MB
+      maxSizeMB: 1,
       maxWidthOrHeight: 1200,
       useWebWorker: true,
       fileType: 'image/jpeg',
@@ -21,7 +21,7 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
       return compressedFile;
     } catch (error) {
       console.error('Compress error:', error);
-      return file; // Nếu lỗi thì dùng file gốc
+      return file;
     }
   };
 
@@ -31,7 +31,6 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
     setUploading(true);
 
     try {
-      // Compress từng file trước khi upload
       const compressedFiles = await Promise.all(
         acceptedFiles.map(file => compressImage(file))
       );
@@ -88,7 +87,6 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
 
   return (
     <div className="space-y-4">
-      {/* Danh sách ảnh đã upload */}
       {value.length > 0 && (
         <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
           {value.map((url, index) => (
@@ -97,6 +95,9 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
                 src={url}
                 alt={`Ảnh ${index + 1}`}
                 className="object-cover w-full h-24 rounded-lg border"
+                width="100"
+                height="96"
+                loading="lazy"
               />
               <button
                 type="button"
@@ -110,7 +111,6 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
         </div>
       )}
 
-      {/* Dropzone */}
       <div
         {...getRootProps()}
         className={`
