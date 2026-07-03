@@ -7,7 +7,15 @@ const ProductCard = memo(({ product }) => {
       <div className="overflow-hidden transition bg-white border rounded-xl hover:shadow-md hover:border-brand-primary/30">
         <div className="flex items-center justify-center bg-gray-50 aspect-square p-4">
           {product.images?.[0] ? (
-            <img src={product.images[0]} alt={product.name} loading="lazy" className="object-cover w-full h-full" />
+            <img 
+              src={product.images[0]} 
+              alt={product.name} 
+              loading="lazy" 
+              className="object-cover w-full h-full"
+              width="400"
+              height="400"
+              decoding="async"
+            />
           ) : (
             <span className="text-6xl">💄</span>
           )}
