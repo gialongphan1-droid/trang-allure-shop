@@ -8,31 +8,25 @@ router.get('/sitemap.xml', async (req, res) => {
     const baseUrl = 'https://trangallure.shop';
     const today = new Date().toISOString().split('T')[0];
 
-    // Lấy tất cả sản phẩm đang hoạt động
+    // Lấy dữ liệu từ database
     const products = await Product.find({ isActive: true }).select('slug updatedAt');
-    // Lấy tất cả danh mục đang hoạt động
     const categories = await Category.find({ isActive: true }).select('slug updatedAt');
 
-    // Tạo XML
+    // Bắt đầu tạo XML
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Trang chủ -->
   <url>
     <loc>${baseUrl}/</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- Trang sản phẩm -->
   <url>
     <loc>${baseUrl}/san-pham</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
-  
-  <!-- Trang liên hệ -->
   <url>
     <loc>${baseUrl}/lien-he</loc>
     <lastmod>${today}</lastmod>
@@ -40,7 +34,7 @@ router.get('/sitemap.xml', async (req, res) => {
     <priority>0.5</priority>
   </url>`;
 
-    // Thêm các danh mục
+    // Thêm danh mục
     categories.forEach(cat => {
       const lastmod = cat.updatedAt ? cat.updatedAt.toISOString().split('T')[0] : today;
       xml += `
@@ -52,7 +46,7 @@ router.get('/sitemap.xml', async (req, res) => {
   </url>`;
     });
 
-    // Thêm các sản phẩm
+    // Thêm sản phẩm
     products.forEach(product => {
       const lastmod = product.updatedAt ? product.updatedAt.toISOString().split('T')[0] : today;
       xml += `
