@@ -26,24 +26,29 @@ const AdminLogin = () => {
       const response = await adminApi.login({ email, password });
       console.log('✅ Login response:', response);
       
-      // ✅ KIỂM TRA RESPONSE CÓ DATA KHÔNG
+      // ✅ KIỂM TRA RESPONSE
       if (response.success && response.data) {
-         // ✅ KIỂM TRA COOKIE NGAY LẬP TỨC
-      setTimeout(() => {
-        const hasToken = document.cookie.split(';').some(c => c.trim().startsWith('token='));
-        console.log('🔍 Cookie after login:', hasToken ? '✅ Has token' : '❌ No token');
-        console.log('🔍 All cookies:', document.cookie);
-      }, 500);
+        // ✅ LƯU TOKEN VÀO localStorage (QUAN TRỌNG!)
+        if (response.data.token) {
+          localStorage.setItem('adminToken', response.data.token);
+          console.log('✅ Token saved to localStorage:', response.data.token.substring(0, 20) + '...');
+        }
+        
+        // ✅ LƯU REFRESH TOKEN NẾU CÓ
+        if (response.data.refreshToken) {
+          localStorage.setItem('adminRefreshToken', response.data.refreshToken);
+        }
+        
         toast({
           title: '🎉 Đăng nhập thành công!',
           description: 'Chào mừng bạn trở lại!',
         });
         
-       // ✅ ĐỢI 1s CHO COOKIE ĐƯỢC SET
-      setTimeout(() => {
-        console.log('🔄 Redirecting to dashboard...');
-        navigate('/admin/dashboard', { replace: true });
-      }, 1500);
+        // ✅ CHUYỂN HƯỚNG SAU 1.5s
+        setTimeout(() => {
+          console.log('🔄 Redirecting to dashboard...');
+          navigate('/admin/dashboard', { replace: true });
+        }, 1500);
       } else {
         setError('Đăng nhập thất bại, vui lòng thử lại');
       }
@@ -123,7 +128,7 @@ const AdminLogin = () => {
         </form>
 
         <div className="mt-6 text-sm text-center text-gray-500 dark:text-gray-400">
-        <p>Liên hệ quản trị viên nếu quên mật khẩu</p>
+          <p>Liên hệ quản trị viên nếu quên mật khẩu</p>
         </div>
       </div>
     </div>

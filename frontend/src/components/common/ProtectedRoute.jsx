@@ -8,14 +8,12 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        console.log('🔍 ProtectedRoute: Checking auth...');
-        console.log('🔍 Document cookie:', document.cookie);
+        // ✅ KIỂM TRA TOKEN TRONG localStorage (không phải cookie)
+        const token = localStorage.getItem('adminToken');
+        console.log('🔍 Token in localStorage:', token ? '✅ Has token' : '❌ No token');
         
-        const hasToken = document.cookie.split(';').some(c => c.trim().startsWith('token='));
-        console.log('🔍 Has token cookie?', hasToken);
-        
-        if (!hasToken) {
-          console.log('❌ No token cookie, redirect to login');
+        if (!token) {
+          console.log('❌ No token, redirect to login');
           setIsAuthenticated(false);
           return;
         }
@@ -33,8 +31,6 @@ const ProtectedRoute = ({ children }) => {
         }
       } catch (error) {
         console.error('❌ Auth check error:', error);
-        console.error('❌ Error status:', error?.response?.status);
-        console.error('❌ Error data:', error?.response?.data);
         setIsAuthenticated(false);
       }
     };

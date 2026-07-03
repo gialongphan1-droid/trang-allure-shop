@@ -7,7 +7,7 @@ const generateAccessToken = (admin) => {
 	return jwt.sign(
 		{ id: admin._id, email: admin.email },
 		process.env.JWT_SECRET,
-		{ expiresIn: process.env.JWT_EXPIRES_IN || "15m" }
+		{ expiresIn: process.env.JWT_EXPIRES_IN || "15m" },
 	);
 };
 
@@ -20,14 +20,14 @@ const getCookieOptions = (maxAge) => {
 	const isProduction = process.env.NODE_ENV === "production";
 	const options = {
 		httpOnly: true,
-		secure: isProduction,
-		sameSite: "lax", // ✅ Cùng domain nên dùng 'lax'
+		secure: false, // ✅ LUÔN false cho local
+		sameSite: "lax",
 		maxAge: maxAge,
 		path: "/",
 	};
-	// ✅ Nếu production, set domain
 	if (isProduction) {
 		options.domain = ".trangallure.shop";
+		options.secure = true;
 	}
 	return options;
 };
@@ -36,23 +36,13 @@ const getCookieOptions = (maxAge) => {
 exports.login = async (req, res, next) => {
 	try {
 		const { email, password } = req.body;
-		console.log("🔐 Login attempt:", email);
-
 		const admin = await Admin.findOne({ email }).select("+password");
-		if (!admin) {
-			console.log("❌ Admin not found");
-			return res
-				.status(401)
-				.json({ success: false, message: "Email hoặc mật khẩu không đúng" });
-		}
 
-		const isMatch = await admin.comparePassword(password);
-		console.log("🔑 Password match:", isMatch);
-
-		if (!isMatch) {
-			return res
-				.status(401)
-				.json({ success: false, message: "Email hoặc mật khẩu không đúng" });
+		if (!admin || !(await admin.comparePassword(password))) {
+			return res.status(401).json({
+				success: false,
+				message: "Email hoặc mật khẩu không đúng",
+			});
 		}
 
 		admin.lastLogin = new Date();
@@ -61,23 +51,29 @@ exports.login = async (req, res, next) => {
 		const accessToken = generateAccessToken(admin);
 		const refreshToken = generateRefreshToken();
 
-		// Hash refresh token trước khi lưu vào DB
 		const hashedRefreshToken = crypto
 			.createHash("sha256")
 			.update(refreshToken)
 			.digest("hex");
 		admin.refreshToken = hashedRefreshToken;
 		admin.refreshTokenExpiresAt = new Date(
-			Date.now() + 7 * 24 * 60 * 60 * 1000
+			Date.now() + 7 * 24 * 60 * 60 * 1000,
 		);
 		await admin.save();
 
-		console.log("📝 Token generated:", accessToken.substring(0, 20) + "...");
+		const isProduction = process.env.NODE_ENV === "production";
 
-		// ✅ Set cookie
-		res.cookie("token", accessToken, getCookieOptions(15 * 60 * 1000));
-		res.cookie("refreshToken", refreshToken, getCookieOptions(7 * 24 * 60 * 60 * 1000));
+		// ✅ CHỈ SET COOKIE KHI PRODUCTION
+		if (isProduction) {
+			res.cookie("token", accessToken, getCookieOptions(15 * 60 * 1000));
+			res.cookie(
+				"refreshToken",
+				refreshToken,
+				getCookieOptions(7 * 24 * 60 * 60 * 1000),
+			);
+		}
 
+		// ✅ LUÔN TRẢ TOKEN TRONG RESPONSE
 		res.json({
 			success: true,
 			data: {
@@ -85,6 +81,7 @@ exports.login = async (req, res, next) => {
 				name: admin.name,
 				email: admin.email,
 				avatar: admin.avatar,
+				token: accessToken, // 👈 Client tự lưu vào localStorage (dev)
 			},
 		});
 	} catch (error) {
@@ -128,15 +125,25 @@ exports.refreshToken = async (req, res, next) => {
 
 		admin.refreshToken = newHashedToken;
 		admin.refreshTokenExpiresAt = new Date(
-			Date.now() + 7 * 24 * 60 * 60 * 1000
+			Date.now() + 7 * 24 * 60 * 60 * 1000,
 		);
 		await admin.save();
 
-		// ✅ Set cookie mới
-		res.cookie("token", newAccessToken, getCookieOptions(15 * 60 * 1000));
-		res.cookie("refreshToken", newRefreshToken, getCookieOptions(7 * 24 * 60 * 60 * 1000));
+		const isProduction = process.env.NODE_ENV === "production";
+		if (isProduction) {
+			res.cookie("token", newAccessToken, getCookieOptions(15 * 60 * 1000));
+			res.cookie(
+				"refreshToken",
+				newRefreshToken,
+				getCookieOptions(7 * 24 * 60 * 60 * 1000),
+			);
+		}
 
-		res.json({ success: true, message: "Token refreshed" });
+		res.json({
+			success: true,
+			message: "Token refreshed",
+			token: newAccessToken,
+		});
 	} catch (error) {
 		console.error("❌ Refresh token error:", error);
 		next(error);
@@ -158,7 +165,6 @@ exports.logout = async (req, res) => {
 		console.error("❌ Logout error:", error);
 	}
 
-	// ✅ Clear cookie với đúng options
 	const isProduction = process.env.NODE_ENV === "production";
 	const clearOptions = {
 		httpOnly: true,
@@ -182,7 +188,7 @@ exports.getMe = async (req, res, next) => {
 			return res.status(401).json({ success: false, message: "Unauthorized" });
 		}
 		const admin = await Admin.findById(req.admin.id).select(
-			"-password -refreshToken"
+			"-password -refreshToken",
 		);
 		if (!admin) {
 			return res

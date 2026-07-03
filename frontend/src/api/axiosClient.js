@@ -1,9 +1,13 @@
 import axios from 'axios';
 import { cache } from '../utils/cache';
 
+// ✅ Tự động phân biệt môi trường
+const isProduction = import.meta.env.PROD; // Vite tự động có
+const API_URL = import.meta.env.VITE_API_URL || '/api';
+
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
-  withCredentials: true,
+  baseURL: API_URL,
+  withCredentials: isProduction, // ✅ Prod: true, Dev: false
   headers: {
     'Content-Type': 'application/json',
   },
@@ -23,9 +27,20 @@ const processQueue = (error) => {
   failedQueue = [];
 };
 
+// ✅ Interceptor request
 axiosClient.interceptors.request.use(
   (config) => {
     console.log('📤 Request:', config.method.toUpperCase(), config.url);
+    
+    // ✅ Nếu là dev, thêm token từ localStorage
+    if (!isProduction) {
+      const token = localStorage.getItem('adminToken');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    
+    // Cache cho GET requests
     if (config.method === 'get' && config.cache !== false) {
       const cacheKey = `${config.url}${JSON.stringify(config.params || {})}`;
       const cachedData = cache.get(cacheKey);
@@ -40,6 +55,7 @@ axiosClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// ✅ Interceptor response
 axiosClient.interceptors.response.use(
   (response) => {
     console.log('📥 Response:', response.status, response.config.url);
@@ -55,6 +71,9 @@ axiosClient.interceptors.response.use(
     // ✅ Nếu chính refresh-token bị 401 → KHÔNG RETRY
     if (error.response?.status === 401 && originalRequest.url === '/admin/auth/refresh-token') {
       if (window.location.pathname.startsWith('/admin')) {
+        if (!isProduction) {
+          localStorage.removeItem('adminToken');
+        }
         window.location.href = '/admin/login';
       }
       return Promise.reject(error);
@@ -76,11 +95,33 @@ axiosClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await axiosClient.post('/admin/auth/refresh-token');
+        if (!isProduction) {
+          // ✅ Dev: Dùng refresh token từ localStorage
+          const refreshToken = localStorage.getItem('adminRefreshToken');
+          if (!refreshToken) {
+            throw new Error('No refresh token');
+          }
+          
+          const response = await axios.post(`${API_URL}/admin/auth/refresh-token`, {
+            refreshToken: refreshToken,
+          });
+          
+          if (response.data?.token) {
+            localStorage.setItem('adminToken', response.data.token);
+          }
+        } else {
+          // ✅ Prod: Dùng cookie (gửi tự động)
+          await axiosClient.post('/admin/auth/refresh-token');
+        }
+        
         processQueue(null);
         return axiosClient(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError);
+        if (!isProduction) {
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminRefreshToken');
+        }
         if (window.location.pathname.startsWith('/admin')) {
           window.location.href = '/admin/login';
         }

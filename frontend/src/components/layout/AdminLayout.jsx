@@ -40,6 +40,9 @@ const AdminLayout = () => {
       try {
         await adminApi.getMe();
       } catch (error) {
+        // ✅ XÓA TOKEN NẾU KHÔNG HỢP LỆ
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminRefreshToken');
         navigate('/admin/login');
       }
     };
@@ -66,13 +69,20 @@ const AdminLayout = () => {
       toast({
         title: 'Đăng xuất thành công',
       });
-      setShowLogoutDialog(false);
-      navigate('/admin/login');
     } catch (error) {
+      console.error('Logout error:', error);
       toast({
         title: 'Lỗi đăng xuất',
         variant: 'destructive',
       });
+    } finally {
+      // ✅ XÓA TOKEN KHỎI localStorage (QUAN TRỌNG!)
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminRefreshToken');
+      console.log('🗑️ Token removed from localStorage');
+      
+      setShowLogoutDialog(false);
+      navigate('/admin/login', { replace: true });
     }
   };
 
