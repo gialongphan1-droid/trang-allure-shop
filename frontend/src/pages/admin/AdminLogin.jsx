@@ -28,15 +28,22 @@ const AdminLogin = () => {
       
       // ✅ KIỂM TRA RESPONSE CÓ DATA KHÔNG
       if (response.success && response.data) {
+         // ✅ KIỂM TRA COOKIE NGAY LẬP TỨC
+      setTimeout(() => {
+        const hasToken = document.cookie.split(';').some(c => c.trim().startsWith('token='));
+        console.log('🔍 Cookie after login:', hasToken ? '✅ Has token' : '❌ No token');
+        console.log('🔍 All cookies:', document.cookie);
+      }, 500);
         toast({
           title: '🎉 Đăng nhập thành công!',
           description: 'Chào mừng bạn trở lại!',
         });
         
-        // ✅ ĐỢI 1 CHÚT ĐỂ COOKIE ĐƯỢC SET
-        setTimeout(() => {
-          navigate('/admin/dashboard');
-        }, 300);
+       // ✅ ĐỢI 1s CHO COOKIE ĐƯỢC SET
+      setTimeout(() => {
+        console.log('🔄 Redirecting to dashboard...');
+        navigate('/admin/dashboard', { replace: true });
+      }, 1500);
       } else {
         setError('Đăng nhập thất bại, vui lòng thử lại');
       }

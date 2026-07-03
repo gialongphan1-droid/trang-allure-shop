@@ -9,6 +9,7 @@ const ProtectedRoute = ({ children }) => {
     const checkAuth = async () => {
       try {
         console.log('🔍 ProtectedRoute: Checking auth...');
+        console.log('🔍 Document cookie:', document.cookie);
         
         const hasToken = document.cookie.split(';').some(c => c.trim().startsWith('token='));
         console.log('🔍 Has token cookie?', hasToken);
@@ -23,16 +24,17 @@ const ProtectedRoute = ({ children }) => {
         const response = await adminApi.getMe();
         console.log('🔍 getMe response:', response);
         
-        if (response.success && response.data) {
+        if (response?.success && response?.data) {
           console.log('✅ Authenticated!');
           setIsAuthenticated(true);
         } else {
-          console.log('❌ getMe failed:', response);
+          console.log('❌ getMe failed');
           setIsAuthenticated(false);
         }
       } catch (error) {
         console.error('❌ Auth check error:', error);
-        console.error('❌ Error details:', error.response?.status, error.response?.data);
+        console.error('❌ Error status:', error?.response?.status);
+        console.error('❌ Error data:', error?.response?.data);
         setIsAuthenticated(false);
       }
     };
@@ -41,13 +43,13 @@ const ProtectedRoute = ({ children }) => {
 
   if (isAuthenticated === null) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex justify-center items-center h-screen">
         <div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
       </div>
     );
   }
 
-  console.log('🔍 isAuthenticated:', isAuthenticated);
+  console.log('🔍 Final isAuthenticated:', isAuthenticated);
   return isAuthenticated ? children : <Navigate to="/admin/login" replace />;
 };
 
