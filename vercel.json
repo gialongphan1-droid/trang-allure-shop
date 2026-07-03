@@ -6,6 +6,10 @@
       "buildCommand": "npm run build",
       "routes": [
         {
+          "src": "/(.*\\..*)",
+          "dest": "/$1"
+        },
+        {
           "src": "/(.*)",
           "dest": "/index.html"
         }
