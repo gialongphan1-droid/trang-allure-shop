@@ -3,9 +3,7 @@
     "frontend": {
       "root": "frontend",
       "framework": "vite",
-      "output": {
-        "distDir": "dist"
-      }
+      "buildCommand": "npm run build"
     },
     "backend": {
       "root": "backend",
