@@ -20,14 +20,13 @@ export default defineConfig({
   },
   css: {
     minify: false,
-  },  
+  },
   build: {
-    // Tăng giới hạn cảnh báo lên 2000 KB để không bị làm phiền
+    outDir: 'dist', // ✅ THÊM DÒNG NÀY
     chunkSizeWarningLimit: 2000,
     rollupOptions: {
       output: {
         manualChunks: {
-          // Tách các thư viện lớn thành chunk riêng
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'redux-vendor': ['@reduxjs/toolkit', 'react-redux'],
           'ui-vendor': ['@radix-ui/react-slot', 'class-variance-authority'],
