@@ -39,6 +39,23 @@ app.get("/api/health", (req, res) => {
 	});
 });
 
+// ============ ROOT API ============
+app.get("/api", (req, res) => {
+	res.json({
+		success: true,
+		message: "TrangAllure Shop API",
+		version: "1.0.0",
+		endpoints: {
+			health: "/api/health",
+			products: "/api/products",
+			categories: "/api/categories",
+			banners: "/api/banners",
+			admin: "/api/admin",
+			sitemap: "/sitemap.xml"
+		}
+	});
+});
+
 // ============ CẤU HÌNH RATE LIMIT ============
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 phút

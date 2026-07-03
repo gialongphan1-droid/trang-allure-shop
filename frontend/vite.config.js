@@ -20,7 +20,7 @@ export default defineConfig({
   },
   css: {
     minify: false,
-  },
+  },  
   build: {
     // Tăng giới hạn cảnh báo lên 2000 KB để không bị làm phiền
     chunkSizeWarningLimit: 2000,
