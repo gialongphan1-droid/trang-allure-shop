@@ -18,9 +18,11 @@ export default defineConfig({
       },
     },
   },
+  css: {
+    minify: false,
+  },
   build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
+    outDir: 'dist', // ✅ THÊM DÒNG NÀY
     chunkSizeWarningLimit: 2000,
     rollupOptions: {
       output: {
