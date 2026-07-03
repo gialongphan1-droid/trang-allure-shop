@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Chặn các trang không cần index (chỉ chặn thư mục admin, api, dashboard)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /dashboard/
+
+# Cho phép bot crawl các trang quan trọng
+Allow: /san-pham/
+Allow: /danh-muc/
+
+# Sitemap
+Sitemap: https://trangallure.shop/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
