@@ -28,6 +28,7 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
+import { optimizeAdmin } from "@/utils/imageUtils";
 import { Pencil, Plus, Search, Trash, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -249,7 +250,7 @@ const AdminProducts = () => {
 						placeholder="Tìm kiếm sản phẩm..."
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
-						className="pl-10 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400 dark:text-gray-500"
+						className="pl-10 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
 					/>
 					{search && (
 						<button
@@ -292,11 +293,15 @@ const AdminProducts = () => {
 								</TableHead>
 								<TableHead className="w-16 dark:text-gray-300">STT</TableHead>
 								<TableHead className="w-16 dark:text-gray-300">Ảnh</TableHead>
-								<TableHead className="dark:text-gray-300">Tên sản phẩm</TableHead>
+								<TableHead className="dark:text-gray-300">
+									Tên sản phẩm
+								</TableHead>
 								<TableHead className="dark:text-gray-300">Danh mục</TableHead>
 								<TableHead className="dark:text-gray-300">Giá</TableHead>
 								<TableHead className="dark:text-gray-300">Trạng thái</TableHead>
-								<TableHead className="text-right dark:text-gray-300">Thao tác</TableHead>
+								<TableHead className="text-right dark:text-gray-300">
+									Thao tác
+								</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -312,7 +317,7 @@ const AdminProducts = () => {
 								<TableRow>
 									<TableCell
 										colSpan={8}
-										className="py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500"
+										className="py-8 text-center text-gray-500 dark:text-gray-400"
 									>
 										{debouncedSearch
 											? "Không tìm thấy sản phẩm nào phù hợp"
@@ -329,10 +334,14 @@ const AdminProducts = () => {
 												className="dark:border-gray-500"
 											/>
 										</TableCell>
-										<TableCell className="dark:text-gray-300">{(page - 1) * 10 + index + 1}</TableCell>
+										<TableCell className="dark:text-gray-300">
+											{(page - 1) * 10 + index + 1}
+										</TableCell>
 										<TableCell>
 											<img
-												src={product.images?.[0] || "/placeholder.jpg"}
+												src={optimizeAdmin(
+													product.images?.[0] || "/placeholder.jpg",
+												)}
 												alt={product.name}
 												className="object-cover w-12 h-12 rounded-lg"
 												width="48"
@@ -344,7 +353,9 @@ const AdminProducts = () => {
 										<TableCell className="font-medium dark:text-white line-clamp-1">
 											{product.name}
 										</TableCell>
-										<TableCell className="dark:text-gray-300">{product.category?.name || "N/A"}</TableCell>
+										<TableCell className="dark:text-gray-300">
+											{product.category?.name || "N/A"}
+										</TableCell>
 										<TableCell>
 											<div className="flex flex-col">
 												<span className="font-medium text-brand-primary dark:text-brand-primary">
@@ -353,7 +364,7 @@ const AdminProducts = () => {
 												</span>
 												{product.originalPrice &&
 													product.originalPrice > product.price && (
-														<span className="text-xs text-gray-400 line-through dark:text-gray-500 dark:text-gray-400 dark:text-gray-500">
+														<span className="text-xs text-gray-400 line-through dark:text-gray-500">
 															{new Intl.NumberFormat("vi-VN").format(
 																product.originalPrice,
 															)}
@@ -404,7 +415,7 @@ const AdminProducts = () => {
 							<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
 						</div>
 					) : products.length === 0 ? (
-						<p className="py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
+						<p className="py-8 text-center text-gray-500 dark:text-gray-400">
 							{debouncedSearch
 								? "Không tìm thấy sản phẩm nào phù hợp"
 								: "Chưa có sản phẩm nào"}
@@ -422,7 +433,9 @@ const AdminProducts = () => {
 										className="mt-1 dark:border-gray-500"
 									/>
 									<img
-										src={product.images?.[0] || "/placeholder.jpg"}
+										src={optimizeAdmin(
+											product.images?.[0] || "/placeholder.jpg",
+										)}
 										alt={product.name}
 										className="flex-shrink-0 object-cover w-20 h-20 rounded-lg"
 										width="80"
@@ -434,7 +447,7 @@ const AdminProducts = () => {
 										<h3 className="font-semibold text-brand-text dark:text-white line-clamp-1">
 											{product.name}
 										</h3>
-										<p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
+										<p className="text-sm text-gray-500 dark:text-gray-400">
 											{product.category?.name || "N/A"}
 										</p>
 										<div className="flex items-center gap-2 mt-1">
@@ -443,7 +456,7 @@ const AdminProducts = () => {
 											</span>
 											{product.originalPrice &&
 												product.originalPrice > product.price && (
-													<span className="text-xs text-gray-400 line-through dark:text-gray-500 dark:text-gray-400 dark:text-gray-500">
+													<span className="text-xs text-gray-400 line-through dark:text-gray-500">
 														{new Intl.NumberFormat("vi-VN").format(
 															product.originalPrice,
 														)}
@@ -517,8 +530,10 @@ const AdminProducts = () => {
 			>
 				<AlertDialogContent className="dark:bg-gray-800 dark:border-gray-700">
 					<AlertDialogHeader>
-						<AlertDialogTitle className="dark:text-white">Xác nhận xóa sản phẩm</AlertDialogTitle>
-						<AlertDialogDescription className="dark:text-gray-400 dark:text-gray-500">
+						<AlertDialogTitle className="dark:text-white">
+							Xác nhận xóa sản phẩm
+						</AlertDialogTitle>
+						<AlertDialogDescription className="dark:text-gray-400">
 							Bạn có chắc chắn muốn xóa sản phẩm "{deleteTarget?.name}"? Hành
 							động này không thể hoàn tác.
 						</AlertDialogDescription>
@@ -544,8 +559,10 @@ const AdminProducts = () => {
 			>
 				<AlertDialogContent className="dark:bg-gray-800 dark:border-gray-700">
 					<AlertDialogHeader>
-						<AlertDialogTitle className="dark:text-white">Xác nhận xóa hàng loạt</AlertDialogTitle>
-						<AlertDialogDescription className="dark:text-gray-400 dark:text-gray-500">
+						<AlertDialogTitle className="dark:text-white">
+							Xác nhận xóa hàng loạt
+						</AlertDialogTitle>
+						<AlertDialogDescription className="dark:text-gray-400">
 							Bạn có chắc chắn muốn xóa {selectedProducts.length} sản phẩm đã
 							chọn? Hành động này không thể hoàn tác.
 						</AlertDialogDescription>

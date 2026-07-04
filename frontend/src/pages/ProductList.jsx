@@ -16,6 +16,7 @@ import SEO from '@/components/common/SEO';
 import Skeleton from '@/components/common/Skeleton';
 import { fetchProducts } from '../store/slices/productSlice';
 import { fetchCategories } from '../store/slices/categorySlice';
+import { optimizeProduct } from '@/utils/imageUtils';
 
 const ProductList = () => {
   const dispatch = useDispatch();
@@ -152,7 +153,7 @@ const ProductList = () => {
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-bold font-display text-brand-text dark:text-white">{pageTitle}</h1>
-          <p className="mt-1 text-gray-600 dark:text-gray-400 dark:text-gray-500">Khám phá bộ sưu tập mỹ phẩm đa dạng của chúng tôi</p>
+          <p className="mt-1 text-gray-600 dark:text-gray-400">Khám phá bộ sưu tập mỹ phẩm đa dạng của chúng tôi</p>
         </div>
 
         <div className="p-6 bg-white shadow-sm dark:bg-gray-800 rounded-xl">
@@ -224,7 +225,7 @@ const ProductList = () => {
 
         {products.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-gray-500 dark:text-gray-400 dark:text-gray-500">Không tìm thấy sản phẩm nào</p>
+            <p className="text-gray-500 dark:text-gray-400">Không tìm thấy sản phẩm nào</p>
           </div>
         ) : (
           <InfiniteScroll
@@ -237,7 +238,7 @@ const ProductList = () => {
               </div>
             }
             endMessage={
-              <div className="py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
+              <div className="py-8 text-center text-gray-500 dark:text-gray-400">
                 Đã tải hết {pagination.total} sản phẩm
               </div>
             }
@@ -249,7 +250,7 @@ const ProductList = () => {
                     <div className="flex items-center justify-center bg-gray-100 dark:bg-gray-700 aspect-square">
                       {product.images?.[0] ? (
                         <img
-                          src={product.images[0]}
+                          src={optimizeProduct(product.images[0])}
                           alt={product.name}
                           loading="lazy"
                           className="object-cover w-full h-full"
@@ -263,13 +264,13 @@ const ProductList = () => {
                     </div>
                     <div className="p-4">
                       <h3 className="font-semibold text-brand-text dark:text-white line-clamp-1">{product.name}</h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">{product.brand || ''}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{product.brand || ''}</p>
                       <div className="flex items-center gap-2 mt-2">
                         <span className="text-lg font-bold text-brand-primary">
                           {new Intl.NumberFormat('vi-VN').format(product.price)}đ
                         </span>
                         {product.originalPrice && product.originalPrice > product.price && (
-                          <span className="text-sm text-gray-400 line-through dark:text-gray-500 dark:text-gray-400 dark:text-gray-500">
+                          <span className="text-sm text-gray-400 line-through dark:text-gray-500">
                             {new Intl.NumberFormat('vi-VN').format(product.originalPrice)}đ
                           </span>
                         )}

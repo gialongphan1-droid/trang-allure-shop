@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, Menu, X, User, LogOut, ArrowLeft, Moon, Sun } from 'lucide-react';
+import { ShoppingBag, Menu, X, LogOut, ArrowLeft, Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useToast } from '@/components/ui/use-toast';
 import {
@@ -25,7 +25,6 @@ const Header = () => {
   const location = useLocation();
   const { toast } = useToast();
 
-  // Kiểm tra authentication
   const checkAuth = async () => {
     const token = localStorage.getItem('adminToken');
     
@@ -137,28 +136,33 @@ const Header = () => {
 
             {/* Right Section */}
             <div className="flex items-center gap-2">
-              {showAdminButtons && !isAdminPage && !isAdminLoginPage && (
-                <button
-                  onClick={handleBackToAdmin}
-                  className="flex items-center gap-1 px-3 py-2 text-sm font-medium transition rounded-lg text-brand-primary hover:bg-brand-primary/10 dark:text-brand-primary dark:hover:bg-brand-primary/20"
-                  aria-label="Quay lại trang admin"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  <span className="hidden sm:inline">Admin</span>
-                </button>
+              {showAdminButtons && !isAdminLoginPage && (
+                <>
+                  {/* Nút quay lại Admin - chỉ hiện khi ở trang user */}
+                  {!isAdminPage && (
+                    <button
+                      onClick={handleBackToAdmin}
+                      className="flex items-center gap-1 px-3 py-2 text-sm font-medium transition rounded-lg text-brand-primary hover:bg-brand-primary/10 dark:text-brand-primary dark:hover:bg-brand-primary/20"
+                      aria-label="Quay lại trang admin"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      <span className="hidden sm:inline">Admin</span>
+                    </button>
+                  )}
+
+                  {/* Nút Đăng xuất - hiện ở mọi nơi (cả user và admin) */}
+                  <button
+                    onClick={() => setShowLogoutDialog(true)}
+                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-red-600 transition rounded-lg hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
+                    aria-label="Đăng xuất"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span className="hidden sm:inline">Đăng xuất</span>
+                  </button>
+                </>
               )}
 
-              {showAdminButtons && isAdminPage && !isAdminLoginPage && (
-                <button
-                  onClick={() => setShowLogoutDialog(true)}
-                  className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-red-600 transition rounded-lg hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
-                  aria-label="Đăng xuất"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span className="hidden sm:inline">Đăng xuất</span>
-                </button>
-              )}
-
+              {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
                 className="p-2 transition rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -171,6 +175,7 @@ const Header = () => {
                 )}
               </button>
 
+              {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="p-2 rounded-lg md:hidden hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -209,29 +214,31 @@ const Header = () => {
               >
                 Liên hệ
               </Link>
-              {showAdminButtons && !isAdminPage && !isAdminLoginPage && (
-                <button
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    handleBackToAdmin();
-                  }}
-                  className="flex items-center gap-2 text-left text-brand-primary hover:text-brand-accent"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Quay lại Admin
-                </button>
-              )}
-              {showAdminButtons && isAdminPage && !isAdminLoginPage && (
-                <button
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setShowLogoutDialog(true);
-                  }}
-                  className="flex items-center gap-2 text-left text-red-600 hover:text-red-700"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Đăng xuất
-                </button>
+              {showAdminButtons && !isAdminLoginPage && (
+                <>
+                  {!isAdminPage && (
+                    <button
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        handleBackToAdmin();
+                      }}
+                      className="flex items-center gap-2 text-left text-brand-primary hover:text-brand-accent"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      Quay lại Admin
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      setShowLogoutDialog(true);
+                    }}
+                    className="flex items-center gap-2 text-left text-red-600 hover:text-red-700"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Đăng xuất
+                  </button>
+                </>
               )}
             </nav>
           )}

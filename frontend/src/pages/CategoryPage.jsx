@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import SEO from '@/components/common/SEO';
 import { fetchProducts } from '../store/slices/productSlice';
 import { fetchCategories } from '../store/slices/categorySlice';
+import { optimizeProduct } from '@/utils/imageUtils';
 
 const CategoryPage = () => {
   const { slug } = useParams();
@@ -54,19 +55,20 @@ const CategoryPage = () => {
         url={`https://trangallure.shop/danh-muc/${slug}`}
         keywords={`${categoryName}, mỹ phẩm, trang điểm, chăm sóc da`}
       />
+      
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-bold font-display text-brand-text dark:text-white">
             {categoryName || 'Danh mục sản phẩm'}
           </h1>
-          <p className="mt-1 text-gray-600 dark:text-gray-400 dark:text-gray-500">
+          <p className="mt-1 text-gray-600 dark:text-gray-400">
             {products.length} sản phẩm
           </p>
         </div>
 
         {products.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-gray-500 dark:text-gray-400 dark:text-gray-500">Chưa có sản phẩm nào trong danh mục này</p>
+            <p className="text-gray-500 dark:text-gray-400">Chưa có sản phẩm nào trong danh mục này</p>
             <Link to="/san-pham">
               <Button className="mt-4">Xem tất cả sản phẩm</Button>
             </Link>
@@ -79,7 +81,7 @@ const CategoryPage = () => {
                   <div className="flex items-center justify-center bg-gray-100 dark:bg-gray-700/50 aspect-square">
                     {product.images?.[0] ? (
                       <img
-                        src={product.images[0]}
+                        src={optimizeProduct(product.images[0])}
                         alt={product.name}
                         loading="lazy"
                         className="object-cover w-full h-full"
@@ -93,13 +95,13 @@ const CategoryPage = () => {
                   </div>
                   <div className="p-4">
                     <h3 className="font-semibold text-brand-text dark:text-white line-clamp-1">{product.name}</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">{product.brand || ''}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{product.brand || ''}</p>
                     <div className="flex items-center gap-2 mt-2">
                       <span className="text-lg font-bold text-brand-primary">
                         {new Intl.NumberFormat('vi-VN').format(product.price)}đ
                       </span>
                       {product.originalPrice && product.originalPrice > product.price && (
-                        <span className="text-sm text-gray-400 line-through dark:text-gray-500 dark:text-gray-400 dark:text-gray-500">
+                        <span className="text-sm text-gray-400 line-through dark:text-gray-500">
                           {new Intl.NumberFormat('vi-VN').format(product.originalPrice)}đ
                         </span>
                       )}
