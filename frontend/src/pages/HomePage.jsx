@@ -180,11 +180,13 @@ const HomePage = () => {
 
 	return (
 		<>
+			{/* ✅ SEO với pageType="home" */}
 			<SEO
-				title="Trang chủ - Mỹ phẩm chính hãng"
-				description="TrangAllure Shop - Cửa hàng mỹ phẩm chính hãng với các sản phẩm son môi, kem nền, skincare chất lượng cao. Mua sắm an toàn, giá tốt."
+				pageType="home"
+				title="Mỹ phẩm chính hãng"
+				description="TRANG ALLURE - Nơi hội tụ các thương hiệu mỹ phẩm Authentic. Săn ngay ưu đãi sốc, hàng chính hãng 100%!"
 				url="https://trangallure.shop"
-				keywords="mỹ phẩm, son môi, kem nền, skincare, trang điểm, chăm sóc da"
+				keywords="mỹ phẩm chính hãng, son môi, kem nền, skincare, trang điểm, chăm sóc da, sale mỹ phẩm"
 			/>
 
 			<div className="space-y-12">
@@ -358,6 +360,23 @@ const HomePage = () => {
 						<span className="inline-block px-4 py-1.5 text-sm font-semibold rounded-full text-brand-primary bg-brand-primary/20 dark:bg-brand-primary/10 sm:px-6 sm:py-2 sm:text-base md:text-lg">
 							🚀 SHIP TOÀN QUỐC
 						</span>
+					</div>
+				</section>
+
+				{/* SLOGAN 3 - Banner quảng bá */}
+				<section className="relative bg-gradient-to-r from-brand-primary/10 to-brand-secondary/20 dark:from-brand-primary/20 dark:to-brand-secondary/10 rounded-2xl p-6 md:p-10 my-4">
+					<div className="flex flex-col items-center text-center">
+						<h3 className="text-xl md:text-3xl font-bold text-brand-text dark:text-white">
+							TRANG ALLURE
+						</h3>
+						<p className="text-base md:text-xl mt-2 text-brand-text/80 dark:text-white/80 font-medium">
+							Săn ngay hàng Authentic, sale cực đã từ các thương hiệu nổi tiếng!
+						</p>
+						<Link to="/san-pham">
+							<Button className="mt-4 text-white bg-brand-primary hover:bg-brand-accent">
+								Khám phá ngay
+							</Button>
+						</Link>
 					</div>
 				</section>
 
