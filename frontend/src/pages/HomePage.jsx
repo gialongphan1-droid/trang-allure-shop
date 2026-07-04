@@ -211,6 +211,7 @@ const HomePage = () => {
 												alt={banner.title || "Banner"}
 												loading={index === 0 ? "eager" : "lazy"}
 												fetchpriority={index === 0 ? "high" : "auto"}
+												importance="high"  // ✅ Thêm dòng này
 												className="object-cover w-full h-full"
 												width="1200"
 												height="400"

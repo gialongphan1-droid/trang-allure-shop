@@ -22,8 +22,16 @@ export default defineConfig({
     minify: false,
   },
   build: {
-    outDir: 'dist', // ✅ THÊM DÒNG NÀY
+    outDir: 'dist',
     chunkSizeWarningLimit: 2000,
+    // ✅ Tối ưu minify để giảm bundle size
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,      // Xóa console.log trong production
+        drop_debugger: true,     // Xóa debugger
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: {
