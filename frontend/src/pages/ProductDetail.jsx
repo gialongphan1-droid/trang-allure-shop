@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { productApi } from '../api/productApi';
-import { ChevronLeft, ChevronRight, MessageCircle, Facebook, MessageSquare, Phone } from 'lucide-react';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  MessageCircle
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -13,6 +17,10 @@ import { useToast } from '@/components/ui/use-toast';
 import SEO from '@/components/common/SEO';
 import Skeleton from '@/components/common/Skeleton';
 
+// ✅ Import icons từ react-icons
+import { FaFacebook, FaFacebookMessenger } from 'react-icons/fa';
+import { SiZalo } from 'react-icons/si';
+
 const ProductDetail = () => {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
@@ -21,7 +29,7 @@ const ProductDetail = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const { toast } = useToast();
 
-  // Thông tin liên hệ - có thể set qua env hoặc hardcode
+  // Thông tin liên hệ
   const contact = {
     messenger: import.meta.env.VITE_MESSENGER_LINK || 'https://m.me/trangallure.shop',
     zalo: import.meta.env.VITE_ZALO_LINK || 'https://zalo.me/0987654321',
@@ -135,7 +143,7 @@ const ProductDetail = () => {
         link = `${contact.zalo}?text=${encodeURIComponent(text + '\n' + url)}`;
         break;
       case 'facebook':
-        link = contact.facebook;
+        link = `${contact.facebook}?text=${encodeURIComponent(text + '\n' + url)}`;
         break;
       default:
         return;
@@ -197,13 +205,13 @@ const ProductDetail = () => {
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition dark:bg-gray-800/80 dark:hover:bg-gray-700"
+                    className="absolute p-2 transition -translate-y-1/2 rounded-full shadow-md left-2 top-1/2 bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700"
                   >
                     <ChevronLeft className="w-5 h-5 dark:text-white" />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition dark:bg-gray-800/80 dark:hover:bg-gray-700"
+                    className="absolute p-2 transition -translate-y-1/2 rounded-full shadow-md right-2 top-1/2 bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700"
                   >
                     <ChevronRight className="w-5 h-5 dark:text-white" />
                   </button>
@@ -260,7 +268,7 @@ const ProductDetail = () => {
                     <span className="ml-3 text-lg text-gray-400 line-through dark:text-gray-500">
                       {formatPrice(product.originalPrice)}
                     </span>
-                    <span className="ml-2 px-2 py-1 text-sm font-bold text-white bg-red-500 rounded-full">
+                    <span className="px-2 py-1 ml-2 text-sm font-bold text-white bg-red-500 rounded-full">
                       -{discount}%
                     </span>
                   </>
@@ -269,9 +277,9 @@ const ProductDetail = () => {
             </div>
 
             {/* Mô tả với scroll */}
-            <div className="prose prose-sm dark:prose-invert max-h-48 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+            <div className="pr-2 overflow-y-auto prose-sm prose dark:prose-invert max-h-48 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
               <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-300">Mô tả sản phẩm</h3>
-              <p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+              <p className="text-gray-700 whitespace-pre-wrap dark:text-gray-300">
                 {product.description || 'Chưa có mô tả cho sản phẩm này.'}
               </p>
             </div>
@@ -287,15 +295,15 @@ const ProductDetail = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuItem onClick={() => handleContact('messenger')} className="cursor-pointer">
-                    <MessageSquare className="w-4 h-4 mr-2 text-blue-500" />
+                    <FaFacebookMessenger className="w-4 h-4 mr-2 text-blue-500" />
                     Messenger
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleContact('zalo')} className="cursor-pointer">
-                    <Phone className="w-4 h-4 mr-2 text-blue-600" />
+                    <SiZalo className="w-4 h-4 mr-2 text-blue-600" />
                     Zalo
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleContact('facebook')} className="cursor-pointer">
-                    <Facebook className="w-4 h-4 mr-2 text-blue-700" />
+                    <FaFacebook className="w-4 h-4 mr-2 text-blue-700" />
                     Facebook
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -334,7 +342,7 @@ const ProductDetail = () => {
                   to={`/san-pham/${related.slug}`}
                   className="overflow-hidden transition bg-white border border-gray-200 rounded-xl hover:shadow-md dark:bg-gray-800 dark:border-gray-700"
                 >
-                  <div className="aspect-square p-4 bg-gray-50 dark:bg-gray-700/50">
+                  <div className="p-4 aspect-square bg-gray-50 dark:bg-gray-700/50">
                     {related.images?.[0] ? (
                       <img
                         src={related.images[0]}
