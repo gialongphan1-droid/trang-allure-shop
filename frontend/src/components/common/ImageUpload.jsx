@@ -39,14 +39,22 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
         const formData = new FormData();
         formData.append('image', file);
 
+        // ✅ Lấy token từ localStorage
+        const token = localStorage.getItem('adminToken');
+
         const response = await fetch('/api/admin/upload', {
           method: 'POST',
           body: formData,
           credentials: 'include',
+          headers: {
+            // ✅ Thêm token vào header Authorization
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
         });
 
         if (!response.ok) {
-          throw new Error('Upload failed');
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || 'Upload failed');
         }
 
         const data = await response.json();
@@ -61,6 +69,7 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
         description: `Đã upload ${uploadedUrls.length} ảnh`,
       });
     } catch (error) {
+      console.error('Upload error:', error);
       toast({
         title: 'Upload thất bại',
         description: error.message || 'Có lỗi xảy ra',
@@ -94,7 +103,7 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
               <img
                 src={url}
                 alt={`Ảnh ${index + 1}`}
-                className="object-cover w-full h-24 rounded-lg border"
+                className="object-cover w-full h-24 border rounded-lg"
                 width="100"
                 height="96"
                 loading="lazy"
@@ -102,7 +111,7 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
               <button
                 type="button"
                 onClick={() => removeImage(index)}
-                className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition"
+                className="absolute p-1 text-white transition bg-red-500 rounded-full opacity-0 top-1 right-1 group-hover:opacity-100"
               >
                 <X className="w-3 h-3" />
               </button>
@@ -115,7 +124,7 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
         {...getRootProps()}
         className={`
           border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition
-          ${isDragActive ? 'border-brand-primary bg-brand-background' : 'border-gray-300 hover:border-brand-primary'}
+          ${isDragActive ? 'border-brand-primary bg-brand-background' : 'border-gray-300 hover:border-brand-primary dark:border-gray-600 dark:hover:border-brand-primary'}
           ${uploading ? 'opacity-50 cursor-not-allowed' : ''}
         `}
       >
@@ -124,7 +133,7 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
           {uploading ? (
             <div className="flex items-center gap-2">
               <div className="w-5 h-5 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
-              <span className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Đang upload...</span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">Đang upload...</span>
             </div>
           ) : (
             <>

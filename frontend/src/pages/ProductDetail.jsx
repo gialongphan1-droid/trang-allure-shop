@@ -1,8 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { productApi } from '../api/productApi';
-import { ChevronLeft, ChevronRight, Heart, Share2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MessageCircle, Facebook, MessageSquare, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useToast } from '@/components/ui/use-toast';
 import SEO from '@/components/common/SEO';
 import Skeleton from '@/components/common/Skeleton';
@@ -15,6 +21,13 @@ const ProductDetail = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const { toast } = useToast();
 
+  // Thông tin liên hệ - có thể set qua env hoặc hardcode
+  const contact = {
+    messenger: import.meta.env.VITE_MESSENGER_LINK || 'https://m.me/trangallure.shop',
+    zalo: import.meta.env.VITE_ZALO_LINK || 'https://zalo.me/0987654321',
+    facebook: import.meta.env.VITE_FACEBOOK_PAGE || 'https://facebook.com/trangallure.shop',
+  };
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -25,7 +38,6 @@ const ProductDetail = () => {
           if (response.data.images?.length > 0) {
             setSelectedImage(0);
           }
-          // Fetch related products
           if (response.data.category) {
             const related = await productApi.getProducts({
               category: response.data.category._id,
@@ -61,7 +73,6 @@ const ProductDetail = () => {
     }
   }, [product]);
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') nextImage();
@@ -90,7 +101,7 @@ const ProductDetail = () => {
   if (!product) {
     return (
       <div className="container px-4 py-16 mx-auto text-center">
-        <h2 className="text-2xl font-bold text-gray-600 dark:text-gray-300">Không tìm thấy sản phẩm</h2>
+        <h2 className="text-2xl font-bold text-gray-600 dark:text-gray-400">Không tìm thấy sản phẩm</h2>
         <Link to="/san-pham" className="mt-4 text-brand-primary hover:underline">
           Quay lại danh sách sản phẩm
         </Link>
@@ -106,6 +117,33 @@ const ProductDetail = () => {
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
+  const getShareText = () => {
+    const price = product.price ? formatPrice(product.price) : '';
+    return `🛍️ ${product.name}\n💰 Giá: ${price}\n🔗 Xem chi tiết: https://trangallure.shop/san-pham/${product.slug}`;
+  };
+
+  const handleContact = (platform) => {
+    const url = `https://trangallure.shop/san-pham/${product.slug}`;
+    const text = getShareText();
+    let link = '';
+
+    switch (platform) {
+      case 'messenger':
+        link = `${contact.messenger}?text=${encodeURIComponent(text + '\n' + url)}`;
+        break;
+      case 'zalo':
+        link = `${contact.zalo}?text=${encodeURIComponent(text + '\n' + url)}`;
+        break;
+      case 'facebook':
+        link = contact.facebook;
+        break;
+      default:
+        return;
+    }
+
+    window.open(link, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <>
       <SEO
@@ -118,7 +156,7 @@ const ProductDetail = () => {
 
       <div className="container px-4 py-8 mx-auto">
         {/* Breadcrumb */}
-        <nav className="flex mb-6 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
+        <nav className="flex mb-6 text-sm text-gray-500 dark:text-gray-400">
           <Link to="/" className="hover:text-brand-primary">Trang chủ</Link>
           <span className="mx-2">/</span>
           <Link to="/san-pham" className="hover:text-brand-primary">Sản phẩm</Link>
@@ -159,15 +197,15 @@ const ProductDetail = () => {
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition dark:bg-gray-800/80 dark:hover:bg-gray-700"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-5 h-5 dark:text-white" />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition dark:bg-gray-800/80 dark:hover:bg-gray-700"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-5 h-5 dark:text-white" />
                   </button>
                 </>
               )}
@@ -183,7 +221,7 @@ const ProductDetail = () => {
                     className={`overflow-hidden rounded-lg border-2 transition ${
                       selectedImage === index
                         ? 'border-brand-primary'
-                        : 'border-transparent hover:border-gray-300'
+                        : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'
                     }`}
                   >
                     <img
@@ -219,7 +257,7 @@ const ProductDetail = () => {
                 </span>
                 {product.originalPrice && product.originalPrice > product.price && (
                   <>
-                    <span className="ml-3 text-lg text-gray-400 line-through">
+                    <span className="ml-3 text-lg text-gray-400 line-through dark:text-gray-500">
                       {formatPrice(product.originalPrice)}
                     </span>
                     <span className="ml-2 px-2 py-1 text-sm font-bold text-white bg-red-500 rounded-full">
@@ -230,40 +268,47 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {product.stock !== undefined && (
-              <div className="flex items-center gap-2">
-                <span className={`inline-block w-3 h-3 rounded-full ${
-                  product.stock > 0 ? 'bg-green-500' : 'bg-red-500'
-                }`} />
-                <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
-                  {product.stock > 0 ? 'Còn hàng' : 'Hết hàng'}
-                </span>
-              </div>
-            )}
-
-            <div className="prose prose-sm dark:prose-invert">
+            {/* Mô tả với scroll */}
+            <div className="prose prose-sm dark:prose-invert max-h-48 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
               <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-300">Mô tả sản phẩm</h3>
               <p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">
                 {product.description || 'Chưa có mô tả cho sản phẩm này.'}
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-3">
-              <Button className="flex-1 text-white bg-brand-primary hover:bg-brand-accent">
-                Thêm vào giỏ hàng
-              </Button>
-              <Button variant="outline" size="icon" className="border-gray-300 dark:border-gray-600">
-                <Heart className="w-5 h-5" />
-              </Button>
-              <Button variant="outline" size="icon" className="border-gray-300 dark:border-gray-600">
-                <Share2 className="w-5 h-5" />
-              </Button>
+            {/* Nút liên hệ đặt hàng */}
+            <div className="pt-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="w-full text-white bg-brand-primary hover:bg-brand-accent">
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    Liên hệ đặt hàng
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem onClick={() => handleContact('messenger')} className="cursor-pointer">
+                    <MessageSquare className="w-4 h-4 mr-2 text-blue-500" />
+                    Messenger
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleContact('zalo')} className="cursor-pointer">
+                    <Phone className="w-4 h-4 mr-2 text-blue-600" />
+                    Zalo
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleContact('facebook')} className="cursor-pointer">
+                    <Facebook className="w-4 h-4 mr-2 text-blue-700" />
+                    Facebook
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <p className="mt-2 text-xs text-center text-gray-400 dark:text-gray-500">
+                Nhấn để chọn kênh liên hệ đặt hàng
+              </p>
             </div>
 
             {product.category && (
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                <span className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
-                  Danh mục: {' '}
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  Danh mục:{' '}
                   <Link
                     to={`/danh-muc/${product.category.slug}`}
                     className="text-brand-primary hover:underline"
