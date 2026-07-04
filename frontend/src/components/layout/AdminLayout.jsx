@@ -222,7 +222,7 @@ const AdminLayout = () => {
         <AlertDialogContent className="dark:bg-gray-900 dark:border-gray-700">
           <AlertDialogHeader>
             <AlertDialogTitle className="dark:text-white">Xác nhận đăng xuất</AlertDialogTitle>
-            <AlertDialogDescription className="dark:text-gray-400">
+            <AlertDialogDescription className="dark:text-gray-400 dark:text-gray-500">
               Bạn có chắc chắn muốn đăng xuất khỏi tài khoản admin?
             </AlertDialogDescription>
           </AlertDialogHeader>

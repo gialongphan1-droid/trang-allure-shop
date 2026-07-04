@@ -244,7 +244,7 @@ const ProductForm = ({
           onChange={(images) => handleChange("images", images)}
           multiple={true}
         />
-        <p className="text-xs text-gray-400 dark:text-gray-500">
+        <p className="text-xs text-gray-400 dark:text-gray-500 dark:text-gray-400 dark:text-gray-500">
           💡 Kéo thả hoặc click để chọn ảnh - Không giới hạn số lượng và dung lượng
         </p>
       </div>

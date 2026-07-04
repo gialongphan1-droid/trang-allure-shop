@@ -18,7 +18,7 @@ const Footer = () => {
 							TRANG ALLURE
 						</h3>
 						
-						<div className="flex flex-wrap gap-1 text-sm text-white/70 dark:text-gray-400">
+						<div className="flex flex-wrap gap-1 text-sm text-white/70 dark:text-gray-400 dark:text-gray-500">
 							<span>6,7K người theo dõi</span>
 							<span>·</span>
 							<span>4,2K đang theo dõi</span>
@@ -26,11 +26,11 @@ const Footer = () => {
 
 						<div className="flex flex-wrap gap-1 mt-3 text-sm font-medium text-white/80 dark:text-gray-300">
 							<span className="transition cursor-pointer hover:text-brand-secondary">Túi Auth</span>
-							<span className="text-white/30 dark:text-gray-600">·</span>
+							<span className="text-white/30 dark:text-gray-600 dark:text-gray-300">·</span>
 							<span className="transition cursor-pointer hover:text-brand-secondary">Đồng Hồ</span>
-							<span className="text-white/30 dark:text-gray-600">·</span>
+							<span className="text-white/30 dark:text-gray-600 dark:text-gray-300">·</span>
 							<span className="transition cursor-pointer hover:text-brand-secondary">Mỹ Phẩm</span>
-							<span className="text-white/30 dark:text-gray-600">·</span>
+							<span className="text-white/30 dark:text-gray-600 dark:text-gray-300">·</span>
 							<span className="transition cursor-pointer hover:text-brand-secondary">Phụ Kiện</span>
 						</div>
 
@@ -38,7 +38,7 @@ const Footer = () => {
 							Có gu · Có tấm · Ship toàn quốc <Heart className="inline w-4 h-4 text-brand-secondary" fill="#FFB7C5" />
 						</p>
 
-						<p className="mt-1 text-sm text-white/50 dark:text-gray-500">
+						<p className="mt-1 text-sm text-white/50 dark:text-gray-500 dark:text-gray-400 dark:text-gray-500">
 							Mua sắm &amp; bán lẻ
 						</p>
 					</div>
@@ -138,7 +138,7 @@ const Footer = () => {
 							</a>
 						</div>
 						<div className="p-3 mt-4 rounded-lg bg-white/10 dark:bg-white/5">
-							<p className="text-xs text-white/70 dark:text-gray-400">
+							<p className="text-xs text-white/70 dark:text-gray-400 dark:text-gray-500">
 								📞 Liên hệ ngay để được tư vấn!
 							</p>
 						</div>
@@ -146,7 +146,7 @@ const Footer = () => {
 				</div>
 
 				{/* Bottom bar */}
-				<div className="pt-6 mt-8 text-sm text-center border-t border-white/20 dark:border-gray-700 text-white/60 dark:text-gray-400">
+				<div className="pt-6 mt-8 text-sm text-center border-t border-white/20 dark:border-gray-700 text-white/60 dark:text-gray-400 dark:text-gray-500">
 					<p>
 						© {new Date().getFullYear()} TrangAllure Shop. All rights reserved.
 					</p>

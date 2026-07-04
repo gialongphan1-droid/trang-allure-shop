@@ -324,7 +324,7 @@ const HomePage = () => {
 								</span>
 							))
 						) : (
-							<span className="text-gray-500 dark:text-gray-400">
+							<span className="text-gray-500 dark:text-gray-400 dark:text-gray-500">
 								Đang tải danh mục...
 							</span>
 						)}
@@ -409,7 +409,7 @@ const HomePage = () => {
 						</>
 					) : (
 						<div className="py-12 text-center">
-							<p className="text-gray-500 dark:text-gray-400">
+							<p className="text-gray-500 dark:text-gray-400 dark:text-gray-500">
 								Chưa có sản phẩm nào
 							</p>
 						</div>

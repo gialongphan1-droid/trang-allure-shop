@@ -124,18 +124,18 @@ const ImageUpload = ({ value = [], onChange, multiple = true }) => {
           {uploading ? (
             <div className="flex items-center gap-2">
               <div className="w-5 h-5 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
-              <span className="text-sm text-gray-500">Đang upload...</span>
+              <span className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Đang upload...</span>
             </div>
           ) : (
             <>
-              <Upload className="w-12 h-12 text-gray-400" />
-              <p className="text-base text-gray-600">
+              <Upload className="w-12 h-12 text-gray-400 dark:text-gray-500" />
+              <p className="text-base text-gray-600 dark:text-gray-300">
                 {isDragActive ? 'Thả ảnh vào đây' : 'Kéo thả ảnh vào đây hoặc click để chọn'}
               </p>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-gray-400 dark:text-gray-500">
                 Hỗ trợ: JPG, PNG, WEBP, GIF, BMP, SVG
               </p>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-gray-400 dark:text-gray-500">
                 Đã chọn: {value.length} ảnh
               </p>
               <p className="text-xs text-blue-500">

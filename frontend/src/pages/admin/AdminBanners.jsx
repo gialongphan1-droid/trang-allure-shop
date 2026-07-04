@@ -186,7 +186,7 @@ const AdminBanners = () => {
 										setFormData({ ...formData, title: e.target.value })
 									}
 									placeholder="Tiêu đề banner"
-									className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+									className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400 dark:text-gray-500"
 								/>
 							</div>
 
@@ -212,7 +212,7 @@ const AdminBanners = () => {
 										setFormData({ ...formData, link: e.target.value })
 									}
 									placeholder="/san-pham hoặc https://..."
-									className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+									className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400 dark:text-gray-500"
 								/>
 							</div>
 
@@ -231,7 +231,7 @@ const AdminBanners = () => {
 										})
 									}
 									min="0"
-									className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+									className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400 dark:text-gray-500"
 								/>
 							</div>
 
@@ -282,7 +282,7 @@ const AdminBanners = () => {
 						placeholder="Tìm kiếm banner..."
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
-						className="pl-10 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+						className="pl-10 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400 dark:text-gray-500"
 					/>
 					{search && (
 						<button
@@ -323,7 +323,7 @@ const AdminBanners = () => {
 								<TableRow>
 									<TableCell
 										colSpan={7}
-										className="py-8 text-center text-gray-500 dark:text-gray-400"
+										className="py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500"
 									>
 										{search
 											? "Không tìm thấy banner nào phù hợp"
@@ -348,7 +348,7 @@ const AdminBanners = () => {
 										<TableCell className="font-medium dark:text-white">
 											{banner.title || "Không có tiêu đề"}
 										</TableCell>
-										<TableCell className="text-sm text-gray-500 dark:text-gray-400">
+										<TableCell className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
 											{banner.link || "—"}
 										</TableCell>
 										<TableCell className="dark:text-gray-300">{banner.position || 0}</TableCell>
@@ -394,7 +394,7 @@ const AdminBanners = () => {
 							<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
 						</div>
 					) : filteredBanners.length === 0 ? (
-						<p className="py-8 text-center text-gray-500 dark:text-gray-400">
+						<p className="py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
 							{search
 								? "Không tìm thấy banner nào phù hợp"
 								: "Chưa có banner nào"}
@@ -419,10 +419,10 @@ const AdminBanners = () => {
 										<h3 className="font-semibold text-brand-text dark:text-white">
 											{banner.title || "Không có tiêu đề"}
 										</h3>
-										<p className="text-sm text-gray-500 dark:text-gray-400">
+										<p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
 											{banner.link || "—"}
 										</p>
-										<p className="text-sm text-gray-500 dark:text-gray-400">
+										<p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
 											Vị trí: {banner.position || 0}
 										</p>
 										<Badge
@@ -463,7 +463,7 @@ const AdminBanners = () => {
 				<AlertDialogContent className="dark:bg-gray-800 dark:border-gray-700">
 					<AlertDialogHeader>
 						<AlertDialogTitle className="dark:text-white">Xác nhận xóa banner</AlertDialogTitle>
-						<AlertDialogDescription className="dark:text-gray-400">
+						<AlertDialogDescription className="dark:text-gray-400 dark:text-gray-500">
 							Bạn có chắc chắn muốn xóa banner "
 							{deleteTarget?.title || "không tên"}"? Hành động này không thể
 							hoàn tác.

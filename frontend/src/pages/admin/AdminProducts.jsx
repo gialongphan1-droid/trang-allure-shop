@@ -249,7 +249,7 @@ const AdminProducts = () => {
 						placeholder="Tìm kiếm sản phẩm..."
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
-						className="pl-10 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+						className="pl-10 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400 dark:text-gray-500"
 					/>
 					{search && (
 						<button
@@ -312,7 +312,7 @@ const AdminProducts = () => {
 								<TableRow>
 									<TableCell
 										colSpan={8}
-										className="py-8 text-center text-gray-500 dark:text-gray-400"
+										className="py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500"
 									>
 										{debouncedSearch
 											? "Không tìm thấy sản phẩm nào phù hợp"
@@ -353,7 +353,7 @@ const AdminProducts = () => {
 												</span>
 												{product.originalPrice &&
 													product.originalPrice > product.price && (
-														<span className="text-xs text-gray-400 line-through dark:text-gray-500">
+														<span className="text-xs text-gray-400 line-through dark:text-gray-500 dark:text-gray-400 dark:text-gray-500">
 															{new Intl.NumberFormat("vi-VN").format(
 																product.originalPrice,
 															)}
@@ -404,7 +404,7 @@ const AdminProducts = () => {
 							<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
 						</div>
 					) : products.length === 0 ? (
-						<p className="py-8 text-center text-gray-500 dark:text-gray-400">
+						<p className="py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
 							{debouncedSearch
 								? "Không tìm thấy sản phẩm nào phù hợp"
 								: "Chưa có sản phẩm nào"}
@@ -434,7 +434,7 @@ const AdminProducts = () => {
 										<h3 className="font-semibold text-brand-text dark:text-white line-clamp-1">
 											{product.name}
 										</h3>
-										<p className="text-sm text-gray-500 dark:text-gray-400">
+										<p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
 											{product.category?.name || "N/A"}
 										</p>
 										<div className="flex items-center gap-2 mt-1">
@@ -443,7 +443,7 @@ const AdminProducts = () => {
 											</span>
 											{product.originalPrice &&
 												product.originalPrice > product.price && (
-													<span className="text-xs text-gray-400 line-through dark:text-gray-500">
+													<span className="text-xs text-gray-400 line-through dark:text-gray-500 dark:text-gray-400 dark:text-gray-500">
 														{new Intl.NumberFormat("vi-VN").format(
 															product.originalPrice,
 														)}
@@ -518,7 +518,7 @@ const AdminProducts = () => {
 				<AlertDialogContent className="dark:bg-gray-800 dark:border-gray-700">
 					<AlertDialogHeader>
 						<AlertDialogTitle className="dark:text-white">Xác nhận xóa sản phẩm</AlertDialogTitle>
-						<AlertDialogDescription className="dark:text-gray-400">
+						<AlertDialogDescription className="dark:text-gray-400 dark:text-gray-500">
 							Bạn có chắc chắn muốn xóa sản phẩm "{deleteTarget?.name}"? Hành
 							động này không thể hoàn tác.
 						</AlertDialogDescription>
@@ -545,7 +545,7 @@ const AdminProducts = () => {
 				<AlertDialogContent className="dark:bg-gray-800 dark:border-gray-700">
 					<AlertDialogHeader>
 						<AlertDialogTitle className="dark:text-white">Xác nhận xóa hàng loạt</AlertDialogTitle>
-						<AlertDialogDescription className="dark:text-gray-400">
+						<AlertDialogDescription className="dark:text-gray-400 dark:text-gray-500">
 							Bạn có chắc chắn muốn xóa {selectedProducts.length} sản phẩm đã
 							chọn? Hành động này không thể hoàn tác.
 						</AlertDialogDescription>

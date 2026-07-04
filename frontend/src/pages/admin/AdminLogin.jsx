@@ -82,7 +82,7 @@ const AdminLogin = () => {
       <div className="w-full max-w-md p-8 transition-colors bg-white shadow-xl dark:bg-gray-800 rounded-2xl">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold font-display text-brand-text dark:text-white">🌸 TrangAllure</h1>
-          <p className="mt-2 text-gray-500 dark:text-gray-400">Đăng nhập vào trang quản trị</p>
+          <p className="mt-2 text-gray-500 dark:text-gray-400 dark:text-gray-500">Đăng nhập vào trang quản trị</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -127,7 +127,7 @@ const AdminLogin = () => {
           </Button>
         </form>
 
-        <div className="mt-6 text-sm text-center text-gray-500 dark:text-gray-400">
+        <div className="mt-6 text-sm text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
           <p>Liên hệ quản trị viên nếu quên mật khẩu</p>
         </div>
       </div>

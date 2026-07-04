@@ -174,7 +174,7 @@ const AdminCategories = () => {
 										setFormData({ ...formData, name: e.target.value })
 									}
 									required
-									className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+									className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400 dark:text-gray-500"
 								/>
 							</div>
 							<div className="space-y-2">
@@ -188,7 +188,7 @@ const AdminCategories = () => {
 										setFormData({ ...formData, icon: e.target.value })
 									}
 									placeholder="VD: 💄, 🧴, 👁️"
-									className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+									className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400 dark:text-gray-500"
 								/>
 							</div>
 							<div className="space-y-2">
@@ -202,7 +202,7 @@ const AdminCategories = () => {
 										setFormData({ ...formData, description: e.target.value })
 									}
 									rows={3}
-									className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+									className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400 dark:text-gray-500"
 								/>
 							</div>
 							<div className="flex items-center space-x-2">
@@ -251,7 +251,7 @@ const AdminCategories = () => {
 						placeholder="Tìm kiếm danh mục..."
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
-						className="pl-10 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+						className="pl-10 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400 dark:text-gray-500"
 					/>
 					{search && (
 						<button
@@ -263,7 +263,7 @@ const AdminCategories = () => {
 					)}
 				</div>
 				{search && (
-					<div className="text-sm text-gray-500 dark:text-gray-400">
+					<div className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
 						Kết quả: {filteredCategories.length} danh mục
 					</div>
 				)}
@@ -297,7 +297,7 @@ const AdminCategories = () => {
 								<TableRow>
 									<TableCell
 										colSpan={7}
-										className="py-8 text-center text-gray-500 dark:text-gray-400"
+										className="py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500"
 									>
 										{search
 											? "Không tìm thấy danh mục nào phù hợp"
@@ -312,7 +312,7 @@ const AdminCategories = () => {
 											{cat.icon || "📦"}
 										</TableCell>
 										<TableCell className="font-medium dark:text-white">{cat.name}</TableCell>
-										<TableCell className="text-sm text-gray-500 dark:text-gray-400">
+										<TableCell className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
 											{cat.slug}
 										</TableCell>
 										<TableCell className="max-w-xs truncate dark:text-gray-300">
@@ -358,7 +358,7 @@ const AdminCategories = () => {
 							<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
 						</div>
 					) : filteredCategories.length === 0 ? (
-						<p className="py-8 text-center text-gray-500 dark:text-gray-400">
+						<p className="py-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500">
 							{search
 								? "Không tìm thấy danh mục nào phù hợp"
 								: "Chưa có danh mục nào"}
@@ -375,9 +375,9 @@ const AdminCategories = () => {
 										<h3 className="font-semibold text-brand-text dark:text-white">
 											{cat.name}
 										</h3>
-										<p className="text-sm text-gray-500 dark:text-gray-400">Slug: {cat.slug}</p>
+										<p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Slug: {cat.slug}</p>
 										{cat.description && (
-											<p className="text-sm text-gray-500 dark:text-gray-400">{cat.description}</p>
+											<p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">{cat.description}</p>
 										)}
 										<Badge
 											className={`mt-1 ${cat.isActive ? "bg-green-500" : "bg-red-500"}`}
@@ -417,7 +417,7 @@ const AdminCategories = () => {
 				<AlertDialogContent className="dark:bg-gray-800 dark:border-gray-700">
 					<AlertDialogHeader>
 						<AlertDialogTitle className="dark:text-white">Xác nhận xóa danh mục</AlertDialogTitle>
-						<AlertDialogDescription className="dark:text-gray-400">
+						<AlertDialogDescription className="dark:text-gray-400 dark:text-gray-500">
 							Bạn có chắc chắn muốn xóa danh mục "{deleteTarget?.name}"? Hành
 							động này không thể hoàn tác.
 						</AlertDialogDescription>

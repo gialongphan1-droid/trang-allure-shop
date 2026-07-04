@@ -115,7 +115,7 @@ const Header = () => {
 						{isDark ? (
 							<Sun className="w-5 h-5 text-yellow-400" />
 						) : (
-							<Moon className="w-5 h-5 text-gray-600" />
+							<Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
 						)}
 					</button>
 
@@ -142,7 +142,7 @@ const Header = () => {
 									</Button>
 								</Link>
 							)}
-							<span className="text-sm text-gray-500 dark:text-gray-400">
+							<span className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
 								{adminName}
 							</span>
 							<Button
@@ -168,7 +168,7 @@ const Header = () => {
 						{isDark ? (
 							<Sun className="w-5 h-5 text-yellow-400" />
 						) : (
-							<Moon className="w-5 h-5 text-gray-600" />
+							<Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
 						)}
 					</button>
 
@@ -197,7 +197,7 @@ const Header = () => {
 						onChange={(e) => setSearchQuery(e.target.value)}
 						className="w-full px-4 py-2 pl-10 text-gray-900 bg-white border border-gray-200 rounded-full dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
 					/>
-					<Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 dark:text-gray-500" />
+					<Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 dark:text-gray-500 dark:text-gray-400 dark:text-gray-500" />
 				</form>
 			</div>
 

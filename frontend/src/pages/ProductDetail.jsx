@@ -90,7 +90,7 @@ const ProductDetail = () => {
   if (!product) {
     return (
       <div className="container px-4 py-16 mx-auto text-center">
-        <h2 className="text-2xl font-bold text-gray-600">Không tìm thấy sản phẩm</h2>
+        <h2 className="text-2xl font-bold text-gray-600 dark:text-gray-300">Không tìm thấy sản phẩm</h2>
         <Link to="/san-pham" className="mt-4 text-brand-primary hover:underline">
           Quay lại danh sách sản phẩm
         </Link>
@@ -118,7 +118,7 @@ const ProductDetail = () => {
 
       <div className="container px-4 py-8 mx-auto">
         {/* Breadcrumb */}
-        <nav className="flex mb-6 text-sm text-gray-500">
+        <nav className="flex mb-6 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
           <Link to="/" className="hover:text-brand-primary">Trang chủ</Link>
           <span className="mx-2">/</span>
           <Link to="/san-pham" className="hover:text-brand-primary">Sản phẩm</Link>
@@ -235,7 +235,7 @@ const ProductDetail = () => {
                 <span className={`inline-block w-3 h-3 rounded-full ${
                   product.stock > 0 ? 'bg-green-500' : 'bg-red-500'
                 }`} />
-                <span className="text-sm text-gray-600 dark:text-gray-400">
+                <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
                   {product.stock > 0 ? 'Còn hàng' : 'Hết hàng'}
                 </span>
               </div>
@@ -262,7 +262,7 @@ const ProductDetail = () => {
 
             {product.category && (
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                <span className="text-sm text-gray-500 dark:text-gray-400">
+                <span className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                   Danh mục: {' '}
                   <Link
                     to={`/danh-muc/${product.category.slug}`}
