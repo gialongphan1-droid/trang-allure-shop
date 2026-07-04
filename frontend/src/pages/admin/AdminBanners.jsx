@@ -1,4 +1,3 @@
-import ImageUpload from "@/components/common/ImageUpload";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -31,8 +30,18 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { optimizeAdmin } from "@/utils/imageUtils";
 import { Pencil, Plus, Search, Trash2, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { bannerApi } from "../../api/productApi";
+
+// ✅ Lazy load ImageUpload (chỉ tải khi mở dialog)
+const ImageUpload = lazy(() => import("@/components/common/ImageUpload"));
+
+// ✅ Loading fallback cho ImageUpload
+const ImageUploadLoader = () => (
+	<div className="flex items-center justify-center p-8 border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600">
+		<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
+	</div>
+);
 
 const AdminBanners = () => {
 	const { toast } = useToast();
@@ -193,13 +202,16 @@ const AdminBanners = () => {
 
 							<div className="space-y-2">
 								<Label className="dark:text-gray-300">Hình ảnh *</Label>
-								<ImageUpload
-									value={formData.image ? [formData.image] : []}
-									onChange={(images) =>
-										setFormData({ ...formData, image: images[0] || "" })
-									}
-									multiple={false}
-								/>
+								{/* ✅ Lazy load ImageUpload - chỉ tải khi mở dialog */}
+								<Suspense fallback={<ImageUploadLoader />}>
+									<ImageUpload
+										value={formData.image ? [formData.image] : []}
+										onChange={(images) =>
+											setFormData({ ...formData, image: images[0] || "" })
+										}
+										multiple={false}
+									/>
+								</Suspense>
 							</div>
 
 							<div className="space-y-2">
