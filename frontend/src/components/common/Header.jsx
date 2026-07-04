@@ -1,292 +1,267 @@
-import { adminApi } from "@/api/productApi";
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { ShoppingBag, Menu, X, User, LogOut, ArrowLeft, Moon, Sun } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
+import { useToast } from '@/components/ui/use-toast';
 import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Menu, Moon, Search, Shield, Sun, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useTheme } from "../../context/ThemeContext";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { adminApi } from '@/api/productApi';
 
 const Header = () => {
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [isAdmin, setIsAdmin] = useState(false);
-	const [adminName, setAdminName] = useState("");
-	const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-	const [searchQuery, setSearchQuery] = useState("");
-	const navigate = useNavigate();
-	const hasChecked = useRef(false);
-	const { isDark, toggleTheme } = useTheme();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+  const { isDark, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { toast } = useToast();
 
-	// ✅ SỬA ĐÚNG: CHỈ GỌI API KHI CÓ TOKEN
-	useEffect(() => {
-		if (hasChecked.current) return;
-		hasChecked.current = true;
+  // Kiểm tra authentication
+  const checkAuth = async () => {
+    const token = localStorage.getItem('adminToken');
+    
+    if (!token) {
+      setIsAdmin(false);
+      setIsLoading(false);
+      return;
+    }
 
-		const checkAdminStatus = async () => {
-			// ✅ QUAN TRỌNG: Kiểm tra cookie token trước khi gọi API
-			const hasToken = document.cookie.split(';').some(c => c.trim().startsWith('token='));
-			if (!hasToken) {
-				setIsAdmin(false);
-				setAdminName("");
-				return;  // ❌ KHÔNG GỌI API
-			}
+    try {
+      const response = await adminApi.getMe();
+      if (response?.success && response?.data) {
+        setIsAdmin(true);
+      } else {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminRefreshToken');
+        setIsAdmin(false);
+      }
+    } catch (error) {
+      console.error('Auth check error:', error);
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminRefreshToken');
+      setIsAdmin(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-			try {
-				const response = await adminApi.getMe();
-				if (response.success && response.data) {
-					setIsAdmin(true);
-					setAdminName(response.data.name || "Admin");
-				}
-			} catch (error) {
-				setIsAdmin(false);
-				setAdminName("");
-			}
-		};
-		checkAdminStatus();
-	}, []);
+  useEffect(() => {
+    checkAuth();
 
-	const handleLogout = async () => {
-		try {
-			await adminApi.logout();
-			setIsAdmin(false);
-			setAdminName("");
-			setShowLogoutDialog(false);
-			navigate("/");
-			window.location.reload();
-		} catch (error) {
-			console.error("Logout error:", error);
-		}
-	};
+    const handleStorageChange = (e) => {
+      if (e.key === 'adminToken') {
+        checkAuth();
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
 
-	const handleSearch = (e) => {
-		e.preventDefault();
-		if (searchQuery.trim()) {
-			navigate(`/san-pham?search=${encodeURIComponent(searchQuery)}`);
-			setSearchQuery("");
-			setIsMenuOpen(false);
-		}
-	};
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
-	return (
-		<header className="sticky top-0 z-50 transition-colors bg-white shadow-sm dark:bg-gray-900">
-			<div className="flex items-center justify-between py-4 container-custom">
-				{/* Logo */}
-				<Link
-					to="/"
-					className="text-2xl font-bold transition md:text-3xl font-display text-brand-text dark:text-white hover:text-brand-primary dark:hover:text-brand-primary whitespace-nowrap"
-				>
-					Trang Allure Shop
-				</Link>
+  useEffect(() => {
+    checkAuth();
+  }, [location.pathname]);
 
-				{/* Navigation - Desktop */}
-				<nav className="items-center hidden gap-6 md:flex">
-					<Link
-						to="/"
-						className="text-base font-medium text-gray-600 transition dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary"
-					>
-						Trang chủ
-					</Link>
-					<Link
-						to="/san-pham"
-						className="text-base font-medium text-gray-600 transition dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary"
-					>
-						Sản phẩm
-					</Link>
-					<Link
-						to="/lien-he"
-						className="text-base font-medium text-gray-600 transition dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary"
-					>
-						Liên hệ
-					</Link>
+  const isAdminPage = location.pathname.startsWith('/admin');
+  const isAdminLoginPage = location.pathname === '/admin/login';
 
-					{/* Dark Mode Toggle */}
-					<button
-						onClick={toggleTheme}
-						className="p-2 transition rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
-						aria-label="Toggle theme"
-					>
-						{isDark ? (
-							<Sun className="w-5 h-5 text-yellow-400" />
-						) : (
-							<Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-						)}
-					</button>
+  const getPreviousAdminPage = () => {
+    if (isAdminPage && !isAdminLoginPage) {
+      sessionStorage.setItem('lastAdminPage', location.pathname);
+    }
+    return sessionStorage.getItem('lastAdminPage') || '/admin/dashboard';
+  };
 
-					{isAdmin && (
-						<div className="flex items-center gap-3 pl-4 ml-4 border-l border-gray-200 dark:border-gray-700">
-							{window.location.pathname === "/" ? (
-								<Button
-									size="sm"
-									className="text-white bg-brand-primary hover:bg-brand-accent"
-									onClick={() => navigate("/admin/dashboard")}
-								>
-									<ArrowLeft className="w-4 h-4 mr-1" />
-									Quay lại Admin
-								</Button>
-							) : (
-								<Link to="/admin/dashboard">
-									<Button
-										variant="outline"
-										size="sm"
-										className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white dark:border-brand-primary dark:text-brand-primary dark:hover:bg-brand-primary dark:hover:text-white"
-									>
-										<Shield className="w-4 h-4 mr-1" />
-										Admin
-									</Button>
-								</Link>
-							)}
-							<span className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
-								{adminName}
-							</span>
-							<Button
-								variant="ghost"
-								size="sm"
-								className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
-								onClick={() => setShowLogoutDialog(true)}
-							>
-								Đăng xuất
-							</Button>
-						</div>
-					)}
-				</nav>
+  const handleLogout = async () => {
+    try {
+      await adminApi.logout();
+      toast({
+        title: 'Đăng xuất thành công',
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast({
+        title: 'Lỗi đăng xuất',
+        variant: 'destructive',
+      });
+    } finally {
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminRefreshToken');
+      setShowLogoutDialog(false);
+      setIsAdmin(false);
+      navigate('/admin/login', { replace: true });
+    }
+  };
 
-				{/* Right side - Mobile */}
-				<div className="flex items-center gap-2">
-					{/* Dark Mode Toggle - Mobile */}
-					<button
-						onClick={toggleTheme}
-						className="p-2 transition rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 md:hidden"
-						aria-label="Toggle theme"
-					>
-						{isDark ? (
-							<Sun className="w-5 h-5 text-yellow-400" />
-						) : (
-							<Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-						)}
-					</button>
+  const handleBackToAdmin = () => {
+    const lastPage = getPreviousAdminPage();
+    navigate(lastPage);
+  };
 
-					<Button
-						variant="ghost"
-						size="icon"
-						className="md:hidden"
-						onClick={() => setIsMenuOpen(!isMenuOpen)}
-					>
-						{isMenuOpen ? (
-							<X className="w-6 h-6" />
-						) : (
-							<Menu className="w-6 h-6" />
-						)}
-					</Button>
-				</div>
-			</div>
+  const showAdminButtons = isAdmin && !isLoading;
 
-			{/* Mobile Search */}
-			<div className="px-4 pb-3 md:hidden">
-				<form onSubmit={handleSearch} className="relative">
-					<input
-						type="text"
-						placeholder="Tìm kiếm sản phẩm..."
-						value={searchQuery}
-						onChange={(e) => setSearchQuery(e.target.value)}
-						className="w-full px-4 py-2 pl-10 text-gray-900 bg-white border border-gray-200 rounded-full dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-					/>
-					<Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 dark:text-gray-500 dark:text-gray-400 dark:text-gray-500" />
-				</form>
-			</div>
+  return (
+    <>
+      <header className="sticky top-0 z-50 w-full transition-colors bg-white border-b dark:bg-gray-900 dark:border-gray-800">
+        <div className="container px-4 py-3 mx-auto">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-brand-primary">
+              <ShoppingBag className="w-6 h-6" />
+              <span className="font-display">TrangAllure</span>
+            </Link>
 
-			{/* Mobile menu */}
-			{isMenuOpen && (
-				<div className="bg-white border-t dark:bg-gray-900 dark:border-gray-700 md:hidden">
-					<div className="flex flex-col gap-3 py-4 container-custom">
-						<Link
-							to="/"
-							className="py-2 text-gray-600 transition dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary"
-							onClick={() => setIsMenuOpen(false)}
-						>
-							Trang chủ
-						</Link>
-						<Link
-							to="/san-pham"
-							className="py-2 text-gray-600 transition dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary"
-							onClick={() => setIsMenuOpen(false)}
-						>
-							Sản phẩm
-						</Link>
-						<Link
-							to="/lien-he"
-							className="py-2 text-gray-600 transition dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary"
-							onClick={() => setIsMenuOpen(false)}
-						>
-							Liên hệ
-						</Link>
-						{isAdmin && (
-							<div className="pt-3 mt-2 border-t dark:border-gray-700">
-								{window.location.pathname === "/" ? (
-									<button
-										onClick={() => {
-											navigate("/admin/dashboard");
-											setIsMenuOpen(false);
-										}}
-										className="flex items-center gap-2 py-2 transition text-brand-primary hover:text-brand-accent"
-									>
-										<ArrowLeft className="w-5 h-5" />
-										Quay lại Admin
-									</button>
-								) : (
-									<Link
-										to="/admin/dashboard"
-										className="flex items-center gap-2 py-2 transition text-brand-primary hover:text-brand-accent"
-										onClick={() => setIsMenuOpen(false)}
-									>
-										<Shield className="w-5 h-5" />
-										Quản trị Admin
-									</Link>
-								)}
-								<button
-									onClick={() => {
-										setIsMenuOpen(false);
-										setShowLogoutDialog(true);
-									}}
-									className="py-2 text-left text-red-500 transition hover:text-red-600"
-								>
-									Đăng xuất
-								</button>
-							</div>
-						)}
-					</div>
-				</div>
-			)}
+            {/* Desktop Navigation */}
+            <nav className="hidden space-x-6 md:flex">
+              <Link to="/" className="text-gray-700 transition hover:text-brand-primary dark:text-gray-300 dark:hover:text-brand-primary">
+                Trang chủ
+              </Link>
+              <Link to="/san-pham" className="text-gray-700 transition hover:text-brand-primary dark:text-gray-300 dark:hover:text-brand-primary">
+                Sản phẩm
+              </Link>
+              <Link to="/lien-he" className="text-gray-700 transition hover:text-brand-primary dark:text-gray-300 dark:hover:text-brand-primary">
+                Liên hệ
+              </Link>
+            </nav>
 
-			{/* Dialog xác nhận đăng xuất */}
-			<AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
-				<AlertDialogContent className="dark:bg-gray-900 dark:border-gray-700">
-					<AlertDialogHeader>
-						<AlertDialogTitle className="dark:text-white">
-							Xác nhận đăng xuất
-						</AlertDialogTitle>
-					</AlertDialogHeader>
-					<AlertDialogFooter>
-						<AlertDialogCancel className="dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
-							Hủy
-						</AlertDialogCancel>
-						<AlertDialogAction
-							onClick={handleLogout}
-							className="text-white bg-brand-primary hover:bg-brand-accent"
-						>
-							Đăng xuất
-						</AlertDialogAction>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
-		</header>
-	);
+            {/* Right Section */}
+            <div className="flex items-center gap-2">
+              {showAdminButtons && !isAdminPage && !isAdminLoginPage && (
+                <button
+                  onClick={handleBackToAdmin}
+                  className="flex items-center gap-1 px-3 py-2 text-sm font-medium transition rounded-lg text-brand-primary hover:bg-brand-primary/10 dark:text-brand-primary dark:hover:bg-brand-primary/20"
+                  aria-label="Quay lại trang admin"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span className="hidden sm:inline">Admin</span>
+                </button>
+              )}
+
+              {showAdminButtons && isAdminPage && !isAdminLoginPage && (
+                <button
+                  onClick={() => setShowLogoutDialog(true)}
+                  className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-red-600 transition rounded-lg hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
+                  aria-label="Đăng xuất"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span className="hidden sm:inline">Đăng xuất</span>
+                </button>
+              )}
+
+              <button
+                onClick={toggleTheme}
+                className="p-2 transition rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                aria-label="Toggle theme"
+              >
+                {isDark ? (
+                  <Sun className="w-5 h-5 text-yellow-400" />
+                ) : (
+                  <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                )}
+              </button>
+
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="p-2 rounded-lg md:hidden hover:bg-gray-100 dark:hover:bg-gray-800"
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? (
+                  <X className="w-5 h-5" />
+                ) : (
+                  <Menu className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Navigation */}
+          {isMenuOpen && (
+            <nav className="flex flex-col gap-4 pt-4 pb-2 md:hidden">
+              <Link
+                to="/"
+                className="text-gray-700 transition hover:text-brand-primary dark:text-gray-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Trang chủ
+              </Link>
+              <Link
+                to="/san-pham"
+                className="text-gray-700 transition hover:text-brand-primary dark:text-gray-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Sản phẩm
+              </Link>
+              <Link
+                to="/lien-he"
+                className="text-gray-700 transition hover:text-brand-primary dark:text-gray-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Liên hệ
+              </Link>
+              {showAdminButtons && !isAdminPage && !isAdminLoginPage && (
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    handleBackToAdmin();
+                  }}
+                  className="flex items-center gap-2 text-left text-brand-primary hover:text-brand-accent"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Quay lại Admin
+                </button>
+              )}
+              {showAdminButtons && isAdminPage && !isAdminLoginPage && (
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setShowLogoutDialog(true);
+                  }}
+                  className="flex items-center gap-2 text-left text-red-600 hover:text-red-700"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Đăng xuất
+                </button>
+              )}
+            </nav>
+          )}
+        </div>
+      </header>
+
+      {/* Dialog xác nhận đăng xuất */}
+      <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+        <AlertDialogContent className="dark:bg-gray-900 dark:border-gray-700">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="dark:text-white">Xác nhận đăng xuất</AlertDialogTitle>
+            <AlertDialogDescription className="dark:text-gray-400">
+              Bạn có chắc chắn muốn đăng xuất khỏi tài khoản admin?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
+              Hủy
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleLogout}
+              className="text-white bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+            >
+              Đăng xuất
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
 };
 
 export default Header;

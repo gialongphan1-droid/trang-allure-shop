@@ -1,13 +1,15 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
+const { protect } = require("../../middleware/auth");
 const {
-  createBanner,
-  updateBanner,
-  deleteBanner,
-} = require('../../controllers/admin/bannerController');
+	createBanner,
+	updateBanner,
+	deleteBanner,
+} = require("../../controllers/admin/bannerController");
 
-router.post('/', createBanner);
-router.put('/:id', updateBanner);
-router.delete('/:id', deleteBanner);
+// ✅ Thêm protect vào tất cả routes
+router.post("/", protect, createBanner);
+router.put("/:id", protect, updateBanner);
+router.delete("/:id", protect, deleteBanner);
 
 module.exports = router;
