@@ -118,7 +118,7 @@ const AdminBanners = () => {
 		} catch (error) {
 			toast({
 				title: "Lỗi",
-				description: error.message || "C有 lỗi xảy ra",
+				description: error.message || "Có lỗi xảy ra",
 				variant: "destructive",
 			});
 		}
@@ -340,6 +340,9 @@ const AdminBanners = () => {
 												alt={banner.title || "Banner"}
 												loading="lazy"
 												className="object-cover w-16 h-10 rounded-lg"
+												width="64"
+												height="40"
+												decoding="async"
 											/>
 										</TableCell>
 										<TableCell className="font-medium dark:text-white">
@@ -408,6 +411,9 @@ const AdminBanners = () => {
 										alt={banner.title || "Banner"}
 										loading="lazy"
 										className="object-cover w-20 h-16 rounded-lg"
+										width="80"
+										height="64"
+										decoding="async"
 									/>
 									<div className="flex-1 min-w-0">
 										<h3 className="font-semibold text-brand-text dark:text-white">

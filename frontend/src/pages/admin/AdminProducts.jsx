@@ -335,6 +335,10 @@ const AdminProducts = () => {
 												src={product.images?.[0] || "/placeholder.jpg"}
 												alt={product.name}
 												className="object-cover w-12 h-12 rounded-lg"
+												width="48"
+												height="48"
+												loading="lazy"
+												decoding="async"
 											/>
 										</TableCell>
 										<TableCell className="font-medium dark:text-white line-clamp-1">
@@ -421,6 +425,10 @@ const AdminProducts = () => {
 										src={product.images?.[0] || "/placeholder.jpg"}
 										alt={product.name}
 										className="flex-shrink-0 object-cover w-20 h-20 rounded-lg"
+										width="80"
+										height="80"
+										loading="lazy"
+										decoding="async"
 									/>
 									<div className="flex-1 min-w-0">
 										<h3 className="font-semibold text-brand-text dark:text-white line-clamp-1">
