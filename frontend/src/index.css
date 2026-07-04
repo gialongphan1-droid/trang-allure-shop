@@ -73,6 +73,23 @@
 		--input: 160 30% 25%;
 		--ring: 160 50% 55%;
 	}
+
+	/* ✅ Tăng độ tương phản cho text xám */
+	.text-gray-400 {
+		color: #9ca3af;
+	}
+	.text-gray-500 {
+		color: #6b7280;
+	}
+	.text-gray-600 {
+		color: #4b5563;
+	}
+	.dark .text-gray-400 {
+		color: #d1d5db;
+	}
+	.dark .text-gray-500 {
+		color: #9ca3af;
+	}
 }
 
 @layer base {
@@ -132,6 +149,24 @@
 	.dark .scrollbar-thin::-webkit-scrollbar-thumb {
 		background-color: #4b5563;
 	}
+}
+
+/* ✅ Badge có độ tương phản cao */
+.badge-active {
+	background-color: #22c55e;
+	color: #ffffff;
+}
+.badge-inactive {
+	background-color: #ef4444;
+	color: #ffffff;
+}
+.dark .badge-active {
+	background-color: #16a34a;
+	color: #ffffff;
+}
+.dark .badge-inactive {
+	background-color: #dc2626;
+	color: #ffffff;
 }
 
 @keyframes slideInFromTop {
