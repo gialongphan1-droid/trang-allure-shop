@@ -190,7 +190,10 @@ const HomePage = () => {
 			<div className="space-y-12">
 				{/* Banner Slider */}
 				{!bannerLoading && banners.length > 0 ? (
-					<section className="relative overflow-hidden rounded-2xl group banner-container">
+					<section
+						className="relative overflow-hidden rounded-2xl group banner-container"
+						style={{ minHeight: "200px" }}
+					>
 						<div
 							className="flex transition-transform duration-700 ease-in-out"
 							style={{ transform: `translateX(-${currentBannerIndex * 100}%)` }}
@@ -211,7 +214,7 @@ const HomePage = () => {
 												alt={banner.title || "Banner"}
 												loading={index === 0 ? "eager" : "lazy"}
 												fetchpriority={index === 0 ? "high" : "auto"}
-												importance="high"  // ✅ Thêm dòng này
+												importance="high"
 												className="object-cover w-full h-full"
 												width="1200"
 												height="400"
@@ -359,7 +362,7 @@ const HomePage = () => {
 				</section>
 
 				{/* Featured Products */}
-				<section>
+				<section style={{ minHeight: "400px" }}>
 					<h2 className="mb-8 text-2xl font-bold tracking-wide text-center md:text-3xl text-brand-text dark:text-white">
 						SẢN PHẨM NỔI BẬT
 					</h2>
