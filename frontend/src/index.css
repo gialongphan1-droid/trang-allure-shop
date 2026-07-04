@@ -2,7 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============ FONT OPTIMIZATION ============ */
 @layer base {
+  /* ✅ Tối ưu font để tránh layout shift (CLS) */
+  @font-face {
+    font-family: 'Inter';
+    font-display: optional; /* ⭐ Quan trọng: không gây shift nếu font chưa tải */
+    src: url('/fonts/Inter.woff2') format('woff2');
+  }
+
+  /* Font fallback có kích thước tương tự Inter */
+  @font-face {
+    font-family: 'Inter Fallback';
+    src: local('Arial');
+    ascent-override: 90%;
+    descent-override: 22%;
+    line-gap-override: 0%;
+    size-adjust: 107%;
+  }
+
   :root {
     /* 🌿 MÀU OPTION 1 - MINT & PINK */
     --background: 160 30% 96%; /* #F0FBF8 - Trắng mint */
@@ -71,8 +89,64 @@
   * {
     @apply border-gray-200 dark:border-gray-700;
   }
+
   body {
     @apply bg-background text-foreground;
+    /* ✅ Font family với fallback để tránh shift */
+    font-family: 'Inter', 'Inter Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ✅ Ổn định kích thước cho ảnh và video */
+  img,
+  video,
+  iframe {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ✅ Ổn định banner slider */
+  .banner-container {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 4;
+    background-color: #e5e7eb; /* gray-200 fallback */
+  }
+
+  .dark .banner-container {
+    background-color: #1f2937; /* gray-700 fallback */
+  }
+
+  /* ✅ Ổn định phần header để tránh shift */
+  .brand-header {
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* ✅ Scrollbar tùy chỉnh (đã dùng trong ProductDetail) */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #d1d5db; /* gray-300 */
+    border-radius: 9999px;
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #4b5563; /* gray-600 */
   }
 }
 

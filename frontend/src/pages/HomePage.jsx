@@ -297,7 +297,7 @@ const HomePage = () => {
         )}
 
         {/* Brand Header */}
-        <section className="py-8 text-center">
+        <section className="py-8 text-center min-h-[200px]">
           <h1 className="text-4xl font-bold tracking-wider uppercase md:text-6xl lg:text-7xl text-brand-text dark:text-white">
             TRANG ALLURE
           </h1>
