@@ -5,12 +5,14 @@ import MainLayout from './components/layout/MainLayout';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import ProtectedRoute from './components/common/ProtectedRoute';
 
-// ✅ Lazy load các trang (chỉ tải khi cần)
+// ✅ Lazy load các trang chính (chỉ tải khi cần)
 const HomePage = lazy(() => import('./pages/HomePage'));
 const ProductList = lazy(() => import('./pages/ProductList'));
 const ProductDetail = lazy(() => import('./pages/ProductDetail'));
 const CategoryPage = lazy(() => import('./pages/CategoryPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
+
+// ✅ Lazy load các trang admin (chỉ tải khi vào admin)
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const AdminProducts = lazy(() => import('./pages/admin/AdminProducts'));
