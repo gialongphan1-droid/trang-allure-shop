@@ -13,17 +13,34 @@ import {
 	optimizeProduct,
 	optimizeThumbnail,
 } from "@/utils/imageUtils";
-import {
-	ChevronLeft,
-	ChevronRight,
-	MessageCircle,
-	MessageSquare,
-	Send,
-	Share2,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { productApi } from "../api/productApi";
+
+// ✅ Icon Facebook giống footer
+const FacebookIcon = ({ className = "w-4 h-4" }) => (
+	<svg className={className} fill="currentColor" viewBox="0 0 24 24">
+		<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+	</svg>
+);
+
+// ✅ Icon Messenger giống footer
+const MessengerIcon = ({ className = "w-4 h-4", color = "#0084FF" }) => (
+	<svg className={className} viewBox="0 0 24 24" fill={color}>
+		<path d="M12 2C6.486 2 2 6.262 2 11.5c0 2.612 1.139 4.974 2.969 6.617L4.5 21l2.5-1.5c.95.406 1.997.625 3.062.625 5.538 0 10-4.262 10-9.625S17.538 2 12 2zm0 16.5c-.938 0-1.831-.146-2.667-.438L7.5 19l1.2-1.8C7.611 16.238 6.5 14.167 6.5 11.5c0-4.005 3.514-7.25 7.75-7.25 4.236 0 7.75 3.245 7.75 7.25S16.236 18.5 12 18.5z" />
+		<circle cx="8.5" cy="11.5" r="1.5" />
+		<circle cx="15.5" cy="11.5" r="1.5" />
+	</svg>
+);
+
+// ✅ Icon Zalo (dùng Send từ lucide-react)
+const ZaloIcon = ({ className = "w-4 h-4" }) => (
+	<svg className={className} viewBox="0 0 24 24" fill="#0068FF">
+		<path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" />
+		<path d="M8.5 9.5h2v5h-2zM13.5 9.5h2v5h-2z" />
+	</svg>
+);
 
 const ProductDetail = () => {
 	const { slug } = useParams();
@@ -33,7 +50,7 @@ const ProductDetail = () => {
 	const [relatedProducts, setRelatedProducts] = useState([]);
 	const { toast } = useToast();
 
-	// Thông tin liên hệ - có thể set qua env hoặc hardcode
+	// Thông tin liên hệ
 	const contact = {
 		messenger:
 			import.meta.env.VITE_MESSENGER_LINK || "https://m.me/trangallure.shop",
@@ -171,14 +188,14 @@ const ProductDetail = () => {
 	return (
 		<>
 			<SEO
-				title={product.name}
-				description={product.description}
-				image={product.images[0]}
+				title={`${product.name} - TrangAllure Shop`}
+				description={
+					product.description?.slice(0, 160) ||
+					`Mua ${product.name} chính hãng tại TrangAllure Shop`
+				}
 				url={`https://trangallure.shop/san-pham/${product.slug}`}
-				product={product}
-				priceCurrency="VND"
-				ratingValue={4.8} // Nếu có
-				ratingCount={120} // Nếu có
+				image={product.images?.[0]}
+				keywords={`${product.name}, ${product.category?.name}, mỹ phẩm, trang điểm`}
 			/>
 
 			<div className="container px-4 py-8 mx-auto">
@@ -316,7 +333,7 @@ const ProductDetail = () => {
 							</p>
 						</div>
 
-						{/* Nút liên hệ đặt hàng */}
+						{/* Nút liên hệ đặt hàng với icon giống footer */}
 						<div className="pt-2">
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
@@ -330,21 +347,21 @@ const ProductDetail = () => {
 										onClick={() => handleContact("messenger")}
 										className="cursor-pointer"
 									>
-										<MessageSquare className="w-4 h-4 mr-2 text-blue-500" />
+										<MessengerIcon className="w-4 h-4 mr-2" color="#0084FF" />
 										Messenger
 									</DropdownMenuItem>
 									<DropdownMenuItem
 										onClick={() => handleContact("zalo")}
 										className="cursor-pointer"
 									>
-										<Send className="w-4 h-4 mr-2 text-blue-600" />
+										<ZaloIcon className="w-4 h-4 mr-2" />
 										Zalo
 									</DropdownMenuItem>
 									<DropdownMenuItem
 										onClick={() => handleContact("facebook")}
 										className="cursor-pointer"
 									>
-										<Share2 className="w-4 h-4 mr-2 text-blue-700" />
+										<FacebookIcon className="w-4 h-4 mr-2 text-blue-700" />
 										Facebook
 									</DropdownMenuItem>
 								</DropdownMenuContent>
