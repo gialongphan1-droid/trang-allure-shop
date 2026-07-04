@@ -6,16 +6,14 @@ import { useToast } from '@/components/ui/use-toast';
 import { adminApi } from '@/api/productApi';
 import { fetchProducts } from '@/store/slices/productSlice';
 import { fetchCategories } from '@/store/slices/categorySlice';
-import { Package, ShoppingBag, Tag, TrendingUp, ArrowUp, ArrowDown, Image } from 'lucide-react';
+import { Package, ShoppingBag, Tag, TrendingUp, ArrowUp, ArrowDown, Image, PieChart } from 'lucide-react';
 import Skeleton from '@/components/common/Skeleton';
 
 // ✅ Lazy load recharts
 const ResponsiveContainer = lazy(() => import('recharts').then(module => ({ default: module.ResponsiveContainer })));
-const LineChart = lazy(() => import('recharts').then(module => ({ default: module.LineChart })));
-const Line = lazy(() => import('recharts').then(module => ({ default: module.Line })));
-const XAxis = lazy(() => import('recharts').then(module => ({ default: module.XAxis })));
-const YAxis = lazy(() => import('recharts').then(module => ({ default: module.YAxis })));
-const CartesianGrid = lazy(() => import('recharts').then(module => ({ default: module.CartesianGrid })));
+const PieChartRecharts = lazy(() => import('recharts').then(module => ({ default: module.PieChart })));
+const Pie = lazy(() => import('recharts').then(module => ({ default: module.Pie })));
+const Cell = lazy(() => import('recharts').then(module => ({ default: module.Cell })));
 const Tooltip = lazy(() => import('recharts').then(module => ({ default: module.Tooltip })));
 
 const ChartLoader = () => (
@@ -23,6 +21,9 @@ const ChartLoader = () => (
     <div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
   </div>
 );
+
+// Màu sắc cho biểu đồ
+const COLORS = ['#5BB8A6', '#FFB7C5', '#7BC6B4', '#FF9A9E', '#A8E6CF', '#FFD3B4', '#B5A9E8', '#FFB3A0'];
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [chartData, setChartData] = useState([]);
+  const [categoryProductCount, setCategoryProductCount] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +44,7 @@ const AdminDashboard = () => {
         // ✅ Fetch tất cả dữ liệu cùng lúc
         const [statsResponse, productsResult, categoriesResult] = await Promise.all([
           adminApi.getDashboardStats().catch(() => ({ data: null })),
-          dispatch(fetchProducts({ limit: 10 })).unwrap().catch(() => ({ data: [] })),
+          dispatch(fetchProducts({ limit: 100 })).unwrap().catch(() => ({ data: [] })),
           dispatch(fetchCategories()).unwrap().catch(() => ({ data: [] })),
         ]);
 
@@ -52,7 +54,6 @@ const AdminDashboard = () => {
         if (statsResponse?.data?.chartData) {
           setChartData(statsResponse.data.chartData);
         } else {
-          // Dữ liệu mẫu nếu chưa có API
           setChartData([
             { name: 'Tháng 1', revenue: 12000000 },
             { name: 'Tháng 2', revenue: 19000000 },
@@ -62,6 +63,21 @@ const AdminDashboard = () => {
             { name: 'Tháng 6', revenue: 35000000 },
           ]);
         }
+
+        // ✅ Đếm số lượng sản phẩm theo danh mục
+        if (productsResult?.data?.length > 0 && categoriesResult?.data?.length > 0) {
+          const productCountByCategory = categoriesResult.data.map(cat => {
+            const count = productsResult.data.filter(p => p.category?._id === cat._id).length;
+            return {
+              name: cat.name,
+              value: count,
+              slug: cat.slug,
+              icon: cat.icon || '📁',
+            };
+          });
+          setCategoryProductCount(productCountByCategory);
+        }
+
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
         toast({
@@ -84,7 +100,10 @@ const AdminDashboard = () => {
             <Skeleton key={i} className="h-32 rounded-xl" />
           ))}
         </div>
-        <Skeleton className="h-[300px] rounded-xl" />
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <Skeleton className="h-[300px] rounded-xl" />
+          <Skeleton className="h-[300px] rounded-xl" />
+        </div>
       </div>
     );
   }
@@ -126,6 +145,9 @@ const AdminDashboard = () => {
   const previousRevenue = stats?.previousRevenue || totalRevenue * 0.8;
   const revenueChange = previousRevenue > 0 ? ((totalRevenue - previousRevenue) / previousRevenue) * 100 : 0;
 
+  // Lọc danh mục có sản phẩm
+  const categoriesWithProducts = categoryProductCount.filter(item => item.value > 0);
+
   return (
     <div className="space-y-6">
       {/* Stats Grid */}
@@ -151,52 +173,98 @@ const AdminDashboard = () => {
         ))}
       </div>
 
-      {/* Revenue Chart */}
-      <Card className="dark:bg-gray-800">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-brand-text dark:text-white">Doanh thu theo tháng</CardTitle>
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-brand-primary">
-                {new Intl.NumberFormat('vi-VN').format(totalRevenue)}đ
-              </span>
-              <span className={`flex items-center text-sm ${revenueChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                {revenueChange >= 0 ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />}
-                {Math.abs(revenueChange).toFixed(1)}%
-              </span>
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        {/* Revenue Chart */}
+        <Card className="dark:bg-gray-800">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-brand-text dark:text-white">Doanh thu theo tháng</CardTitle>
+              <div className="flex items-center gap-2">
+                <span className="text-2xl font-bold text-brand-primary">
+                  {new Intl.NumberFormat('vi-VN').format(totalRevenue)}đ
+                </span>
+                <span className={`flex items-center text-sm ${revenueChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                  {revenueChange >= 0 ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />}
+                  {Math.abs(revenueChange).toFixed(1)}%
+                </span>
+              </div>
             </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <Suspense fallback={<ChartLoader />}>
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="name" stroke="#9ca3af" />
-                  <YAxis stroke="#9ca3af" />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: '#ffffff',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '8px',
-                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                    }}
-                    formatter={(value) => new Intl.NumberFormat('vi-VN').format(value) + 'đ'}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="revenue" 
-                    stroke="#5BB8A6" 
-                    strokeWidth={2}
-                    dot={{ fill: '#5BB8A6' }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+          </CardHeader>
+          <CardContent>
+            <Suspense fallback={<ChartLoader />}>
+              <div className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="name" stroke="#9ca3af" />
+                    <YAxis stroke="#9ca3af" />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      }}
+                      formatter={(value) => new Intl.NumberFormat('vi-VN').format(value) + 'đ'}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="revenue" 
+                      stroke="#5BB8A6" 
+                      strokeWidth={2}
+                      dot={{ fill: '#5BB8A6' }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </Suspense>
+          </CardContent>
+        </Card>
+
+        {/* Category Product Distribution - Pie Chart */}
+        <Card className="dark:bg-gray-800">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-brand-text dark:text-white">Sản phẩm theo danh mục</CardTitle>
+              <PieChart className="w-5 h-5 text-gray-400" />
             </div>
-          </Suspense>
-        </CardContent>
-      </Card>
+          </CardHeader>
+          <CardContent>
+            {categoriesWithProducts.length === 0 ? (
+              <div className="flex items-center justify-center h-[300px] text-gray-500 dark:text-gray-400">
+                <p>Chưa có sản phẩm nào trong danh mục</p>
+              </div>
+            ) : (
+              <Suspense fallback={<ChartLoader />}>
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChartRecharts>
+                      <Pie
+                        data={categoriesWithProducts}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={true}
+                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                        outerRadius={100}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {categoriesWithProducts.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip 
+                        formatter={(value, name) => [`${value} sản phẩm`, name]}
+                      />
+                    </PieChartRecharts>
+                  </ResponsiveContainer>
+                </div>
+              </Suspense>
+            )}
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Recent Products */}
       <Card className="dark:bg-gray-800">
@@ -212,6 +280,7 @@ const AdminDashboard = () => {
                 <thead>
                   <tr className="border-b border-gray-200 dark:border-gray-700">
                     <th className="px-4 py-2 text-left text-gray-500 dark:text-gray-400">Tên sản phẩm</th>
+                    <th className="px-4 py-2 text-left text-gray-500 dark:text-gray-400">Danh mục</th>
                     <th className="px-4 py-2 text-left text-gray-500 dark:text-gray-400">Giá</th>
                     <th className="px-4 py-2 text-left text-gray-500 dark:text-gray-400">Trạng thái</th>
                   </tr>
@@ -221,6 +290,9 @@ const AdminDashboard = () => {
                     <tr key={product._id} className="border-b border-gray-100 dark:border-gray-700/50">
                       <td className="px-4 py-3 font-medium text-brand-text dark:text-white">
                         {product.name}
+                      </td>
+                      <td className="px-4 py-3 text-gray-500 dark:text-gray-400">
+                        {product.category?.name || 'Chưa phân loại'}
                       </td>
                       <td className="px-4 py-3 text-brand-primary">
                         {new Intl.NumberFormat('vi-VN').format(product.price)}đ
