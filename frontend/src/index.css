@@ -74,7 +74,7 @@
 		--ring: 160 50% 55%;
 	}
 
-	/* ✅ Tăng độ tương phản cho text xám (Accessibility) */
+	/* ✅ CHỈ GIỮ CONTRAST CHO TEXT */
 	.text-gray-400 {
 		color: #9ca3af;
 	}
@@ -89,29 +89,6 @@
 	}
 	.dark .text-gray-500 {
 		color: #9ca3af;
-	}
-
-	/* ✅ Tăng contrast cho text trên nền brand */
-	.text-brand-text {
-		color: #1a3a32;
-	}
-	.dark .text-brand-text {
-		color: #e6f2ef;
-	}
-
-	/* ✅ Tăng contrast cho button text */
-	.btn-primary {
-		color: #ffffff;
-		background-color: #5bb8a6;
-	}
-	.btn-primary:hover {
-		background-color: #4a9a8a;
-	}
-	.dark .btn-primary {
-		background-color: #4a9a8a;
-	}
-	.dark .btn-primary:hover {
-		background-color: #3a7a6a;
 	}
 }
 
@@ -190,31 +167,6 @@
 .dark .badge-inactive {
 	background-color: #dc2626;
 	color: #ffffff;
-}
-
-/* ✅ Tăng contrast cho các link */
-a {
-	color: #3b8b7a;
-	text-decoration: none;
-}
-a:hover {
-	color: #2a6a5a;
-	text-decoration: underline;
-}
-.dark a {
-	color: #6bc4b2;
-}
-.dark a:hover {
-	color: #8ad4c4;
-}
-
-/* ✅ Tăng contrast cho input placeholder */
-::placeholder {
-	color: #9ca3af;
-	opacity: 1;
-}
-.dark ::placeholder {
-	color: #6b7280;
 }
 
 @keyframes slideInFromTop {
