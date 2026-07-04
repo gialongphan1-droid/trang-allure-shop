@@ -195,7 +195,7 @@ const HomePage = () => {
 							className="flex transition-transform duration-700 ease-in-out"
 							style={{ transform: `translateX(-${currentBannerIndex * 100}%)` }}
 						>
-							{banners.map((banner) => (
+							{banners.map((banner, index) => (
 								<div key={banner._id} className="flex-shrink-0 min-w-full">
 									<a
 										href={banner.link || "#"}
@@ -209,8 +209,8 @@ const HomePage = () => {
 											<img
 												src={optimizeBanner(banner.image)}
 												alt={banner.title || "Banner"}
-												loading="eager" // ✅ TẢI NGAY LẬP TỨC
-												fetchpriority="high" // ✅ ƯU TIÊN CAO
+												loading={index === 0 ? "eager" : "lazy"}
+												fetchpriority={index === 0 ? "high" : "auto"}
 												className="object-cover w-full h-full"
 												width="1200"
 												height="400"
