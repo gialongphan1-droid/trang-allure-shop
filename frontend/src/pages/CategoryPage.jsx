@@ -83,8 +83,11 @@ const CategoryPage = () => {
                       <img
                         src={product.images[0]}
                         alt={product.name}
-						loading="lazy"
+                        loading="lazy"
                         className="object-cover w-full h-full"
+                        width="400"
+                        height="400"
+                        decoding="async"
                       />
                     ) : (
                       <span className="text-6xl">💄</span>
