@@ -183,10 +183,9 @@ const HomePage = () => {
 			{/* ✅ SEO với pageType="home" */}
 			<SEO
 				pageType="home"
-				title="Mỹ phẩm chính hãng"
-				description="TRANG ALLURE - Nơi hội tụ các thương hiệu mỹ phẩm Authentic. Săn ngay ưu đãi sốc, hàng chính hãng 100%!"
-				url="https://trangallure.shop"
-				keywords="mỹ phẩm chính hãng, son môi, kem nền, skincare, trang điểm, chăm sóc da, sale mỹ phẩm"
+				title="Mỹ phẩm chính hãng - TrangAllure Shop"
+				description="TrangAllure Shop - Nơi hội tụ các thương hiệu mỹ phẩm Authentic. Săn ngay ưu đãi sốc, hàng chính hãng 100%!"
+				keywords="mỹ phẩm, trang điểm, chăm sóc da, làm đẹp, TrangAllure Shop"
 			/>
 
 			<div className="space-y-12">
@@ -412,7 +411,10 @@ const HomePage = () => {
 													<span className="text-4xl sm:text-6xl">💄</span>
 												)}
 											</div>
-											<div className="p-2 text-center sm:p-3" style={{ minHeight: "80px" }}>
+											<div
+												className="p-2 text-center sm:p-3"
+												style={{ minHeight: "80px" }}
+											>
 												<h3 className="text-xs font-medium text-brand-text dark:text-white line-clamp-1 sm:text-sm md:text-base">
 													{product.name}
 												</h3>
