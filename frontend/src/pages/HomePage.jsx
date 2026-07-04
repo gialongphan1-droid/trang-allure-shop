@@ -371,8 +371,14 @@ const HomePage = () => {
 							<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
 								{products.slice(0, 8).map((product) => (
 									<Link key={product._id} to={`/san-pham/${product.slug}`}>
-										<div className="overflow-hidden transition bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-xl hover:shadow-md hover:border-brand-primary/30 dark:hover:border-brand-primary/30">
-											<div className="flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-700/50 aspect-square">
+										<div
+											className="overflow-hidden transition bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-xl hover:shadow-md hover:border-brand-primary/30 dark:hover:border-brand-primary/30"
+											style={{ minHeight: "320px" }}
+										>
+											<div
+												className="flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-700/50 aspect-square"
+												style={{ minHeight: "200px" }}
+											>
 												{product.images?.[0] ? (
 													<img
 														src={optimizeProduct(product.images[0])}
@@ -387,7 +393,7 @@ const HomePage = () => {
 													<span className="text-6xl">💄</span>
 												)}
 											</div>
-											<div className="p-3 text-center">
+											<div className="p-3 text-center" style={{ minHeight: "80px" }}>
 												<h3 className="text-sm font-medium text-brand-text dark:text-white line-clamp-1 md:text-base">
 													{product.name}
 												</h3>
