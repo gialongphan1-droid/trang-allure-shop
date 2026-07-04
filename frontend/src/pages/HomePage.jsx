@@ -308,12 +308,12 @@ const HomePage = () => {
 				<section
 					className="brand-header text-center"
 					style={{
-						minHeight: "200px",
+						minHeight: "240px",
 						display: "flex",
 						flexDirection: "column",
 						justifyContent: "center",
 						alignItems: "center",
-						padding: "20px 0",
+						padding: "24px 0",
 					}}
 				>
 					<h1 className="text-3xl font-bold tracking-wider uppercase sm:text-4xl md:text-6xl lg:text-7xl text-brand-text dark:text-white">
@@ -373,11 +373,11 @@ const HomePage = () => {
 									<Link key={product._id} to={`/san-pham/${product.slug}`}>
 										<div
 											className="overflow-hidden transition bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-xl hover:shadow-md hover:border-brand-primary/30 dark:hover:border-brand-primary/30"
-											style={{ minHeight: "240px" }}
+											style={{ minHeight: "280px" }}
 										>
 											<div
 												className="flex items-center justify-center p-3 bg-gray-50 dark:bg-gray-700/50 aspect-square sm:p-4"
-												style={{ minHeight: "160px" }}
+												style={{ minHeight: "180px" }}
 											>
 												{product.images?.[0] ? (
 													<img
@@ -393,7 +393,7 @@ const HomePage = () => {
 													<span className="text-4xl sm:text-6xl">💄</span>
 												)}
 											</div>
-											<div className="p-2 text-center sm:p-3" style={{ minHeight: "70px" }}>
+											<div className="p-2 text-center sm:p-3" style={{ minHeight: "80px" }}>
 												<h3 className="text-xs font-medium text-brand-text dark:text-white line-clamp-1 sm:text-sm md:text-base">
 													{product.name}
 												</h3>

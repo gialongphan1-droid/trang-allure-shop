@@ -74,6 +74,7 @@
 		--ring: 160 50% 55%;
 	}
 
+	/* ✅ Tăng độ tương phản cho text (Accessibility) */
 	.text-gray-400 {
 		color: #9ca3af;
 	}
@@ -108,26 +109,26 @@
 		display: block;
 	}
 
-	/* ✅ Banner container - responsive */
+	/* ✅ Banner container - ỔN ĐỊNH CLS */
 	.banner-container {
 		position: relative;
 		overflow: hidden;
-		aspect-ratio: 16 / 6;
+		aspect-ratio: 16 / 5;
 		background-color: #e5e7eb;
-		min-height: 120px;
+		min-height: 160px;
 	}
 
 	@media (min-width: 640px) {
 		.banner-container {
-			aspect-ratio: 16 / 5;
-			min-height: 180px;
+			aspect-ratio: 16 / 4.5;
+			min-height: 200px;
 		}
 	}
 
 	@media (min-width: 768px) {
 		.banner-container {
 			aspect-ratio: 16 / 4;
-			min-height: 200px;
+			min-height: 240px;
 		}
 	}
 
@@ -135,14 +136,21 @@
 		background-color: #1f2937;
 	}
 
-	/* ✅ Brand header - responsive */
+	/* ✅ Brand header - ỔN ĐỊNH CLS */
 	.brand-header {
-		min-height: 200px !important;
+		min-height: 220px !important;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		padding: 20px 0;
+	}
+
+	@media (min-width: 640px) {
+		.brand-header {
+			min-height: 240px !important;
+			padding: 24px 0;
+		}
 	}
 
 	@media (min-width: 768px) {
@@ -152,6 +160,7 @@
 		}
 	}
 
+	/* ✅ Scrollbar tùy chỉnh */
 	.scrollbar-thin::-webkit-scrollbar {
 		width: 6px;
 		height: 6px;
@@ -171,6 +180,7 @@
 	}
 }
 
+/* ✅ Badge có độ tương phản cao */
 .badge-active {
 	background-color: #22c55e;
 	color: #ffffff;
