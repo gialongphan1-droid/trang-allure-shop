@@ -190,7 +190,7 @@ const HomePage = () => {
       <div className="space-y-12">
         {/* Banner Slider */}
         {!bannerLoading && banners.length > 0 ? (
-          <section className="relative overflow-hidden rounded-2xl group">
+          <section className="relative overflow-hidden rounded-2xl group banner-container">
             <div
               className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${currentBannerIndex * 100}%)` }}
@@ -205,12 +205,12 @@ const HomePage = () => {
                     rel="noopener noreferrer"
                     className="block"
                   >
-                    <div className="relative">
+                    <div className="relative w-full h-full">
                       <img
                         src={optimizeBanner(banner.image)}
                         alt={banner.title || "Banner"}
                         loading="lazy"
-                        className="object-cover w-full h-56 sm:h-72 md:h-96"
+                        className="object-cover w-full h-full"
                         width="1200"
                         height="400"
                         decoding="async"
@@ -236,6 +236,7 @@ const HomePage = () => {
                   onClick={handlePrevBanner}
                   className="absolute z-10 p-3 text-white transition-all duration-300 -translate-y-1/2 rounded-full opacity-0 left-4 top-1/2 bg-black/40 hover:bg-black/70 group-hover:opacity-100 hover:scale-110"
                   disabled={isTransitioning}
+                  aria-label="Previous banner"
                 >
                   <svg
                     className="w-5 h-5"
@@ -255,6 +256,7 @@ const HomePage = () => {
                   onClick={handleNextBanner}
                   className="absolute z-10 p-3 text-white transition-all duration-300 -translate-y-1/2 rounded-full opacity-0 right-4 top-1/2 bg-black/40 hover:bg-black/70 group-hover:opacity-100 hover:scale-110"
                   disabled={isTransitioning}
+                  aria-label="Next banner"
                 >
                   <svg
                     className="w-5 h-5"
@@ -285,6 +287,7 @@ const HomePage = () => {
                         : "w-3 h-3 bg-white/50 hover:bg-white/80 hover:scale-110"
                     }`}
                     disabled={isTransitioning}
+                    aria-label={`Go to banner ${index + 1}`}
                   />
                 ))}
               </div>
@@ -296,8 +299,8 @@ const HomePage = () => {
           )
         )}
 
-        {/* Brand Header */}
-        <section className="py-8 text-center min-h-[200px]">
+        {/* Brand Header - ĐÃ TỐI ƯU CLS */}
+        <section className="brand-header text-center">
           <h1 className="text-4xl font-bold tracking-wider uppercase md:text-6xl lg:text-7xl text-brand-text dark:text-white">
             TRANG ALLURE
           </h1>
