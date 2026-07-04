@@ -304,27 +304,27 @@ const HomePage = () => {
 					)
 				)}
 
-				{/* Brand Header - Optimized for CLS */}
+				{/* Brand Header - Responsive */}
 				<section
 					className="brand-header text-center"
 					style={{
-						minHeight: "280px",
+						minHeight: "200px",
 						display: "flex",
 						flexDirection: "column",
 						justifyContent: "center",
 						alignItems: "center",
-						padding: "32px 0",
+						padding: "20px 0",
 					}}
 				>
-					<h1 className="text-4xl font-bold tracking-wider uppercase md:text-6xl lg:text-7xl text-brand-text dark:text-white">
+					<h1 className="text-3xl font-bold tracking-wider uppercase sm:text-4xl md:text-6xl lg:text-7xl text-brand-text dark:text-white">
 						TRANG ALLURE
 					</h1>
-					<p className="mt-3 text-base tracking-wide text-gray-500 dark:text-gray-400 md:text-xl">
+					<p className="mt-2 text-sm tracking-wide text-gray-500 dark:text-gray-400 sm:text-base md:text-xl">
 						Order – Săn Sale hàng Authentic từ các thương hiệu nổi tiếng
 					</p>
 
 					<div
-						className="flex flex-wrap justify-center gap-4 mt-6 text-base font-medium text-gray-700 dark:text-gray-300 md:gap-8 md:text-lg"
+						className="flex flex-wrap justify-center gap-3 mt-4 text-sm font-medium text-gray-700 dark:text-gray-300 sm:gap-4 md:gap-8 sm:text-base md:text-lg"
 						style={{ minHeight: "40px" }}
 					>
 						{categories.length > 0 ? (
@@ -337,7 +337,7 @@ const HomePage = () => {
 										{cat.icon} {cat.name.toUpperCase()}
 									</Link>
 									{index < Math.min(categories.length, 4) - 1 && (
-										<span className="hidden ml-4 text-gray-300 dark:text-gray-600 sm:inline md:ml-8">
+										<span className="hidden ml-3 text-gray-300 dark:text-gray-600 sm:inline md:ml-8">
 											•
 										</span>
 									)}
@@ -350,12 +350,12 @@ const HomePage = () => {
 						)}
 					</div>
 
-					<p className="mt-6 text-lg tracking-wide text-gray-600 dark:text-gray-400 md:text-2xl">
+					<p className="mt-4 text-base tracking-wide text-gray-600 dark:text-gray-400 sm:text-lg md:text-2xl">
 						Hàng đẹp – Giá tốt – Uy tín – Tận tâm
 					</p>
 
-					<div className="mt-4" style={{ minHeight: "44px" }}>
-						<span className="inline-block px-6 py-2 text-base font-semibold rounded-full text-brand-primary bg-brand-primary/20 dark:bg-brand-primary/10 md:text-lg">
+					<div className="mt-3" style={{ minHeight: "40px" }}>
+						<span className="inline-block px-4 py-1.5 text-sm font-semibold rounded-full text-brand-primary bg-brand-primary/20 dark:bg-brand-primary/10 sm:px-6 sm:py-2 sm:text-base md:text-lg">
 							🚀 SHIP TOÀN QUỐC
 						</span>
 					</div>
@@ -363,21 +363,21 @@ const HomePage = () => {
 
 				{/* Featured Products */}
 				<section style={{ minHeight: "400px" }}>
-					<h2 className="mb-8 text-2xl font-bold tracking-wide text-center md:text-3xl text-brand-text dark:text-white">
+					<h2 className="mb-6 text-xl font-bold tracking-wide text-center sm:mb-8 sm:text-2xl md:text-3xl text-brand-text dark:text-white">
 						SẢN PHẨM NỔI BẬT
 					</h2>
 					{products.length > 0 ? (
 						<>
-							<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+							<div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 md:grid-cols-4">
 								{products.slice(0, 8).map((product) => (
 									<Link key={product._id} to={`/san-pham/${product.slug}`}>
 										<div
 											className="overflow-hidden transition bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-xl hover:shadow-md hover:border-brand-primary/30 dark:hover:border-brand-primary/30"
-											style={{ minHeight: "320px" }}
+											style={{ minHeight: "240px" }}
 										>
 											<div
-												className="flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-700/50 aspect-square"
-												style={{ minHeight: "200px" }}
+												className="flex items-center justify-center p-3 bg-gray-50 dark:bg-gray-700/50 aspect-square sm:p-4"
+												style={{ minHeight: "160px" }}
 											>
 												{product.images?.[0] ? (
 													<img
@@ -390,18 +390,18 @@ const HomePage = () => {
 														decoding="async"
 													/>
 												) : (
-													<span className="text-6xl">💄</span>
+													<span className="text-4xl sm:text-6xl">💄</span>
 												)}
 											</div>
-											<div className="p-3 text-center" style={{ minHeight: "80px" }}>
-												<h3 className="text-sm font-medium text-brand-text dark:text-white line-clamp-1 md:text-base">
+											<div className="p-2 text-center sm:p-3" style={{ minHeight: "70px" }}>
+												<h3 className="text-xs font-medium text-brand-text dark:text-white line-clamp-1 sm:text-sm md:text-base">
 													{product.name}
 												</h3>
-												<p className="text-xs text-gray-500 dark:text-gray-400 md:text-sm">
+												<p className="text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
 													{product.brand || ""}
 												</p>
-												<div className="flex items-center justify-center gap-2 mt-1">
-													<span className="text-base font-bold text-brand-primary dark:text-brand-primary md:text-lg">
+												<div className="flex items-center justify-center gap-1 mt-1 sm:gap-2">
+													<span className="text-sm font-bold text-brand-primary dark:text-brand-primary sm:text-base md:text-lg">
 														{new Intl.NumberFormat("vi-VN").format(
 															product.price,
 														)}
@@ -409,7 +409,7 @@ const HomePage = () => {
 													</span>
 													{product.originalPrice &&
 														product.originalPrice > product.price && (
-															<span className="text-xs text-gray-400 line-through dark:text-gray-500 md:text-sm">
+															<span className="text-xs text-gray-400 line-through dark:text-gray-500 sm:text-sm">
 																{new Intl.NumberFormat("vi-VN").format(
 																	product.originalPrice,
 																)}
@@ -422,11 +422,11 @@ const HomePage = () => {
 									</Link>
 								))}
 							</div>
-							<div className="mt-10 text-center">
+							<div className="mt-8 text-center sm:mt-10">
 								<Link to="/san-pham">
 									<Button
 										variant="outline"
-										className="px-8 py-3 text-base font-semibold border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white dark:border-brand-primary dark:text-brand-primary dark:hover:bg-brand-primary dark:hover:text-white md:text-lg"
+										className="px-6 py-2 text-sm font-semibold border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white dark:border-brand-primary dark:text-brand-primary dark:hover:bg-brand-primary dark:hover:text-white sm:px-8 sm:py-3 sm:text-base md:text-lg"
 									>
 										Xem tất cả sản phẩm
 									</Button>

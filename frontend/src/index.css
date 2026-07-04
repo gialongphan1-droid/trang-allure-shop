@@ -74,7 +74,6 @@
 		--ring: 160 50% 55%;
 	}
 
-	/* ✅ CHỈ GIỮ CONTRAST CHO TEXT */
 	.text-gray-400 {
 		color: #9ca3af;
 	}
@@ -109,27 +108,48 @@
 		display: block;
 	}
 
-	/* Banner container */
+	/* ✅ Banner container - responsive */
 	.banner-container {
 		position: relative;
 		overflow: hidden;
-		aspect-ratio: 16 / 4;
+		aspect-ratio: 16 / 6;
 		background-color: #e5e7eb;
-		min-height: 180px;
+		min-height: 120px;
+	}
+
+	@media (min-width: 640px) {
+		.banner-container {
+			aspect-ratio: 16 / 5;
+			min-height: 180px;
+		}
+	}
+
+	@media (min-width: 768px) {
+		.banner-container {
+			aspect-ratio: 16 / 4;
+			min-height: 200px;
+		}
 	}
 
 	.dark .banner-container {
 		background-color: #1f2937;
 	}
 
-	/* Brand header - TĂNG min-height */
+	/* ✅ Brand header - responsive */
 	.brand-header {
-		min-height: 280px !important;
+		min-height: 200px !important;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		padding: 32px 0;
+		padding: 20px 0;
+	}
+
+	@media (min-width: 768px) {
+		.brand-header {
+			min-height: 280px !important;
+			padding: 32px 0;
+		}
 	}
 
 	.scrollbar-thin::-webkit-scrollbar {
@@ -151,7 +171,6 @@
 	}
 }
 
-/* ✅ Badge có độ tương phản cao */
 .badge-active {
 	background-color: #22c55e;
 	color: #ffffff;
