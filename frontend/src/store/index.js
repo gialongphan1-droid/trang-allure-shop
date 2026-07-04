@@ -1,23 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
 import productReducer from './slices/productSlice';
 import categoryReducer from './slices/categorySlice';
+import bannerReducer from './slices/bannerSlice';
 
 export const store = configureStore({
   reducer: {
     products: productReducer,
     categories: categoryReducer,
+    banners: bannerReducer,
   },
+  // ✅ Tắt serializable check cho production (tăng tốc)
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [
-          'products/fetchProducts/fulfilled',
-          'categories/fetchCategories/fulfilled',
-          'products/fetchProducts/rejected',
-          'categories/fetchCategories/rejected',
-        ],
-        ignoredActionPaths: ['payload.headers'],
-      },
+      serializableCheck: false,
     }),
-  devTools: true,
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
