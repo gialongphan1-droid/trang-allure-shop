@@ -2,179 +2,170 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ============ FONT OPTIMIZATION - TRIỆT ĐỂ ============ */
 @layer base {
-  /* ✅ Dùng system font để KHÔNG gây layout shift (CLS) */
-  body {
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+	body {
+		font-family:
+			system-ui,
+			-apple-system,
+			"Segoe UI",
+			Roboto,
+			Helvetica,
+			Arial,
+			sans-serif;
+		font-synthesis: none;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
 
-  /* ✅ Vẫn giữ Inter cho phần .font-display (nếu dùng) */
-  .font-display {
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  }
+	.font-display {
+		font-family:
+			system-ui,
+			-apple-system,
+			"Segoe UI",
+			Roboto,
+			Helvetica,
+			Arial,
+			sans-serif;
+	}
 
-  :root {
-    /* 🌿 MÀU OPTION 1 - MINT & PINK */
-    --background: 160 30% 96%; /* #F0FBF8 - Trắng mint */
-    --foreground: 160 40% 25%; /* #2D5A4E - Xanh đậm */
+	:root {
+		--background: 160 30% 96%;
+		--foreground: 160 40% 25%;
+		--card: 0 0% 100%;
+		--card-foreground: 160 40% 25%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 160 40% 25%;
+		--primary: 160 50% 65%;
+		--primary-foreground: 160 40% 25%;
+		--secondary: 340 60% 75%;
+		--secondary-foreground: 340 40% 25%;
+		--muted: 160 20% 90%;
+		--muted-foreground: 160 30% 40%;
+		--accent: 160 40% 55%;
+		--accent-foreground: 160 40% 25%;
+		--destructive: 0 84% 60%;
+		--destructive-foreground: 210 40% 98%;
+		--border: 160 20% 85%;
+		--input: 160 20% 85%;
+		--ring: 160 50% 65%;
+		--radius: 0.5rem;
+	}
 
-    --card: 0 0% 100%;
-    --card-foreground: 160 40% 25%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 160 40% 25%;
-
-    --primary: 160 50% 65%; /* #98D8C8 - Xanh mint */
-    --primary-foreground: 160 40% 25%;
-
-    --secondary: 340 60% 75%; /* #FFB7C5 - Hồng sen */
-    --secondary-foreground: 340 40% 25%;
-
-    --muted: 160 20% 90%;
-    --muted-foreground: 160 30% 40%;
-
-    --accent: 160 40% 55%; /* #7BC6B4 - Mint đậm */
-    --accent-foreground: 160 40% 25%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 160 20% 85%;
-    --input: 160 20% 85%;
-    --ring: 160 50% 65%;
-
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 160 40% 10%;
-    --foreground: 160 20% 90%;
-
-    --card: 160 40% 12%;
-    --card-foreground: 160 20% 90%;
-
-    --popover: 160 40% 12%;
-    --popover-foreground: 160 20% 90%;
-
-    --primary: 160 50% 55%;
-    --primary-foreground: 160 40% 10%;
-
-    --secondary: 340 50% 65%;
-    --secondary-foreground: 340 40% 10%;
-
-    --muted: 160 30% 20%;
-    --muted-foreground: 160 20% 60%;
-
-    --accent: 160 40% 45%;
-    --accent-foreground: 160 40% 10%;
-
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 160 30% 25%;
-    --input: 160 30% 25%;
-    --ring: 160 50% 55%;
-  }
+	.dark {
+		--background: 160 40% 10%;
+		--foreground: 160 20% 90%;
+		--card: 160 40% 12%;
+		--card-foreground: 160 20% 90%;
+		--popover: 160 40% 12%;
+		--popover-foreground: 160 20% 90%;
+		--primary: 160 50% 55%;
+		--primary-foreground: 160 40% 10%;
+		--secondary: 340 50% 65%;
+		--secondary-foreground: 340 40% 10%;
+		--muted: 160 30% 20%;
+		--muted-foreground: 160 20% 60%;
+		--accent: 160 40% 45%;
+		--accent-foreground: 160 40% 10%;
+		--destructive: 0 62% 30%;
+		--destructive-foreground: 210 40% 98%;
+		--border: 160 30% 25%;
+		--input: 160 30% 25%;
+		--ring: 160 50% 55%;
+	}
 }
 
 @layer base {
-  * {
-    @apply border-gray-200 dark:border-gray-700;
-  }
+	* {
+		@apply border-gray-200 dark:border-gray-700;
+	}
 
-  body {
-    @apply bg-background text-foreground;
-  }
+	body {
+		@apply bg-background text-foreground;
+	}
 
-  /* ✅ Ổn định ảnh, video, iframe */
-  img,
-  video,
-  iframe {
-    max-width: 100%;
-    height: auto;
-    display: block;
-  }
+	img,
+	video,
+	iframe {
+		max-width: 100%;
+		height: auto;
+		display: block;
+	}
 
-  /* ✅ Ổn định banner slider với aspect-ratio */
-  .banner-container {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 16 / 4;
-    background-color: #e5e7eb;
-  }
+	/* Banner container */
+	.banner-container {
+		position: relative;
+		overflow: hidden;
+		aspect-ratio: 16 / 4;
+		background-color: #e5e7eb;
+		min-height: 180px;
+	}
 
-  .dark .banner-container {
-    background-color: #1f2937;
-  }
+	.dark .banner-container {
+		background-color: #1f2937;
+	}
 
-  /* ✅ Ổn định phần brand header - quan trọng cho CLS */
-  .brand-header {
-    min-height: 220px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 32px 0;
-  }
+	/* Brand header - TĂNG min-height */
+	.brand-header {
+		min-height: 280px !important;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding: 32px 0;
+	}
 
-  /* ✅ Scrollbar tùy chỉnh */
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
+	.scrollbar-thin::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
 
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-  }
+	.scrollbar-thin::-webkit-scrollbar-track {
+		background: transparent;
+	}
 
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: #d1d5db;
-    border-radius: 9999px;
-  }
+	.scrollbar-thin::-webkit-scrollbar-thumb {
+		background-color: #d1d5db;
+		border-radius: 9999px;
+	}
 
-  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: #4b5563;
-  }
+	.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+		background-color: #4b5563;
+	}
 }
 
-/* Animation cho toast */
 @keyframes slideInFromTop {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+	from {
+		transform: translateY(-100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
 }
 
 @keyframes slideOutToTop {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
+	from {
+		transform: translateY(0);
+		opacity: 1;
+	}
+	to {
+		transform: translateY(-100%);
+		opacity: 0;
+	}
 }
 
 .animate-in {
-  animation: slideInFromTop 0.3s ease-out;
+	animation: slideInFromTop 0.3s ease-out;
 }
 
 .animate-out {
-  animation: slideOutToTop 0.3s ease-in;
+	animation: slideOutToTop 0.3s ease-in;
 }
 
 @layer components {
-  .container-custom {
-    @apply px-4 mx-auto max-w-7xl sm:px-6 lg:px-8;
-  }
+	.container-custom {
+		@apply px-4 mx-auto max-w-7xl sm:px-6 lg:px-8;
+	}
 }

@@ -299,8 +299,18 @@ const HomePage = () => {
           )
         )}
 
-        {/* Brand Header - ĐÃ TỐI ƯU CLS */}
-        <section className="brand-header text-center">
+        {/* Brand Header - Optimized for CLS */}
+        <section 
+          className="brand-header text-center" 
+          style={{ 
+            minHeight: '280px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '32px 0'
+          }}
+        >
           <h1 className="text-4xl font-bold tracking-wider uppercase md:text-6xl lg:text-7xl text-brand-text dark:text-white">
             TRANG ALLURE
           </h1>
@@ -308,7 +318,7 @@ const HomePage = () => {
             Order – Săn Sale hàng Authentic từ các thương hiệu nổi tiếng
           </p>
 
-          <div className="flex flex-wrap justify-center gap-4 mt-6 text-base font-medium text-gray-700 dark:text-gray-300 md:gap-8 md:text-lg">
+          <div className="flex flex-wrap justify-center gap-4 mt-6 text-base font-medium text-gray-700 dark:text-gray-300 md:gap-8 md:text-lg" style={{ minHeight: '40px' }}>
             {categories.length > 0 ? (
               categories.slice(0, 4).map((cat, index) => (
                 <span key={cat._id}>
@@ -336,7 +346,7 @@ const HomePage = () => {
             Hàng đẹp – Giá tốt – Uy tín – Tận tâm
           </p>
 
-          <div className="mt-4">
+          <div className="mt-4" style={{ minHeight: '44px' }}>
             <span className="inline-block px-6 py-2 text-base font-semibold rounded-full text-brand-primary bg-brand-primary/20 dark:bg-brand-primary/10 md:text-lg">
               🚀 SHIP TOÀN QUỐC
             </span>
