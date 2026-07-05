@@ -1,67 +1,138 @@
 const Product = require('../../models/Product');
 const Category = require('../../models/Category');
 
-exports.getProducts = async (req, res, next) => {
+// ✅ Tối ưu getProducts
+exports.getProducts = async (req, res) => {
   try {
-    const { page = 1, limit = 12, search = '', category, minPrice, maxPrice, brand, sort = '-createdAt', isActive = 'true' } = req.query;
-    const query = { isActive: isActive === 'true' };
+    const { 
+      category, 
+      search, 
+      minPrice, 
+      maxPrice, 
+      sort = '-createdAt', 
+      limit = 10, 
+      page = 1 
+    } = req.query;
 
-    if (search) query.$text = { $search: search };
+    const query = { isActive: true };
+
+    // Lọc theo danh mục
     if (category) {
-      const cat = await Category.findOne({ slug: category });
-      if (cat) query.category = cat._id;
+      query.category = category;
     }
+
+    // Lọc theo giá
     if (minPrice || maxPrice) {
       query.price = {};
       if (minPrice) query.price.$gte = Number(minPrice);
       if (maxPrice) query.price.$lte = Number(maxPrice);
     }
-    if (brand) query.brand = brand;
 
-    const skip = (Number(page) - 1) * Number(limit);
-    const sortOptions = {};
-    switch (sort) {
-      case 'price': sortOptions.price = 1; break;
-      case '-price': sortOptions.price = -1; break;
-      case 'name': sortOptions.name = 1; break;
-      default: sortOptions.createdAt = -1;
+    // Tìm kiếm
+    if (search) {
+      query.$text = { $search: search };
     }
 
+    const skip = (page - 1) * limit;
+
+    // Sắp xếp
+    const sortOptions = {};
+    if (sort === '-createdAt') sortOptions.createdAt = -1;
+    else if (sort === 'price') sortOptions.price = 1;
+    else if (sort === '-price') sortOptions.price = -1;
+    else if (sort === 'name') sortOptions.name = 1;
+
     const [products, total] = await Promise.all([
-      Product.find(query).populate('category').sort(sortOptions).skip(skip).limit(Number(limit)),
-      Product.countDocuments(query),
+      Product.find(query)
+        .populate('category', 'name slug')
+        .sort(sortOptions)
+        .skip(skip)
+        .limit(Number(limit))
+        .lean(), // ✅ Thêm .lean() để tăng tốc
+      Product.countDocuments(query)
     ]);
 
     res.json({
       success: true,
       data: products,
-      pagination: { total, page: Number(page), limit: Number(limit), totalPages: Math.ceil(total / Number(limit)) },
+      pagination: {
+        page: Number(page),
+        limit: Number(limit),
+        total,
+        totalPages: Math.ceil(total / limit)
+      }
     });
-  } catch (error) { next(error); }
+  } catch (error) {
+    console.error('❌ Get products error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-exports.getProductBySlug = async (req, res, next) => {
+// ✅ Tối ưu getProductBySlug
+exports.getProductBySlug = async (req, res) => {
   try {
-    const product = await Product.findOne({ slug: req.params.slug, isActive: true }).populate('category');
-    if (!product) return res.status(404).json({ success: false, message: 'Sản phẩm không tồn tại' });
-    product.views += 1;
-    await product.save();
+    const product = await Product.findOne({ 
+      slug: req.params.slug, 
+      isActive: true 
+    })
+    .populate('category', 'name slug')
+    .lean(); // ✅ Thêm .lean()
+
+    if (!product) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Sản phẩm không tồn tại' 
+      });
+    }
+
+    // Tăng views
+    await Product.findByIdAndUpdate(product._id, { 
+      $inc: { views: 1 } 
+    });
+
     res.json({ success: true, data: product });
-  } catch (error) { next(error); }
+  } catch (error) {
+    console.error('❌ Get product by slug error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-exports.getFeaturedProducts = async (req, res, next) => {
+// ✅ Tối ưu getFeaturedProducts
+exports.getFeaturedProducts = async (req, res) => {
   try {
     const limit = Number(req.query.limit) || 8;
-    const products = await Product.find({ isActive: true }).sort({ views: -1 }).limit(limit).populate('category');
+    
+    const products = await Product.find({ 
+      isActive: true, 
+      stock: { $gt: 0 } // ✅ Chỉ lấy còn hàng
+    })
+    .sort({ views: -1, createdAt: -1 })
+    .limit(limit)
+    .lean(); // ✅ Thêm .lean()
+
     res.json({ success: true, data: products });
-  } catch (error) { next(error); }
+  } catch (error) {
+    console.error('❌ Get featured products error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-exports.getNewProducts = async (req, res, next) => {
+// ✅ Tối ưu getNewProducts
+exports.getNewProducts = async (req, res) => {
   try {
     const limit = Number(req.query.limit) || 8;
-    const products = await Product.find({ isActive: true }).sort({ createdAt: -1 }).limit(limit).populate('category');
+    
+    const products = await Product.find({ 
+      isActive: true, 
+      stock: { $gt: 0 } // ✅ Chỉ lấy còn hàng
+    })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .lean(); // ✅ Thêm .lean()
+
     res.json({ success: true, data: products });
-  } catch (error) { next(error); }
+  } catch (error) {
+    console.error('❌ Get new products error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
 };

@@ -1,26 +1,79 @@
 const mongoose = require('mongoose');
 
-const productSchema = new mongoose.Schema(
-  {
-    name: { type: String, required: true, trim: true, index: true },
-    slug: { type: String, unique: true, sparse: true },
-    description: { type: String, required: true },
-    price: { type: Number, required: true, min: 0, index: true },
-    originalPrice: { type: Number, default: null, min: 0 },
-    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true, index: true },
-    brand: { type: String, trim: true, index: true },
-    images: [{ type: String, required: true }],
-    stock: { type: Number, default: 0, min: 0 },
-    isActive: { type: Boolean, default: true, index: true },
-    views: { type: Number, default: 0 },
-    seoTitle: { type: String, default: null },
-    seoDescription: { type: String, default: null },
-    seoKeywords: { type: String, default: null },
+const productSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+    index: true // ✅ THÊM index cho tìm kiếm
   },
-  { timestamps: true }
-);
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    index: true // ✅ THÊM index cho slug
+  },
+  description: String,
+  price: {
+    type: Number,
+    required: true,
+    index: true // ✅ THÊM index cho lọc giá
+  },
+  originalPrice: Number,
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    index: true // ✅ THÊM index cho category
+  },
+  brand: String,
+  images: [String],
+  stock: {
+    type: Number,
+    default: 0,
+    index: true // ✅ THÊM index cho stock
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+    index: true // ✅ THÊM index cho isActive
+  },
+  views: {
+    type: Number,
+    default: 0,
+    index: true // ✅ THÊM index cho views
+  },
+  seoTitle: String,
+  seoDescription: String,
+  seoKeywords: String
+}, {
+  timestamps: true
+});
 
-// ✅ TẠO TEXT INDEX CHO name (cho phép tìm kiếm $text)
-productSchema.index({ name: 'text' });
+// ✅ THÊM text index cho tìm kiếm
+productSchema.index({ 
+  name: 'text', 
+  description: 'text', 
+  brand: 'text' 
+}, {
+  weights: {
+    name: 10,
+    brand: 5,
+    description: 1
+  }
+});
+
+// ✅ THÊM compound index cho query phức tạp
+productSchema.index({ 
+  isActive: 1, 
+  category: 1, 
+  createdAt: -1 
+});
+
+productSchema.index({ 
+  isActive: 1, 
+  stock: 1, 
+  views: -1 
+});
 
 module.exports = mongoose.model('Product', productSchema);
