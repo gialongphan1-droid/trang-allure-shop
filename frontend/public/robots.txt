@@ -6,12 +6,5 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /dashboard/
 
-# Cho phép bot crawl các trang quan trọng
-Allow: /san-pham/
-Allow: /danh-muc/
-
-# Đường dẫn sitemap
+# Sitemap
 Sitemap: https://trangallure.shop/sitemap.xml
-
-# Thời gian crawl lại (cache)
-Crawl-delay: 1
