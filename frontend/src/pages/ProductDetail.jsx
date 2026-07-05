@@ -188,6 +188,7 @@ const ProductDetail = () => {
 	return (
 		<>
 			<SEO
+				pageType="product"
 				title={`${product.name} - TrangAllure Shop`}
 				description={
 					product.description?.slice(0, 160) ||
@@ -195,6 +196,7 @@ const ProductDetail = () => {
 				}
 				url={`https://trangallure.shop/san-pham/${product.slug}`}
 				image={product.images?.[0]}
+				product={product}
 				keywords={`${product.name}, ${product.category?.name}, mỹ phẩm, trang điểm`}
 			/>
 
