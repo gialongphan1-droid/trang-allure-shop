@@ -50,33 +50,33 @@ const HomePage = () => {
 	}, [dispatch]);
 
 	const fetchBanners = async () => {
-  try {
-    console.log("🔄 Fetching banners...");
-    const response = await bannerApi.getBanners();
-    console.log("✅ Banners response:", response);
-    
-    // ✅ Kiểm tra response trước khi set state
-    if (response && response.success && response.data) {
-      setBanners(response.data);
-    } else if (response && Array.isArray(response)) {
-      // Nếu API trả về mảng trực tiếp
-      setBanners(response);
-    } else {
-      console.warn("⚠️ No banners data found, using empty array");
-      setBanners([]);
-    }
-  } catch (error) {
-    console.error("❌ Lỗi tải banner:", error);
-    toast({
-      title: "Lỗi tải banner",
-      description: error.message || "Không thể tải banner",
-      variant: "destructive",
-    });
-    setBanners([]);
-  } finally {
-    setBannerLoading(false);
-  }
-};
+		try {
+			console.log("🔄 Fetching banners...");
+			const response = await bannerApi.getBanners();
+			console.log("✅ Banners response:", response);
+
+			// ✅ Kiểm tra response trước khi set state
+			if (response && response.success && response.data) {
+				setBanners(response.data);
+			} else if (response && Array.isArray(response)) {
+				// Nếu API trả về mảng trực tiếp
+				setBanners(response);
+			} else {
+				console.warn("⚠️ No banners data found, using empty array");
+				setBanners([]);
+			}
+		} catch (error) {
+			console.error("❌ Lỗi tải banner:", error);
+			toast({
+				title: "Lỗi tải banner",
+				description: error.message || "Không thể tải banner",
+				variant: "destructive",
+			});
+			setBanners([]);
+		} finally {
+			setBannerLoading(false);
+		}
+	};
 
 	const handleNextBanner = useCallback(() => {
 		if (isTransitioning || banners.length <= 1) return;
@@ -300,8 +300,8 @@ const HomePage = () => {
 										onClick={() => goToBanner(index)}
 										className={`transition-all duration-300 rounded-full ${
 											currentBannerIndex === index
-												? "w-8 h-3 bg-white shadow-lg"
-												: "w-3 h-3 bg-white/50 hover:bg-white/80 hover:scale-110"
+												? "w-10 h-4 bg-white shadow-lg"
+												: "w-4 h-4 bg-white/50 hover:bg-white/80 hover:scale-110"
 										}`}
 										disabled={isTransitioning}
 										aria-label={`Go to banner ${index + 1}`}
@@ -334,7 +334,6 @@ const HomePage = () => {
 					<p className="mt-2 text-sm tracking-wide text-gray-500 dark:text-gray-400 sm:text-base md:text-xl">
 						Order – Săn Sale hàng Authentic từ các thương hiệu nổi tiếng
 					</p>
-
 					<div
 						className="flex flex-wrap justify-center gap-3 mt-4 text-sm font-medium text-gray-700 dark:text-gray-300 sm:gap-4 md:gap-8 sm:text-base md:text-lg"
 						style={{ minHeight: "40px" }}
@@ -361,13 +360,12 @@ const HomePage = () => {
 							</span>
 						)}
 					</div>
-
 					<p className="mt-4 text-base tracking-wide text-gray-600 dark:text-gray-400 sm:text-lg md:text-2xl">
 						Hàng đẹp – Giá tốt – Uy tín – Tận tâm
 					</p>
-
+					// Tăng contrast cho ship tag
 					<div className="mt-3" style={{ minHeight: "40px" }}>
-						<span className="inline-block px-4 py-1.5 text-sm font-semibold rounded-full text-brand-primary bg-brand-primary/20 dark:bg-brand-primary/10 sm:px-6 sm:py-2 sm:text-base md:text-lg">
+						<span className="inline-block px-4 py-1.5 text-sm font-semibold rounded-full text-white bg-green-600 dark:bg-green-700">
 							🚀 SHIP TOÀN QUỐC
 						</span>
 					</div>
@@ -456,9 +454,10 @@ const HomePage = () => {
 							</div>
 							<div className="mt-8 text-center sm:mt-10">
 								<Link to="/san-pham">
+									// Tăng contrast cho button
 									<Button
 										variant="outline"
-										className="px-6 py-2 text-sm font-semibold border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white dark:border-brand-primary dark:text-brand-primary dark:hover:bg-brand-primary dark:hover:text-white sm:px-8 sm:py-3 sm:text-base md:text-lg"
+										className="px-6 py-2 text-sm font-semibold border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white dark:border-brand-primary dark:text-brand-primary dark:hover:bg-brand-primary dark:hover:text-white"
 									>
 										Xem tất cả sản phẩm
 									</Button>

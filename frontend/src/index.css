@@ -111,6 +111,22 @@
 		color: #f9fafb;
 	}
 
+	/* ✅ Tăng contrast cho brand primary */
+	.text-brand-primary {
+		color: #0d9488;
+	}
+	.dark .text-brand-primary {
+		color: #5eead4;
+	}
+
+	/* ✅ Tăng contrast cho brand text */
+	.text-brand-text {
+		color: #111827;
+	}
+	.dark .text-brand-text {
+		color: #f9fafb;
+	}
+
 	/* ✅ Tăng contrast cho ship tag */
 	.ship-tag {
 		background-color: #059669;
@@ -119,6 +135,43 @@
 	.dark .ship-tag {
 		background-color: #047857;
 		color: #ffffff;
+	}
+
+	/* ✅ Tăng contrast cho footer text */
+	footer .text-white\/50 {
+		color: #d1d5db;
+	}
+	footer .text-white\/70 {
+		color: #e5e7eb;
+	}
+	footer .text-white\/80 {
+		color: #f3f4f6;
+	}
+	.dark footer .text-white\/50 {
+		color: #9ca3af;
+	}
+	.dark footer .text-white\/70 {
+		color: #d1d5db;
+	}
+	.dark footer .text-white\/80 {
+		color: #e5e7eb;
+	}
+
+	/* ✅ Tăng contrast cho giá sản phẩm */
+	.product-price {
+		color: #0d9488;
+		font-weight: 700;
+	}
+	.dark .product-price {
+		color: #5eead4;
+	}
+
+	/* ✅ Tăng contrast cho giá gốc (line-through) */
+	.text-gray-400.line-through {
+		color: #9ca3af;
+	}
+	.dark .text-gray-400.line-through {
+		color: #6b7280;
 	}
 }
 
@@ -226,6 +279,22 @@
 .dark .badge-inactive {
 	background-color: #dc2626;
 	color: #ffffff;
+}
+
+/* ✅ Button primary - tăng contrast */
+.btn-primary {
+	background-color: #0d9488;
+	color: #ffffff;
+}
+.btn-primary:hover {
+	background-color: #0f766e;
+}
+.dark .btn-primary {
+	background-color: #0d9488;
+	color: #ffffff;
+}
+.dark .btn-primary:hover {
+	background-color: #0f766e;
 }
 
 @keyframes slideInFromTop {
