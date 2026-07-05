@@ -84,11 +84,41 @@
 	.text-gray-600 {
 		color: #4b5563;
 	}
+	.text-gray-700 {
+		color: #374151;
+	}
+	.text-gray-800 {
+		color: #1f2937;
+	}
 	.dark .text-gray-400 {
 		color: #d1d5db;
 	}
 	.dark .text-gray-500 {
 		color: #9ca3af;
+	}
+	.dark .text-gray-600 {
+		color: #d1d5db;
+	}
+	.dark .text-gray-700 {
+		color: #e5e7eb;
+	}
+
+	/* ✅ Tăng contrast cho brand header */
+	.brand-header h1 {
+		color: #111827;
+	}
+	.dark .brand-header h1 {
+		color: #f9fafb;
+	}
+
+	/* ✅ Tăng contrast cho ship tag */
+	.ship-tag {
+		background-color: #059669;
+		color: #ffffff;
+	}
+	.dark .ship-tag {
+		background-color: #047857;
+		color: #ffffff;
 	}
 }
 
