@@ -50,22 +50,33 @@ const HomePage = () => {
 	}, [dispatch]);
 
 	const fetchBanners = async () => {
-		try {
-			console.log("🔄 Fetching banners...");
-			const response = await bannerApi.getBanners();
-			console.log("✅ Banners loaded:", response.data);
-			setBanners(response.data || []);
-		} catch (error) {
-			console.error("❌ Lỗi tải banner:", error);
-			toast({
-				title: "Lỗi tải banner",
-				description: error.message || "Không thể tải banner",
-				variant: "destructive",
-			});
-		} finally {
-			setBannerLoading(false);
-		}
-	};
+  try {
+    console.log("🔄 Fetching banners...");
+    const response = await bannerApi.getBanners();
+    console.log("✅ Banners response:", response);
+    
+    // ✅ Kiểm tra response trước khi set state
+    if (response && response.success && response.data) {
+      setBanners(response.data);
+    } else if (response && Array.isArray(response)) {
+      // Nếu API trả về mảng trực tiếp
+      setBanners(response);
+    } else {
+      console.warn("⚠️ No banners data found, using empty array");
+      setBanners([]);
+    }
+  } catch (error) {
+    console.error("❌ Lỗi tải banner:", error);
+    toast({
+      title: "Lỗi tải banner",
+      description: error.message || "Không thể tải banner",
+      variant: "destructive",
+    });
+    setBanners([]);
+  } finally {
+    setBannerLoading(false);
+  }
+};
 
 	const handleNextBanner = useCallback(() => {
 		if (isTransitioning || banners.length <= 1) return;
