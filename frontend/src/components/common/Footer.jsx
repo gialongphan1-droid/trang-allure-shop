@@ -102,15 +102,15 @@ const Footer = () => {
               Kết nối với chúng tôi
             </h4>
             <div className="flex flex-wrap gap-4">
-              {/* Facebook */}
+              {/* Facebook - Thêm role="img" và aria-label */}
               <a
                 href="https://www.facebook.com/trangallure.shop"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 transition rounded-full bg-white/10 hover:bg-white/20 dark:bg-white/5 dark:hover:bg-white/10"
+                className="p-3 transition rounded-full bg-white/10 hover:bg-white/20 dark:bg-white/5 dark:hover:bg-white/10"
                 aria-label="Facebook"
               >
-                <FaFacebook className="w-5 h-5" />
+                <FaFacebook className="w-5 h-5" aria-hidden="true" />
               </a>
 
               {/* Messenger */}
@@ -118,10 +118,10 @@ const Footer = () => {
                 href="https://m.me/trangallure.shop"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 transition rounded-full bg-white/10 hover:bg-white/20 dark:bg-white/5 dark:hover:bg-white/10"
+                className="p-3 transition rounded-full bg-white/10 hover:bg-white/20 dark:bg-white/5 dark:hover:bg-white/10"
                 aria-label="Messenger"
               >
-                <FaFacebookMessenger className="w-5 h-5" />
+                <FaFacebookMessenger className="w-5 h-5" aria-hidden="true" />
               </a>
 
               {/* Zalo */}
@@ -129,19 +129,19 @@ const Footer = () => {
                 href="https://zalo.me/0905990862"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 transition rounded-full bg-white/10 hover:bg-white/20 dark:bg-white/5 dark:hover:bg-white/10"
+                className="p-3 transition rounded-full bg-white/10 hover:bg-white/20 dark:bg-white/5 dark:hover:bg-white/10"
                 aria-label="Zalo"
               >
-                <SiZalo className="w-5 h-5" />
+                <SiZalo className="w-5 h-5" aria-hidden="true" />
               </a>
 
               {/* Hotline */}
               <a
                 href="tel:0905990862"
-                className="p-2 transition rounded-full bg-white/10 hover:bg-white/20 dark:bg-white/5 dark:hover:bg-white/10"
+                className="p-3 transition rounded-full bg-white/10 hover:bg-white/20 dark:bg-white/5 dark:hover:bg-white/10"
                 aria-label="Hotline"
               >
-                <Phone className="w-5 h-5" />
+                <Phone className="w-5 h-5" aria-hidden="true" />
               </a>
             </div>
 
