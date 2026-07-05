@@ -12,7 +12,7 @@ export const optimizeImage = (url, width = 400, height = 400, fit = 'fill') => {
   // Nếu không phải Cloudinary, trả về URL gốc
   if (!url.includes('cloudinary.com')) return url;
   
-  // Thêm params vào URL
+  // ✅ Đảm bảo URL đầy đủ
   return url.replace(
     '/upload/',
     `/upload/w_${width},h_${height},c_${fit},q_auto,f_auto/`
@@ -23,7 +23,14 @@ export const optimizeImage = (url, width = 400, height = 400, fit = 'fill') => {
  * Tối ưu ảnh banner (kích thước lớn)
  */
 export const optimizeBanner = (url) => {
-  return optimizeImage(url, 1200, 400);
+  if (!url) return '';
+  if (!url.includes('cloudinary.com')) return url;
+  
+  // ✅ Thêm f_auto và q_auto
+  return url.replace(
+    '/upload/',
+    '/upload/w_1200,h_400,c_fill,q_auto,f_auto/'
+  );
 };
 
 /**
