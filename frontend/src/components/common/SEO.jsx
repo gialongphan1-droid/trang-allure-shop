@@ -21,7 +21,7 @@ const SEO = ({
 
   // ✅ SLOGAN 1: Meta Title
   const getPageTitle = () => {
-    if (product) {
+    if (product && product.name) {
       return `${product.name} | ${siteName}`;
     }
     if (category) {
@@ -38,7 +38,7 @@ const SEO = ({
 
   // ✅ SLOGAN 2: Meta Description
   const getPageDescription = () => {
-    if (product) {
+    if (product && product.name) {
       return `Mua ${product.name} chính hãng giá ${new Intl.NumberFormat('vi-VN').format(product.price)}đ tại TrangAllure Shop. ${product.brand ? `Thương hiệu ${product.brand}.` : ''} Giao hàng nhanh toàn quốc.`;
     }
     if (category) {
@@ -55,7 +55,7 @@ const SEO = ({
 
   // ✅ Keywords tự động theo loại trang
   const getPageKeywords = () => {
-    if (product) {
+    if (product && product.name) {
       const baseKeywords = ['mỹ phẩm chính hãng', product.name, product.brand || ''];
       return [...baseKeywords, ...(keywords?.split(',') || [])].filter(Boolean).join(', ');
     }
@@ -79,13 +79,13 @@ const SEO = ({
 
   // ✅ Schema động cho các loại trang
   const getSchema = () => {
-    // Schema cho Product
-    if (product) {
+    // Schema cho Product (ưu tiên nếu có dữ liệu)
+    if (product && product.name) {
       return {
         "@context": "https://schema.org",
         "@type": "Product",
         "name": product.name,
-        "description": product.description,
+        "description": product.description || pageDescription,
         "image": product.images?.[0] || defaultImage,
         "brand": {
           "@type": "Brand",
@@ -113,7 +113,7 @@ const SEO = ({
     }
 
     // Schema cho Category
-    if (category) {
+    if (category && category.name) {
       return {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
@@ -128,12 +128,12 @@ const SEO = ({
     }
 
     // Schema cho Blog/Article
-    if (pageType === 'blog') {
+    if (pageType === 'blog' && title) {
       return {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": title,
-        "description": description,
+        "description": description || pageDescription,
         "image": pageImage,
         "url": pageUrl,
         "publisher": {
@@ -159,6 +159,8 @@ const SEO = ({
     };
   };
 
+  const schema = getSchema();
+
   return (
     <Helmet>
       {/* ===== CƠ BẢN ===== */}
@@ -172,10 +174,15 @@ const SEO = ({
       <meta property="og:description" content={pageDescription} />
       <meta property="og:image" content={pageImage} />
       <meta property="og:url" content={pageUrl} />
-      <meta property="og:type" content={product ? "product" : pageType === 'blog' ? "article" : "website"} />
+      <meta property="og:type" content={
+        product && product.name ? "product" 
+        : pageType === 'blog' ? "article" 
+        : "website"
+      } />
       <meta property="og:site_name" content={siteName} />
       <meta property="og:locale" content="vi_VN" />
-      {product && (
+      
+      {product && product.name && (
         <>
           <meta property="og:price:amount" content={product.price} />
           <meta property="og:price:currency" content={priceCurrency} />
@@ -193,7 +200,7 @@ const SEO = ({
 
       {/* ===== DỮ LIỆU CÓ CẤU TRÚC (JSON-LD) ===== */}
       <script type="application/ld+json">
-        {JSON.stringify(getSchema())}
+        {JSON.stringify(schema)}
       </script>
     </Helmet>
   );
