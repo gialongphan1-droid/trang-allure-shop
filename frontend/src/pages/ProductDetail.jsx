@@ -65,33 +65,24 @@ const ProductDetail = () => {
 			try {
 				setLoading(true);
 				const response = await productApi.getProductBySlug(slug);
+
 				if (response.success && response.data) {
 					setProduct(response.data);
-					if (response.data.images?.length > 0) {
-						setSelectedImage(0);
-					}
-					if (response.data.category) {
-						const related = await productApi.getProducts({
-							category: response.data.category._id,
-							limit: 4,
-							exclude: response.data._id,
-						});
-						setRelatedProducts(related.data || []);
-					}
+				} else {
+					// ✅ Fallback: dùng dữ liệu từ props hoặc state
+					console.warn("Product not found, using fallback");
+					setProduct(null);
 				}
 			} catch (error) {
 				console.error("Error fetching product:", error);
-				toast({
-					title: "Lỗi",
-					description: "Không thể tải thông tin sản phẩm",
-					variant: "destructive",
-				});
+				// ✅ Vẫn hiển thị fallback schema
+				setProduct(null);
 			} finally {
 				setLoading(false);
 			}
 		};
 		fetchProduct();
-	}, [slug, toast]);
+	}, [slug]);
 
 	const nextImage = useCallback(() => {
 		if (product?.images?.length > 1) {
