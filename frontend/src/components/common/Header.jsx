@@ -124,7 +124,6 @@ const Header = () => {
 				<div className="container px-4 py-3 mx-auto">
 					<div className="flex items-center justify-between">
 						{/* Logo */}
-						// Tăng contrast cho logo
 						<Link
 							to="/"
 							className="flex items-center gap-2 text-2xl font-bold text-brand-primary dark:text-white"
