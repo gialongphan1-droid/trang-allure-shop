@@ -18,11 +18,20 @@
       fetchpriority="high"
     />
     
-    <!-- ❌ XÓA Google Fonts preconnect (không dùng) -->
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" /> -->
-    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /> -->
-    
-    <!-- ✅ Vite sẽ tự động inject CSS và JS -->
+    <!-- ✅ SCHEMA TĨNH - Google đọc ngay khi tải trang -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "TrangAllure Shop",
+        "url": "https://trangallure.shop",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://trangallure.shop/san-pham?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -102,7 +102,6 @@ const SEO = ({
 			{ name: "Trang chủ", item: siteUrl }
 		];
 
-		// Nếu là trang danh mục
 		if (category && category.name) {
 			breadcrumbItems.push({
 				name: category.name,
@@ -110,7 +109,6 @@ const SEO = ({
 			});
 		}
 
-		// Nếu là trang sản phẩm
 		if (product && product.name) {
 			if (product.category && product.category.name) {
 				breadcrumbItems.push({
@@ -124,7 +122,6 @@ const SEO = ({
 			});
 		}
 
-		// Nếu là blog
 		if (pageType === "blog" && title) {
 			breadcrumbItems.push({
 				name: "Blog",
@@ -152,7 +149,6 @@ const SEO = ({
 	const getSchema = () => {
 		let mainSchema = {};
 
-		// Schema cho Product
 		if (product && product.name) {
 			mainSchema = {
 				"@context": "https://schema.org",
@@ -186,7 +182,6 @@ const SEO = ({
 					}),
 			};
 		}
-		// Schema cho Category
 		else if (category && category.name) {
 			mainSchema = {
 				"@context": "https://schema.org",
@@ -202,7 +197,6 @@ const SEO = ({
 				},
 			};
 		}
-		// Schema cho Blog/Article
 		else if (pageType === "blog" && title) {
 			mainSchema = {
 				"@context": "https://schema.org",
@@ -219,7 +213,6 @@ const SEO = ({
 				...(modifiedTime && { dateModified: modifiedTime }),
 			};
 		}
-		// Schema mặc định cho WebSite
 		else {
 			mainSchema = {
 				"@context": "https://schema.org",
@@ -234,13 +227,10 @@ const SEO = ({
 			};
 		}
 
-		// ✅ Gộp BreadcrumbSchema
 		const breadcrumbSchema = getBreadcrumbSchema();
 
-		// Nếu mainSchema có dữ liệu, thêm breadcrumb vào
 		return {
 			...mainSchema,
-			// Breadcrumb riêng cho trang chủ (không cần)
 			...(pageType !== "home" && { breadcrumb: breadcrumbSchema }),
 		};
 	};
@@ -254,13 +244,13 @@ const SEO = ({
 			<meta name="description" content={pageDescription} />
 			<meta name="keywords" content={pageKeywords} />
 
-			{/* ✅ Canonical URL - LUÔN LÀ https://trangallure.shop/ */}
+			{/* ✅ Canonical URL */}
 			<link
 				rel="canonical"
 				href={`${siteUrl}${pageUrl === "/" ? "" : pageUrl}`}
 			/>
 
-			{/* ===== OPEN GRAPH (Facebook, Zalo, LinkedIn, etc.) ===== */}
+			{/* ===== OPEN GRAPH ===== */}
 			<meta property="og:title" content={pageTitle} />
 			<meta property="og:description" content={pageDescription} />
 			<meta property="og:image" content={pageImage} />
@@ -304,8 +294,10 @@ const SEO = ({
 			<meta name="twitter:description" content={pageDescription} />
 			<meta name="twitter:image" content={pageImage} />
 
-			{/* ===== DỮ LIỆU CÓ CẤU TRÚC (JSON-LD) ===== */}
-			<script type="application/ld+json">{JSON.stringify(schema)}</script>
+			{/* ===== SCHEMA ĐỘNG - Cập nhật theo từng trang ===== */}
+			<script type="application/ld+json">
+				{JSON.stringify(schema)}
+			</script>
 		</Helmet>
 	);
 };
