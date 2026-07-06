@@ -192,18 +192,18 @@
 		display: block;
 	}
 
-	/* ✅ Banner container - ỔN ĐỊNH CLS */
+	/* ✅ Sửa banner cho mobile */
 	.banner-container {
 		position: relative;
 		overflow: hidden;
-		aspect-ratio: 16 / 5;
+		aspect-ratio: 16 / 7;
 		background-color: #e5e7eb;
-		min-height: 160px;
+		min-height: 140px;
 	}
 
 	@media (min-width: 640px) {
 		.banner-container {
-			aspect-ratio: 16 / 4.5;
+			aspect-ratio: 16 / 5;
 			min-height: 200px;
 		}
 	}
@@ -328,7 +328,27 @@
 }
 
 @layer components {
+	/* ✅ Container full width trên mobile */
 	.container-custom {
-		@apply px-4 mx-auto max-w-7xl sm:px-6 lg:px-8;
+		width: 100% !important;
+		max-width: 1280px !important;
+		margin-left: auto !important;
+		margin-right: auto !important;
+		padding-left: 16px !important;
+		padding-right: 16px !important;
+	}
+
+	@media (min-width: 640px) {
+		.container-custom {
+			padding-left: 24px;
+			padding-right: 24px;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.container-custom {
+			padding-left: 32px;
+			padding-right: 32px;
+		}
 	}
 }

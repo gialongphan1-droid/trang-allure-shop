@@ -121,8 +121,8 @@ const Header = () => {
 	return (
 		<>
 			<header className="sticky top-0 z-50 w-full transition-colors bg-white border-b dark:bg-gray-900 dark:border-gray-800">
-				<div className="container px-4 py-3 mx-auto">
-					<div className="flex items-center justify-between">
+				<div className="container-custom py-3">
+					<div className="flex items-center justify-between w-full">
 						{/* Logo */}
 						<Link
 							to="/"

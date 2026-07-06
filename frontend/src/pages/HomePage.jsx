@@ -158,7 +158,7 @@ const HomePage = () => {
 				</div>
 				<div>
 					<div className="w-48 h-8 mx-auto mb-8 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></div>
-					<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+					<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
 						{[...Array(8)].map((_, i) => (
 							<div
 								key={i}
@@ -199,7 +199,7 @@ const HomePage = () => {
 				keywords="mỹ phẩm, trang điểm, chăm sóc da, làm đẹp, TrangAllure Shop"
 			/>
 
-			<div className="space-y-12">
+			<div className="container-custom space-y-12">
 				{/* Banner Slider */}
 				{!bannerLoading && banners.length > 0 ? (
 					<section
@@ -334,6 +334,7 @@ const HomePage = () => {
 					<p className="mt-2 text-sm tracking-wide text-gray-500 dark:text-gray-400 sm:text-base md:text-xl">
 						Order – Săn Sale hàng Authentic từ các thương hiệu nổi tiếng
 					</p>
+
 					<div
 						className="flex flex-wrap justify-center gap-3 mt-4 text-sm font-medium text-gray-700 dark:text-gray-300 sm:gap-4 md:gap-8 sm:text-base md:text-lg"
 						style={{ minHeight: "40px" }}
@@ -394,7 +395,7 @@ const HomePage = () => {
 					</h2>
 					{products.length > 0 ? (
 						<>
-							<div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 md:grid-cols-4">
+							<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
 								{products.slice(0, 8).map((product) => (
 									<Link key={product._id} to={`/san-pham/${product.slug}`}>
 										<div

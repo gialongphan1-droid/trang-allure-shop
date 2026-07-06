@@ -8,7 +8,7 @@ import { SiZalo } from "react-icons/si";
 const Footer = () => {
 	return (
 		<footer className="mt-auto text-white transition-colors bg-brand-text dark:bg-gray-900">
-			<div className="py-12 container-custom">
+			<div className="container-custom py-12">
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-4">
 					{/* Column 1 - Brand */}
 					<div>
@@ -44,7 +44,6 @@ const Footer = () => {
 								fill="#FFB7C5"
 							/>
 						</p>
-						// Tăng contrast cho footer
 						<p className="mt-1 text-sm text-gray-300 dark:text-gray-400">
 							Mua sắm &amp; bán lẻ
 						</p>
@@ -161,7 +160,6 @@ const Footer = () => {
 					</div>
 				</div>
 				{/* Bottom bar */}
-				// Tăng contrast cho copyright
 				<div className="pt-6 mt-8 text-sm text-center border-t border-white/20 dark:border-gray-700 text-gray-300 dark:text-gray-400">
 					<p>
 						© {new Date().getFullYear()} TrangAllure Shop. All rights reserved.
