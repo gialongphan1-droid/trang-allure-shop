@@ -2,7 +2,7 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TrangAllure Shop</title>
     
@@ -18,7 +18,7 @@
       fetchpriority="high"
     />
     
-    <!-- ✅ SCHEMA TĨNH - Google đọc ngay khi tải trang -->
+    <!-- ✅ SCHEMA TĨNH CHO WEBSITE -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -29,6 +29,28 @@
           "@type": "SearchAction",
           "target": "https://trangallure.shop/san-pham?search={search_term_string}",
           "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+    
+    <!-- ✅ SCHEMA TĨNH CHO SẢN PHẨM MẪU (Google sẽ đọc) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "Đồng Hồ Nữ Chính Hãng ibso S1183L Rose mặt Trắng",
+        "description": "Đồng hồ nữ chính hãng ibso S1183L, mặt số màu trắng, dây xích kim loại, kích thước 28mm nhỏ xinh.",
+        "image": "https://res.cloudinary.com/dgewjhxjz/image/upload/v1782764698/trangallure/products/up5znzatqxea5nth1fis.webp",
+        "brand": {
+          "@type": "Brand",
+          "name": "Ibso"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "890000",
+          "priceCurrency": "VND",
+          "availability": "https://schema.org/OutOfStock",
+          "url": "https://trangallure.shop/san-pham/dong-ho-nu-chinh-hang-ibso-s1183l-rose-mat-trang"
         }
       }
     </script>
