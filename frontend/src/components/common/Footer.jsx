@@ -164,7 +164,7 @@ const Footer = () => {
 					<p>
 						© {new Date().getFullYear()} TrangAllure Shop. All rights reserved.
 					</p>
-					<p className="mt-1 text-xs opacity-50 dark:opacity-40">
+					<p className="mt-1 text-xs text-gray-300 dark:text-gray-400">
 						Thiết kế bởi Phan Gia Long | Mỹ phẩm chính hãng
 					</p>
 				</div>

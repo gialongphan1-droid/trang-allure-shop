@@ -168,10 +168,10 @@
 
 	/* ✅ Tăng contrast cho giá gốc (line-through) */
 	.text-gray-400.line-through {
-		color: #9ca3af;
+		color: #6b7280 !important;
 	}
 	.dark .text-gray-400.line-through {
-		color: #6b7280;
+		color: #9ca3af !important;
 	}
 }
 

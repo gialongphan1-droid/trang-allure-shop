@@ -331,7 +331,7 @@ const HomePage = () => {
 					<h1 className="text-3xl font-bold tracking-wider uppercase sm:text-4xl md:text-6xl lg:text-7xl text-brand-text dark:text-white">
 						TRANG ALLURE
 					</h1>
-					<p className="mt-2 text-sm tracking-wide text-gray-500 dark:text-gray-400 sm:text-base md:text-xl">
+					<p className="mt-2 text-sm tracking-wide text-gray-700 dark:text-gray-300 sm:text-base md:text-xl">
 						Order – Săn Sale hàng Authentic từ các thương hiệu nổi tiếng
 					</p>
 
@@ -381,7 +381,7 @@ const HomePage = () => {
 							Săn ngay hàng Authentic, sale cực đã từ các thương hiệu nổi tiếng!
 						</p>
 						<Link to="/san-pham">
-							<Button className="mt-4 text-white bg-brand-primary hover:bg-brand-accent">
+							<Button className="mt-4 text-white bg-green-700 hover:bg-green-800">
 								Khám phá ngay
 							</Button>
 						</Link>
