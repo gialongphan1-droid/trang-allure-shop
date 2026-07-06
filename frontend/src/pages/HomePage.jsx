@@ -202,117 +202,123 @@ const HomePage = () => {
 			<div className="container-custom space-y-12">
 				{/* Banner Slider */}
 				{!bannerLoading && banners.length > 0 ? (
-					<section
-						className="relative overflow-hidden rounded-2xl group banner-container"
-						style={{ minHeight: "200px" }}
-					>
-						<div
-							className="flex transition-transform duration-700 ease-in-out"
-							style={{ transform: `translateX(-${currentBannerIndex * 100}%)` }}
+					<div className="container-custom">
+						<section
+							className="relative overflow-hidden rounded-2xl group banner-container"
+							style={{ minHeight: "200px" }}
 						>
-							{banners.map((banner, index) => (
-								<div key={banner._id} className="flex-shrink-0 min-w-full">
-									<a
-										href={banner.link || "#"}
-										target={
-											banner.link?.startsWith("http") ? "_blank" : "_self"
-										}
-										rel="noopener noreferrer"
-										className="block"
-									>
-										<div className="relative w-full h-full">
-											<img
-												src={optimizeBanner(banner.image)}
-												alt={banner.title || "Banner"}
-												loading={index === 0 ? "eager" : "lazy"}
-												fetchpriority={index === 0 ? "high" : "auto"}
-												importance="high"
-												className="object-cover w-full h-full"
-												width="1200"
-												height="400"
-												decoding="async"
-											/>
-											{banner.title && (
-												<div className="absolute inset-0 flex items-center justify-center bg-black/30">
-													<div className="p-4 text-center text-white">
-														<h2 className="text-2xl font-bold md:text-4xl font-display">
-															{banner.title}
-														</h2>
+							<div
+								className="flex transition-transform duration-700 ease-in-out"
+								style={{
+									transform: `translateX(-${currentBannerIndex * 100}%)`,
+								}}
+							>
+								{banners.map((banner, index) => (
+									<div key={banner._id} className="flex-shrink-0 min-w-full">
+										<a
+											href={banner.link || "#"}
+											target={
+												banner.link?.startsWith("http") ? "_blank" : "_self"
+											}
+											rel="noopener noreferrer"
+											className="block"
+										>
+											<div className="relative w-full h-full">
+												<img
+													src={optimizeBanner(banner.image)}
+													alt={banner.title || "Banner"}
+													loading={index === 0 ? "eager" : "lazy"}
+													fetchpriority={index === 0 ? "high" : "auto"}
+													importance="high"
+													className="object-cover w-full h-full"
+													width="1200"
+													height="400"
+													decoding="async"
+												/>
+												{banner.title && (
+													<div className="absolute inset-0 flex items-center justify-center bg-black/30">
+														<div className="p-4 text-center text-white">
+															<h2 className="text-2xl font-bold md:text-4xl font-display">
+																{banner.title}
+															</h2>
+														</div>
 													</div>
-												</div>
-											)}
-										</div>
-									</a>
-								</div>
-							))}
-						</div>
-
-						{banners.length > 1 && (
-							<>
-								<button
-									onClick={handlePrevBanner}
-									className="absolute z-10 p-3 text-white transition-all duration-300 -translate-y-1/2 rounded-full opacity-0 left-4 top-1/2 bg-black/40 hover:bg-black/70 group-hover:opacity-100 hover:scale-110"
-									disabled={isTransitioning}
-									aria-label="Previous banner"
-								>
-									<svg
-										className="w-5 h-5"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth="2.5"
-											d="M15 19l-7-7 7-7"
-										/>
-									</svg>
-								</button>
-								<button
-									onClick={handleNextBanner}
-									className="absolute z-10 p-3 text-white transition-all duration-300 -translate-y-1/2 rounded-full opacity-0 right-4 top-1/2 bg-black/40 hover:bg-black/70 group-hover:opacity-100 hover:scale-110"
-									disabled={isTransitioning}
-									aria-label="Next banner"
-								>
-									<svg
-										className="w-5 h-5"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth="2.5"
-											d="M9 5l7 7-7 7"
-										/>
-									</svg>
-								</button>
-							</>
-						)}
-
-						{banners.length > 1 && (
-							<div className="absolute z-10 flex gap-3 -translate-x-1/2 bottom-4 left-1/2">
-								{banners.map((_, index) => (
-									<button
-										key={index}
-										onClick={() => goToBanner(index)}
-										className={`transition-all duration-300 rounded-full ${
-											currentBannerIndex === index
-												? "w-10 h-4 bg-white shadow-lg"
-												: "w-4 h-4 bg-white/50 hover:bg-white/80 hover:scale-110"
-										}`}
-										disabled={isTransitioning}
-										aria-label={`Go to banner ${index + 1}`}
-									/>
+												)}
+											</div>
+										</a>
+									</div>
 								))}
 							</div>
-						)}
-					</section>
+
+							{banners.length > 1 && (
+								<>
+									<button
+										onClick={handlePrevBanner}
+										className="absolute z-10 p-3 text-white transition-all duration-300 -translate-y-1/2 rounded-full opacity-0 left-4 top-1/2 bg-black/40 hover:bg-black/70 group-hover:opacity-100 hover:scale-110"
+										disabled={isTransitioning}
+										aria-label="Previous banner"
+									>
+										<svg
+											className="w-5 h-5"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth="2.5"
+												d="M15 19l-7-7 7-7"
+											/>
+										</svg>
+									</button>
+									<button
+										onClick={handleNextBanner}
+										className="absolute z-10 p-3 text-white transition-all duration-300 -translate-y-1/2 rounded-full opacity-0 right-4 top-1/2 bg-black/40 hover:bg-black/70 group-hover:opacity-100 hover:scale-110"
+										disabled={isTransitioning}
+										aria-label="Next banner"
+									>
+										<svg
+											className="w-5 h-5"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth="2.5"
+												d="M9 5l7 7-7 7"
+											/>
+										</svg>
+									</button>
+								</>
+							)}
+
+							{banners.length > 1 && (
+								<div className="absolute z-10 flex gap-3 -translate-x-1/2 bottom-4 left-1/2">
+									{banners.map((_, index) => (
+										<button
+											key={index}
+											onClick={() => goToBanner(index)}
+											className={`transition-all duration-300 rounded-full ${
+												currentBannerIndex === index
+													? "w-10 h-4 bg-white shadow-lg"
+													: "w-4 h-4 bg-white/50 hover:bg-white/80 hover:scale-110"
+											}`}
+											disabled={isTransitioning}
+											aria-label={`Go to banner ${index + 1}`}
+										/>
+									))}
+								</div>
+							)}
+						</section>
+					</div>
 				) : (
 					!bannerLoading && (
-						<div className="h-56 bg-gray-200 sm:h-72 md:h-96 dark:bg-gray-700 rounded-2xl animate-pulse"></div>
+						<div className="container-custom">
+							<div className="h-56 bg-gray-200 sm:h-72 md:h-96 dark:bg-gray-700 rounded-2xl animate-pulse"></div>
+						</div>
 					)
 				)}
 
