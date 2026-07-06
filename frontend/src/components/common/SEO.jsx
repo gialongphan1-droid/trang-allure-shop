@@ -96,11 +96,65 @@ const SEO = ({
 	const pageUrl = url || siteUrl;
 	const pageKeywords = getPageKeywords();
 
+	// ✅ Breadcrumb Schema
+	const getBreadcrumbSchema = () => {
+		const breadcrumbItems = [
+			{ name: "Trang chủ", item: siteUrl }
+		];
+
+		// Nếu là trang danh mục
+		if (category && category.name) {
+			breadcrumbItems.push({
+				name: category.name,
+				item: `${siteUrl}/danh-muc/${category.slug}`,
+			});
+		}
+
+		// Nếu là trang sản phẩm
+		if (product && product.name) {
+			if (product.category && product.category.name) {
+				breadcrumbItems.push({
+					name: product.category.name,
+					item: `${siteUrl}/danh-muc/${product.category.slug}`,
+				});
+			}
+			breadcrumbItems.push({
+				name: product.name,
+				item: `${siteUrl}/san-pham/${product.slug}`,
+			});
+		}
+
+		// Nếu là blog
+		if (pageType === "blog" && title) {
+			breadcrumbItems.push({
+				name: "Blog",
+				item: `${siteUrl}/blog`,
+			});
+			breadcrumbItems.push({
+				name: title,
+				item: pageUrl,
+			});
+		}
+
+		return {
+			"@context": "https://schema.org",
+			"@type": "BreadcrumbList",
+			"itemListElement": breadcrumbItems.map((item, index) => ({
+				"@type": "ListItem",
+				position: index + 1,
+				name: item.name,
+				item: item.item,
+			})),
+		};
+	};
+
 	// ✅ Schema động cho các loại trang
 	const getSchema = () => {
-		// Schema cho Product (ưu tiên nếu có dữ liệu)
+		let mainSchema = {};
+
+		// Schema cho Product
 		if (product && product.name) {
-			return {
+			mainSchema = {
 				"@context": "https://schema.org",
 				"@type": "Product",
 				name: product.name,
@@ -132,10 +186,9 @@ const SEO = ({
 					}),
 			};
 		}
-
 		// Schema cho Category
-		if (category && category.name) {
-			return {
+		else if (category && category.name) {
+			mainSchema = {
 				"@context": "https://schema.org",
 				"@type": "CollectionPage",
 				name: category.name,
@@ -149,10 +202,9 @@ const SEO = ({
 				},
 			};
 		}
-
 		// Schema cho Blog/Article
-		if (pageType === "blog" && title) {
-			return {
+		else if (pageType === "blog" && title) {
+			mainSchema = {
 				"@context": "https://schema.org",
 				"@type": "Article",
 				headline: title,
@@ -167,18 +219,29 @@ const SEO = ({
 				...(modifiedTime && { dateModified: modifiedTime }),
 			};
 		}
+		// Schema mặc định cho WebSite
+		else {
+			mainSchema = {
+				"@context": "https://schema.org",
+				"@type": "WebSite",
+				name: siteName,
+				url: siteUrl,
+				potentialAction: {
+					"@type": "SearchAction",
+					target: `${siteUrl}/san-pham?search={search_term_string}`,
+					"query-input": "required name=search_term_string",
+				},
+			};
+		}
 
-		// Schema mặc định cho WebSite (trang chủ, contact, etc.)
+		// ✅ Gộp BreadcrumbSchema
+		const breadcrumbSchema = getBreadcrumbSchema();
+
+		// Nếu mainSchema có dữ liệu, thêm breadcrumb vào
 		return {
-			"@context": "https://schema.org",
-			"@type": "WebSite",
-			name: siteName,
-			url: siteUrl,
-			potentialAction: {
-				"@type": "SearchAction",
-				target: `${siteUrl}/san-pham?search={search_term_string}`,
-				"query-input": "required name=search_term_string",
-			},
+			...mainSchema,
+			// Breadcrumb riêng cho trang chủ (không cần)
+			...(pageType !== "home" && { breadcrumb: breadcrumbSchema }),
 		};
 	};
 
@@ -194,7 +257,7 @@ const SEO = ({
 			{/* ✅ Canonical URL - LUÔN LÀ https://trangallure.shop/ */}
 			<link
 				rel="canonical"
-				href={`https://trangallure.shop${pageUrl === "/" ? "" : pageUrl}`}
+				href={`${siteUrl}${pageUrl === "/" ? "" : pageUrl}`}
 			/>
 
 			{/* ===== OPEN GRAPH (Facebook, Zalo, LinkedIn, etc.) ===== */}
@@ -203,7 +266,7 @@ const SEO = ({
 			<meta property="og:image" content={pageImage} />
 			<meta
 				property="og:url"
-				content={`https://trangallure.shop${pageUrl === "/" ? "" : pageUrl}`}
+				content={`${siteUrl}${pageUrl === "/" ? "" : pageUrl}`}
 			/>
 			<meta
 				property="og:type"
