@@ -5,8 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { adminApi } from '../../api/productApi';
-import { Moon, Sun } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
+import { Mail, Lock } from 'lucide-react';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +14,6 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { isDark, toggleTheme } = useTheme();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,15 +24,12 @@ const AdminLogin = () => {
       const response = await adminApi.login({ email, password });
       console.log('✅ Login response:', response);
       
-      // ✅ KIỂM TRA RESPONSE
       if (response.success && response.data) {
-        // ✅ LƯU TOKEN VÀO localStorage (QUAN TRỌNG!)
         if (response.data.token) {
           localStorage.setItem('adminToken', response.data.token);
           console.log('✅ Token saved to localStorage:', response.data.token.substring(0, 20) + '...');
         }
         
-        // ✅ LƯU REFRESH TOKEN NẾU CÓ
         if (response.data.refreshToken) {
           localStorage.setItem('adminRefreshToken', response.data.refreshToken);
         }
@@ -44,7 +39,6 @@ const AdminLogin = () => {
           description: 'Chào mừng bạn trở lại!',
         });
         
-        // ✅ CHUYỂN HƯỚNG SAU 1.5s
         setTimeout(() => {
           console.log('🔄 Redirecting to dashboard...');
           navigate('/admin/dashboard', { replace: true });
@@ -67,20 +61,9 @@ const AdminLogin = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 transition-colors bg-background text-foreground">
-      <button
-        onClick={toggleTheme}
-        className="absolute p-2 transition rounded-full top-4 right-4 hover:bg-gray-100"
-        aria-label="Toggle theme"
-      >
-        {isDark ? (
-          <Sun className="w-5 h-5 text-yellow-400" />
-        ) : (
-          <Moon className="w-5 h-5 text-gray-600" />
-        )}
-      </button>
-
       <div className="w-full max-w-md p-8 transition-colors bg-white shadow-xl rounded-2xl">
         <div className="mb-8 text-center">
+          <div className="mb-4 text-5xl">🌸</div>
           <h1 className="text-3xl font-bold font-display text-brand-text">
             TrangAllure
           </h1>
@@ -92,28 +75,34 @@ const AdminLogin = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="admin@trangallure.shop"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="focus:ring-brand-primary"
-            />
+            <div className="relative">
+              <Mail className="absolute w-4 h-4 text-gray-400 -translate-y-1/2 left-3 top-1/2" />
+              <Input
+                id="email"
+                type="email"
+                placeholder="admin@trangallure.shop"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="pl-10 focus:ring-brand-primary"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="password">Mật khẩu</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="focus:ring-brand-primary"
-            />
+            <div className="relative">
+              <Lock className="absolute w-4 h-4 text-gray-400 -translate-y-1/2 left-3 top-1/2" />
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="pl-10 focus:ring-brand-primary"
+              />
+            </div>
           </div>
 
           {error && (
