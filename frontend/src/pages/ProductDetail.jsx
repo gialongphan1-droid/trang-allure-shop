@@ -34,7 +34,7 @@ const MessengerIcon = ({ className = "w-4 h-4", color = "#0084FF" }) => (
 	</svg>
 );
 
-// ✅ Icon Zalo (dùng Send từ lucide-react)
+// ✅ Icon Zalo
 const ZaloIcon = ({ className = "w-4 h-4" }) => (
 	<svg className={className} viewBox="0 0 24 24" fill="#0068FF">
 		<path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" />
@@ -50,7 +50,6 @@ const ProductDetail = () => {
 	const [relatedProducts, setRelatedProducts] = useState([]);
 	const { toast } = useToast();
 
-	// Thông tin liên hệ
 	const contact = {
 		messenger:
 			import.meta.env.VITE_MESSENGER_LINK || "https://m.me/trangallure.shop",
@@ -69,13 +68,11 @@ const ProductDetail = () => {
 				if (response.success && response.data) {
 					setProduct(response.data);
 				} else {
-					// ✅ Fallback: dùng dữ liệu từ props hoặc state
 					console.warn("Product not found, using fallback");
 					setProduct(null);
 				}
 			} catch (error) {
 				console.error("Error fetching product:", error);
-				// ✅ Vẫn hiển thị fallback schema
 				setProduct(null);
 			} finally {
 				setLoading(false);
@@ -126,7 +123,7 @@ const ProductDetail = () => {
 	if (!product) {
 		return (
 			<div className="container px-4 py-16 mx-auto text-center">
-				<h2 className="text-2xl font-bold text-gray-600
+				<h2 className="text-2xl font-bold text-gray-600">
 					Không tìm thấy sản phẩm
 				</h2>
 				<Link
@@ -193,7 +190,7 @@ const ProductDetail = () => {
 
 			<div className="container px-4 py-8 mx-auto">
 				{/* Breadcrumb */}
-				<nav className="flex mb-6 text-sm text-gray-500
+				<nav className="flex mb-6 text-sm text-gray-500">
 					<Link to="/" className="hover:text-brand-primary">
 						Trang chủ
 					</Link>
@@ -213,7 +210,7 @@ const ProductDetail = () => {
 						</>
 					)}
 					<span className="mx-2">/</span>
-					<span className="text-gray-700
+					<span className="text-gray-700">
 						{product.name}
 					</span>
 				</nav>
@@ -221,7 +218,7 @@ const ProductDetail = () => {
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 					{/* Image Gallery */}
 					<div className="space-y-4">
-						<div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-square
+						<div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-square">
 							{product.images?.length > 0 ? (
 								<img
 									src={optimizeDetail(product.images[selectedImage])}
@@ -242,15 +239,15 @@ const ProductDetail = () => {
 								<>
 									<button
 										onClick={prevImage}
-										className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition
+										className="absolute p-2 transition -translate-y-1/2 rounded-full shadow-md left-2 top-1/2 bg-white/80 hover:bg-white"
 									>
-										<ChevronLeft className="w-5 h-5 />
+										<ChevronLeft className="w-5 h-5" />
 									</button>
 									<button
 										onClick={nextImage}
-										className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition
+										className="absolute p-2 transition -translate-y-1/2 rounded-full shadow-md right-2 top-1/2 bg-white/80 hover:bg-white"
 									>
-										<ChevronRight className="w-5 h-5 />
+										<ChevronRight className="w-5 h-5" />
 									</button>
 								</>
 							)}
@@ -266,7 +263,7 @@ const ProductDetail = () => {
 										className={`overflow-hidden rounded-lg border-2 transition ${
 											selectedImage === index
 												? "border-brand-primary"
-												: "border-transparent hover:border-gray-300
+												: "border-transparent hover:border-gray-300"
 										}`}
 									>
 										<img
@@ -292,7 +289,7 @@ const ProductDetail = () => {
 									{product.brand}
 								</span>
 							)}
-							<h1 className="text-2xl font-bold md:text-3xl text-brand-text
+							<h1 className="text-2xl font-bold md:text-3xl text-brand-text">
 								{product.name}
 							</h1>
 						</div>
@@ -305,10 +302,10 @@ const ProductDetail = () => {
 								{product.originalPrice &&
 									product.originalPrice > product.price && (
 										<>
-											<span className="ml-3 text-lg text-gray-400 line-through
+											<span className="ml-3 text-lg text-gray-400 line-through">
 												{formatPrice(product.originalPrice)}
 											</span>
-											<span className="ml-2 px-2 py-1 text-sm font-bold text-white bg-red-500 rounded-full">
+											<span className="px-2 py-1 ml-2 text-sm font-bold text-white bg-red-500 rounded-full">
 												-{discount}%
 											</span>
 										</>
@@ -317,16 +314,16 @@ const ProductDetail = () => {
 						</div>
 
 						{/* Mô tả với scroll */}
-						<div className="prose prose-sm max-h-48 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300
-							<h3 className="text-sm font-semibold text-gray-600
+						<div className="pr-2 overflow-y-auto prose-sm prose max-h-48 scrollbar-thin scrollbar-thumb-gray-300">
+							<h3 className="text-sm font-semibold text-gray-600">
 								Mô tả sản phẩm
 							</h3>
-							<p className="whitespace-pre-wrap text-gray-700
+							<p className="text-gray-700 whitespace-pre-wrap">
 								{product.description || "Chưa có mô tả cho sản phẩm này."}
 							</p>
 						</div>
 
-						{/* Nút liên hệ đặt hàng với icon giống footer */}
+						{/* Nút liên hệ đặt hàng */}
 						<div className="pt-2">
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
@@ -359,14 +356,14 @@ const ProductDetail = () => {
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
-							<p className="mt-2 text-xs text-center text-gray-400
+							<p className="mt-2 text-xs text-center text-gray-400">
 								Nhấn để chọn kênh liên hệ đặt hàng
 							</p>
 						</div>
 
 						{product.category && (
-							<div className="pt-4 border-t border-gray-200
-								<span className="text-sm text-gray-500
+							<div className="pt-4 border-t border-gray-200">
+								<span className="text-sm text-gray-500">
 									Danh mục:{" "}
 									<Link
 										to={`/danh-muc/${product.category.slug}`}
@@ -383,7 +380,7 @@ const ProductDetail = () => {
 				{/* Related Products */}
 				{relatedProducts.length > 0 && (
 					<section className="mt-16">
-						<h2 className="mb-6 text-2xl font-bold text-center text-brand-text
+						<h2 className="mb-6 text-2xl font-bold text-center text-brand-text">
 							Sản phẩm liên quan
 						</h2>
 						<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
@@ -391,9 +388,9 @@ const ProductDetail = () => {
 								<Link
 									key={related._id}
 									to={`/san-pham/${related.slug}`}
-									className="overflow-hidden transition bg-white border border-gray-200 rounded-xl hover:shadow-md
+									className="overflow-hidden transition bg-white border border-gray-200 rounded-xl hover:shadow-md"
 								>
-									<div className="aspect-square p-4 bg-gray-50
+									<div className="p-4 aspect-square bg-gray-50">
 										{related.images?.[0] ? (
 											<img
 												src={optimizeProduct(related.images[0])}
@@ -411,7 +408,7 @@ const ProductDetail = () => {
 										)}
 									</div>
 									<div className="p-3 text-center">
-										<h3 className="text-sm font-medium line-clamp-1 text-brand-text
+										<h3 className="text-sm font-medium line-clamp-1 text-brand-text">
 											{related.name}
 										</h3>
 										<p className="text-sm font-bold text-brand-primary">
