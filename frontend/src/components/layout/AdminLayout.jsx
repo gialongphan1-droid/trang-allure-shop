@@ -18,14 +18,11 @@ import {
 	LayoutDashboard,
 	LogOut,
 	Menu,
-	Moon,
 	Package,
-	Sun,
 	X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { useTheme } from "../../context/ThemeContext";
 
 const AdminLayout = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -33,7 +30,6 @@ const AdminLayout = () => {
 	const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 	const navigate = useNavigate();
 	const { toast } = useToast();
-	const { isDark, toggleTheme } = useTheme();
 
 	// ✅ KIỂM TRA AUTH KHI COMPONENT MOUNT
 	useEffect(() => {
@@ -191,17 +187,7 @@ const AdminLayout = () => {
 						</div>
 
 						<div className="flex items-center gap-3">
-							<button
-								onClick={toggleTheme}
-								className="p-2 transition rounded-full hover:bg-gray-100"
-								aria-label="Toggle theme"
-							>
-								{isDark ? (
-									<Sun className="w-5 h-5 text-yellow-400" />
-								) : (
-									<Moon className="w-5 h-5 text-gray-600" />
-								)}
-							</button>
+							{/* ❌ Đã xóa button toggle theme */}
 
 							<Button
 								variant="outline"
@@ -226,17 +212,13 @@ const AdminLayout = () => {
 			<AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>
-							Xác nhận đăng xuất
-						</AlertDialogTitle>
+						<AlertDialogTitle>Xác nhận đăng xuất</AlertDialogTitle>
 						<AlertDialogDescription>
 							Bạn có chắc chắn muốn đăng xuất khỏi tài khoản admin?
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>
-							Hủy
-						</AlertDialogCancel>
+						<AlertDialogCancel>Hủy</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={handleLogout}
 							className="text-white bg-brand-primary hover:bg-brand-accent"
