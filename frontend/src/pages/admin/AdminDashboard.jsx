@@ -103,7 +103,7 @@ const AdminDashboard = () => {
 				console.error("Error fetching dashboard data:", error);
 				toast({
 					title: "Lỗi tải dữ liệu",
-					description: "Không thể tải dữ리ệu dashboard",
+					description: "Không thể tải dữ liệu dashboard",
 					variant: "destructive",
 				});
 			} finally {
@@ -135,21 +135,21 @@ const AdminDashboard = () => {
 			value: stats?.totalProducts ?? products.length ?? 0,
 			icon: Package,
 			color: "text-blue-500",
-			bg: "bg-blue-100
+			bg: "bg-blue-100",
 		},
 		{
 			title: "Tổng danh mục",
 			value: stats?.totalCategories ?? categories.length ?? 0,
 			icon: Tag,
 			color: "text-green-500",
-			bg: "bg-green-100
+			bg: "bg-green-100",
 		},
 		{
 			title: "Tổng banner",
 			value: stats?.totalBanners ?? 0,
 			icon: Image,
 			color: "text-purple-500",
-			bg: "bg-purple-100
+			bg: "bg-purple-100",
 		},
 		{
 			title: "Doanh thu",
@@ -158,7 +158,7 @@ const AdminDashboard = () => {
 				: "0đ",
 			icon: TrendingUp,
 			color: "text-orange-500",
-			bg: "bg-orange-100
+			bg: "bg-orange-100",
 		},
 	];
 
@@ -174,12 +174,6 @@ const AdminDashboard = () => {
 		(item) => item.value > 0,
 	);
 
-	// Render chart component
-	const renderChart = (ChartComponent, props) => {
-		if (!ChartComponent) return <ChartLoader />;
-		return <ChartComponent {...props} />;
-	};
-
 	return (
 		<div className="space-y-6">
 			{/* Stats Grid */}
@@ -187,15 +181,15 @@ const AdminDashboard = () => {
 				{statsData.map((stat, index) => (
 					<Card
 						key={index}
-						className="overflow-hidden transition hover:shadow-md
+						className="overflow-hidden transition hover:shadow-md"
 					>
 						<CardContent className="p-6">
 							<div className="flex items-center justify-between">
 								<div className="space-y-1">
-									<p className="text-sm font-medium text-gray-500
+									<p className="text-sm font-medium text-gray-500">
 										{stat.title}
 									</p>
-									<p className="text-2xl font-bold text-brand-text
+									<p className="text-2xl font-bold text-brand-text">
 										{stat.value}
 									</p>
 								</div>
@@ -211,10 +205,10 @@ const AdminDashboard = () => {
 			{/* Charts Row */}
 			<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 				{/* Revenue Chart */}
-				<Card className="">
+				<Card>
 					<CardHeader>
 						<div className="flex items-center justify-between">
-							<CardTitle className="text-brand-text
+							<CardTitle className="text-brand-text">
 								Doanh thu theo tháng
 							</CardTitle>
 							<div className="flex items-center gap-2">
@@ -280,10 +274,10 @@ const AdminDashboard = () => {
 				</Card>
 
 				{/* Category Pie Chart */}
-				<Card className="">
+				<Card>
 					<CardHeader>
 						<div className="flex items-center justify-between">
-							<CardTitle className="text-brand-text
+							<CardTitle className="text-brand-text">
 								Sản phẩm theo danh mục
 							</CardTitle>
 							<PieChart className="w-5 h-5 text-gray-400" />
@@ -291,7 +285,7 @@ const AdminDashboard = () => {
 					</CardHeader>
 					<CardContent>
 						{categoriesWithProducts.length === 0 ? (
-							<div className="flex items-center justify-center h-[300px] text-gray-500
+							<div className="flex items-center justify-center h-[300px] text-gray-500">
 								<p>Chưa có sản phẩm nào trong danh mục</p>
 							</div>
 						) : (
@@ -344,46 +338,39 @@ const AdminDashboard = () => {
 			</div>
 
 			{/* Recent Products */}
-			<Card className="">
+			<Card>
 				<CardHeader>
-					<CardTitle className="text-brand-text
-						Sản phẩm gần đây
-					</CardTitle>
+					<CardTitle className="text-brand-text">Sản phẩm gần đây</CardTitle>
 				</CardHeader>
 				<CardContent>
 					{products.length === 0 ? (
-						<p className="py-4 text-center text-gray-500
+						<p className="py-4 text-center text-gray-500">
 							Chưa có sản phẩm nào
 						</p>
 					) : (
 						<div className="overflow-x-auto">
 							<table className="w-full text-sm">
 								<thead>
-									<tr className="border-b border-gray-200
-										<th className="px-4 py-2 text-left text-gray-500
+									<tr className="border-b border-gray-200">
+										<th className="px-4 py-2 text-left text-gray-500">
 											Tên sản phẩm
 										</th>
-										<th className="px-4 py-2 text-left text-gray-500
+										<th className="px-4 py-2 text-left text-gray-500">
 											Danh mục
 										</th>
-										<th className="px-4 py-2 text-left text-gray-500
-											Giá
-										</th>
-										<th className="px-4 py-2 text-left text-gray-500
+										<th className="px-4 py-2 text-left text-gray-500">Giá</th>
+										<th className="px-4 py-2 text-left text-gray-500">
 											Trạng thái
 										</th>
 									</tr>
 								</thead>
 								<tbody>
 									{products.slice(0, 5).map((product) => (
-										<tr
-											key={product._id}
-											className="border-b border-gray-100
-										>
-											<td className="px-4 py-3 font-medium text-brand-text
+										<tr key={product._id} className="border-b border-gray-100">
+											<td className="px-4 py-3 font-medium text-brand-text">
 												{product.name}
 											</td>
-											<td className="px-4 py-3 text-gray-500
+											<td className="px-4 py-3 text-gray-500">
 												{product.category?.name || "Chưa phân loại"}
 											</td>
 											<td className="px-4 py-3 text-brand-primary">
@@ -393,8 +380,8 @@ const AdminDashboard = () => {
 												<span
 													className={`px-2 py-1 text-xs font-medium rounded-full ${
 														product.isActive
-															? "bg-green-100 text-green-700
-															: "bg-red-100 text-red-700
+															? "bg-green-100 text-green-700"
+															: "bg-red-100 text-red-700"
 													}`}
 												>
 													{product.isActive ? "Hiển thị" : "Ẩn"}
