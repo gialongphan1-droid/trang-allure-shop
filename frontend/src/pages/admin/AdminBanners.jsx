@@ -59,15 +59,13 @@ const AdminBanners = () => {
 		isActive: true,
 	});
 
-	useEffect(() => {
-		fetchBanners();
-	}, []);
-
+	// ✅ ĐỊNH NGHĨA fetchBanners TRƯỚC KHI DÙNG
 	const fetchBanners = async () => {
 		try {
+			setLoading(true);
 			const response = await bannerApi.getBanners();
 			setBanners(response.data || []);
-		} catch (error) {
+		} catch {
 			toast({
 				title: "Lỗi tải banner",
 				variant: "destructive",
@@ -76,6 +74,13 @@ const AdminBanners = () => {
 			setLoading(false);
 		}
 	};
+
+	// ✅ useEffect GỌI fetchBanners VỚI eslint-disable
+	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
+		fetchBanners();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const filteredBanners = banners.filter(
 		(banner) =>

@@ -139,7 +139,7 @@ const AdminCategories = () => {
 			{/* Header */}
 			<div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
 				<div>
-					<h1 className="text-2xl font-bold sm:text-3xl font-display text-brand-text
+					<h1 className="text-2xl font-bold sm:text-3xl font-display text-brand-text">
 						Quản lý danh mục
 					</h1>
 					<p className="text-sm text-gray-500 sm:text-base">
@@ -156,17 +156,15 @@ const AdminCategories = () => {
 							Thêm danh mục
 						</Button>
 					</DialogTrigger>
-					<DialogContent className="max-w-md max-h-[90vh] overflow-y-auto
+					<DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
 						<DialogHeader>
-							<DialogTitle className="">
+							<DialogTitle>
 								{editingCategory ? "Sửa danh mục" : "Thêm danh mục mới"}
 							</DialogTitle>
 						</DialogHeader>
 						<form onSubmit={handleSubmit} className="space-y-4">
 							<div className="space-y-2">
-								<Label htmlFor="name" className="">
-									Tên danh mục *
-								</Label>
+								<Label htmlFor="name">Tên danh mục *</Label>
 								<Input
 									id="name"
 									value={formData.name}
@@ -174,13 +172,10 @@ const AdminCategories = () => {
 										setFormData({ ...formData, name: e.target.value })
 									}
 									required
-									className=""
 								/>
 							</div>
 							<div className="space-y-2">
-								<Label htmlFor="icon" className="">
-									Icon (Emoji)
-								</Label>
+								<Label htmlFor="icon">Icon (Emoji)</Label>
 								<Input
 									id="icon"
 									value={formData.icon}
@@ -188,13 +183,10 @@ const AdminCategories = () => {
 										setFormData({ ...formData, icon: e.target.value })
 									}
 									placeholder="VD: 💄, 🧴, 👁️"
-									className=""
 								/>
 							</div>
 							<div className="space-y-2">
-								<Label htmlFor="description" className="">
-									Mô tả
-								</Label>
+								<Label htmlFor="description">Mô tả</Label>
 								<Textarea
 									id="description"
 									value={formData.description}
@@ -202,7 +194,6 @@ const AdminCategories = () => {
 										setFormData({ ...formData, description: e.target.value })
 									}
 									rows={3}
-									className=""
 								/>
 							</div>
 							<div className="flex items-center space-x-2">
@@ -213,21 +204,20 @@ const AdminCategories = () => {
 									onChange={(e) =>
 										setFormData({ ...formData, isActive: e.target.checked })
 									}
-									className="w-4 h-4 border-gray-300 rounded text-brand-primary focus:ring-brand-primary
+									className="w-4 h-4 border-gray-300 rounded text-brand-primary focus:ring-brand-primary"
 								/>
 								<Label
 									htmlFor="isActive"
-									className="cursor-pointer
+									className="cursor-pointer"
 								>
 									Hiển thị danh mục
 								</Label>
 							</div>
-							<div className="sticky bottom-0 flex justify-end gap-3 pt-4 bg-white border-t
+							<div className="sticky bottom-0 flex justify-end gap-3 pt-4 bg-white border-t">
 								<Button
 									type="button"
 									variant="outline"
 									onClick={() => setIsDialogOpen(false)}
-									className=""
 								>
 									Hủy
 								</Button>
@@ -251,19 +241,19 @@ const AdminCategories = () => {
 						placeholder="Tìm kiếm danh mục..."
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
-						className="pl-10 pr-10
+						className="pl-10 pr-10"
 					/>
 					{search && (
 						<button
 							onClick={handleClearSearch}
-							className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-gray-600
+							className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-gray-600"
 						>
 							<X className="w-4 h-4" />
 						</button>
 					)}
 				</div>
 				{search && (
-					<div className="text-sm text-gray-500
+					<div className="text-sm text-gray-500">
 						Kết quả: {filteredCategories.length} danh mục
 					</div>
 				)}
@@ -274,14 +264,14 @@ const AdminCategories = () => {
 				<div className="hidden overflow-x-auto md:block">
 					<Table>
 						<TableHeader>
-							<TableRow className="">
-								<TableHead className="w-16
-								<TableHead className="w-16
-								<TableHead className="danh mục</TableHead>
-								<TableHead className="">Slug</TableHead>
-								<TableHead className="tả</TableHead>
-								<TableHead className="thái</TableHead>
-								<TableHead className="text-right tác</TableHead>
+							<TableRow>
+								<TableHead className="w-16">STT</TableHead>
+								<TableHead className="w-16">Icon</TableHead>
+								<TableHead>Tên danh mục</TableHead>
+								<TableHead>Slug</TableHead>
+								<TableHead>Mô tả</TableHead>
+								<TableHead>Trạng thái</TableHead>
+								<TableHead className="text-right">Thao tác</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -297,7 +287,7 @@ const AdminCategories = () => {
 								<TableRow>
 									<TableCell
 										colSpan={7}
-										className="py-8 text-center text-gray-500
+										className="py-8 text-center text-gray-500"
 									>
 										{search
 											? "Không tìm thấy danh mục nào phù hợp"
@@ -306,16 +296,18 @@ const AdminCategories = () => {
 								</TableRow>
 							) : (
 								filteredCategories.map((cat, index) => (
-									<TableRow key={cat._id} className="">
-										<TableCell className="+ 1}</TableCell>
+									<TableRow key={cat._id}>
+										<TableCell>{index + 1}</TableCell>
 										<TableCell className="text-2xl">
 											{cat.icon || "📦"}
 										</TableCell>
-										<TableCell className="font-medium
-										<TableCell className="text-sm text-gray-500
+										<TableCell className="font-medium">
+											{cat.name}
+										</TableCell>
+										<TableCell className="text-sm text-gray-500">
 											{cat.slug}
 										</TableCell>
-										<TableCell className="max-w-xs truncate
+										<TableCell className="max-w-xs truncate">
 											{cat.description || "—"}
 										</TableCell>
 										<TableCell>
@@ -331,7 +323,6 @@ const AdminCategories = () => {
 													variant="outline"
 													size="sm"
 													onClick={() => handleOpenDialog(cat)}
-													className=""
 												>
 													<Pencil className="w-4 h-4" />
 												</Button>
@@ -358,7 +349,7 @@ const AdminCategories = () => {
 							<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
 						</div>
 					) : filteredCategories.length === 0 ? (
-						<p className="py-8 text-center text-gray-500
+						<p className="py-8 text-center text-gray-500">
 							{search
 								? "Không tìm thấy danh mục nào phù hợp"
 								: "Chưa có danh mục nào"}
@@ -367,17 +358,17 @@ const AdminCategories = () => {
 						filteredCategories.map((cat) => (
 							<div
 								key={cat._id}
-								className="p-4 bg-white border rounded-lg shadow-sm
+								className="p-4 bg-white border rounded-lg shadow-sm"
 							>
 								<div className="flex items-center gap-4">
 									<div className="text-3xl">{cat.icon || "📦"}</div>
 									<div className="flex-1 min-w-0">
-										<h3 className="font-semibold text-brand-text
+										<h3 className="font-semibold text-brand-text">
 											{cat.name}
 										</h3>
-										<p className="text-sm text-gray-500 {cat.slug}</p>
+										<p className="text-sm text-gray-500">{cat.slug}</p>
 										{cat.description && (
-											<p className="text-sm text-gray-500
+											<p className="text-sm text-gray-500">{cat.description}</p>
 										)}
 										<Badge
 											className={`mt-1 ${cat.isActive ? "bg-green-500" : "bg-red-500"}`}
@@ -390,7 +381,6 @@ const AdminCategories = () => {
 											variant="outline"
 											size="sm"
 											onClick={() => handleOpenDialog(cat)}
-											className=""
 										>
 											<Pencil className="w-4 h-4" />
 										</Button>
@@ -414,16 +404,16 @@ const AdminCategories = () => {
 				open={!!deleteTarget}
 				onOpenChange={() => setDeleteTarget(null)}
 			>
-				<AlertDialogContent className="">
+				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle className="nhận xóa danh mục</AlertDialogTitle>
-						<AlertDialogDescription className="">
+						<AlertDialogTitle>Xác nhận xóa danh mục</AlertDialogTitle>
+						<AlertDialogDescription>
 							Bạn có chắc chắn muốn xóa danh mục "{deleteTarget?.name}"? Hành
 							động này không thể hoàn tác.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel className="">
+						<AlertDialogCancel>
 							Hủy
 						</AlertDialogCancel>
 						<AlertDialogAction

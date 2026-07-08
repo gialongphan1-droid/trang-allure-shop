@@ -13,11 +13,11 @@ import {
 	Tag,
 	TrendingUp,
 } from "lucide-react";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // ✅ Lazy load recharts - đúng cách
-const Recharts = lazy(() => import("recharts"));
+// const Recharts = lazy(() => import("recharts"));
 
 const ChartLoader = () => (
 	<div className="flex items-center justify-center h-[300px]">

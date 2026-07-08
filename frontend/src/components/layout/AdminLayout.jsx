@@ -40,7 +40,7 @@ const AdminLayout = () => {
 		const checkAuth = async () => {
 			try {
 				await adminApi.getMe();
-			} catch (error) {
+			} catch {
 				// ✅ XÓA TOKEN NẾU KHÔNG HỢP LỆ
 				localStorage.removeItem("adminToken");
 				localStorage.removeItem("adminRefreshToken");

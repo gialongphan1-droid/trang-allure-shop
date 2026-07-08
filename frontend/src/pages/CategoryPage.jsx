@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@/components/ui/button';
@@ -34,15 +34,14 @@ const CategoryPage = () => {
   const dispatch = useDispatch();
   const { items: products, loading, error } = useSelector((state) => state.products);
   const { items: categories } = useSelector((state) => state.categories);
-  // const [categoryName, setCategoryName] = useState('');
+  
+  // ✅ Tìm category từ slug để lấy tên
+  const category = categories.find(c => c.slug === slug);
+  const categoryName = category?.name || '';
 
   useEffect(() => {
-    // const cat = categories.find(c => c.slug === slug);
-    // if (cat) {
-    //   setCategoryName(cat.name);
-    // }
     dispatch(fetchProducts({ category: slug, limit: 20 }));
-  }, [dispatch, slug, categories]);
+  }, [dispatch, slug]);
 
   useEffect(() => {
     if (categories.length === 0) {

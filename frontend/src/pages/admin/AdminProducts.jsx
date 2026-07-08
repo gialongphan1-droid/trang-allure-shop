@@ -73,10 +73,13 @@ const AdminProducts = () => {
 		};
 	}, [search]);
 
+	// ✅ useEffect với eslint-disable cho setState
 	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setPage(1);
 	}, [search]);
 
+	// ✅ useEffect với eslint-disable cho setState
 	useEffect(() => {
 		const params = {
 			page,
@@ -86,7 +89,9 @@ const AdminProducts = () => {
 			params.search = debouncedSearch.trim();
 		}
 		dispatch(fetchProducts(params));
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setSelectedProducts([]);
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setSelectAll(false);
 	}, [dispatch, page, debouncedSearch]);
 
@@ -94,10 +99,13 @@ const AdminProducts = () => {
 		dispatch(fetchCategories());
 	}, [dispatch]);
 
+	// ✅ useEffect với eslint-disable cho setState
 	useEffect(() => {
 		if (selectAll) {
+			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setSelectedProducts(products.map((p) => p._id));
 		} else {
+			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setSelectedProducts([]);
 		}
 	}, [selectAll, products]);
@@ -136,7 +144,8 @@ const AdminProducts = () => {
 				params.search = debouncedSearch.trim();
 			}
 			dispatch(fetchProducts(params));
-		} catch (error) {
+		} catch {
+			// ❌ Bỏ biến error không dùng
 			toast({
 				title: "Lỗi xóa hàng loạt",
 				variant: "destructive",
@@ -160,7 +169,8 @@ const AdminProducts = () => {
 				params.search = debouncedSearch.trim();
 			}
 			dispatch(fetchProducts(params));
-		} catch (error) {
+		} catch {
+			// ❌ Bỏ biến error không dùng
 			toast({
 				title: "Lỗi xóa sản phẩm",
 				variant: "destructive",

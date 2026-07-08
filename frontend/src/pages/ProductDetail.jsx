@@ -152,7 +152,7 @@ const ProductDetail = () => {
   const handleContact = (platform) => {
     const url = `https://trangallure.shop/san-pham/${product.slug}`;
     const text = getShareText();
-    let link = "";
+    let link;
 
     switch (platform) {
       case "messenger":
