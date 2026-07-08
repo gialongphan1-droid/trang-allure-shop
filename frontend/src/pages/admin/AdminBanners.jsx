@@ -38,7 +38,7 @@ const ImageUpload = lazy(() => import("@/components/common/ImageUpload"));
 
 // ✅ Loading fallback cho ImageUpload
 const ImageUploadLoader = () => (
-	<div className="flex items-center justify-center p-8 border-2 border-dashed rounded-lg border-gray-300
+	<div className="flex items-center justify-center p-8 border-2 border-dashed rounded-lg border-gray-300">
 		<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
 	</div>
 );
@@ -161,7 +161,7 @@ const AdminBanners = () => {
 			{/* Header */}
 			<div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
 				<div>
-					<h1 className="text-2xl font-bold sm:text-3xl font-display text-brand-text
+					<h1 className="text-2xl font-bold sm:text-3xl font-display text-brand-text">
 						Quản lý banner
 					</h1>
 					<p className="text-sm text-gray-500 sm:text-base">
@@ -178,17 +178,15 @@ const AdminBanners = () => {
 							Thêm banner
 						</Button>
 					</DialogTrigger>
-					<DialogContent className="max-w-md max-h-[90vh] overflow-y-auto
+					<DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
 						<DialogHeader>
-							<DialogTitle className="">
+							<DialogTitle>
 								{editingBanner ? "Sửa banner" : "Thêm banner mới"}
 							</DialogTitle>
 						</DialogHeader>
 						<form onSubmit={handleSubmit} className="space-y-4">
 							<div className="space-y-2">
-								<Label htmlFor="title" className="">
-									Tiêu đề
-								</Label>
+								<Label htmlFor="title">Tiêu đề</Label>
 								<Input
 									id="title"
 									value={formData.title}
@@ -196,12 +194,11 @@ const AdminBanners = () => {
 										setFormData({ ...formData, title: e.target.value })
 									}
 									placeholder="Tiêu đề banner"
-									className=""
 								/>
 							</div>
 
 							<div className="space-y-2">
-								<Label className="ảnh *</Label>
+								<Label>Ảnh *</Label>
 								{/* ✅ Lazy load ImageUpload - chỉ tải khi mở dialog */}
 								<Suspense fallback={<ImageUploadLoader />}>
 									<ImageUpload
@@ -215,9 +212,7 @@ const AdminBanners = () => {
 							</div>
 
 							<div className="space-y-2">
-								<Label htmlFor="link" className="">
-									Đường dẫn (Link)
-								</Label>
+								<Label htmlFor="link">Đường dẫn (Link)</Label>
 								<Input
 									id="link"
 									value={formData.link}
@@ -225,14 +220,11 @@ const AdminBanners = () => {
 										setFormData({ ...formData, link: e.target.value })
 									}
 									placeholder="/san-pham hoặc https://..."
-									className=""
 								/>
 							</div>
 
 							<div className="space-y-2">
-								<Label htmlFor="position" className="">
-									Vị trí hiển thị
-								</Label>
+								<Label htmlFor="position">Vị trí hiển thị</Label>
 								<Input
 									id="position"
 									type="number"
@@ -244,7 +236,6 @@ const AdminBanners = () => {
 										})
 									}
 									min="0"
-									className=""
 								/>
 							</div>
 
@@ -256,22 +247,21 @@ const AdminBanners = () => {
 									onChange={(e) =>
 										setFormData({ ...formData, isActive: e.target.checked })
 									}
-									className="w-4 h-4 border-gray-300 rounded text-brand-primary focus:ring-brand-primary
+									className="w-4 h-4 border-gray-300 rounded text-brand-primary focus:ring-brand-primary"
 								/>
 								<Label
 									htmlFor="isActive"
-									className="cursor-pointer
+									className="cursor-pointer"
 								>
 									Hiển thị banner
 								</Label>
 							</div>
 
-							<div className="flex justify-end gap-3 pt-4 border-t
+							<div className="flex justify-end gap-3 pt-4 border-t">
 								<Button
 									type="button"
 									variant="outline"
 									onClick={() => setIsDialogOpen(false)}
-									className=""
 								>
 									Hủy
 								</Button>
@@ -295,12 +285,12 @@ const AdminBanners = () => {
 						placeholder="Tìm kiếm banner..."
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
-						className="pl-10 pr-10
+						className="pl-10 pr-10"
 					/>
 					{search && (
 						<button
 							onClick={handleClearSearch}
-							className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-gray-600
+							className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-gray-600"
 						>
 							<X className="w-4 h-4" />
 						</button>
@@ -313,18 +303,14 @@ const AdminBanners = () => {
 				<div className="hidden overflow-x-auto md:block">
 					<Table>
 						<TableHeader>
-							<TableRow className="">
-								<TableHead className="w-16
-								<TableHead className="w-24
-									Hình ảnh
-								</TableHead>
-								<TableHead className="đề</TableHead>
-								<TableHead className="dẫn</TableHead>
-								<TableHead className="trí</TableHead>
-								<TableHead className="thái</TableHead>
-								<TableHead className="text-right
-									Thao tác
-								</TableHead>
+							<TableRow>
+								<TableHead className="w-16">STT</TableHead>
+								<TableHead className="w-24">Hình ảnh</TableHead>
+								<TableHead>Tiêu đề</TableHead>
+								<TableHead>Đường dẫn</TableHead>
+								<TableHead>Vị trí</TableHead>
+								<TableHead>Trạng thái</TableHead>
+								<TableHead className="text-right">Thao tác</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -340,7 +326,7 @@ const AdminBanners = () => {
 								<TableRow>
 									<TableCell
 										colSpan={7}
-										className="py-8 text-center text-gray-500
+										className="py-8 text-center text-gray-500"
 									>
 										{search
 											? "Không tìm thấy banner nào phù hợp"
@@ -349,10 +335,8 @@ const AdminBanners = () => {
 								</TableRow>
 							) : (
 								filteredBanners.map((banner, index) => (
-									<TableRow key={banner._id} className="">
-										<TableCell className="">
-											{index + 1}
-										</TableCell>
+									<TableRow key={banner._id}>
+										<TableCell>{index + 1}</TableCell>
 										<TableCell>
 											<img
 												src={optimizeAdmin(banner.image)}
@@ -364,15 +348,13 @@ const AdminBanners = () => {
 												decoding="async"
 											/>
 										</TableCell>
-										<TableCell className="font-medium
+										<TableCell className="font-medium">
 											{banner.title || "Không có tiêu đề"}
 										</TableCell>
-										<TableCell className="text-sm text-gray-500
+										<TableCell className="text-sm text-gray-500">
 											{banner.link || "—"}
 										</TableCell>
-										<TableCell className="">
-											{banner.position || 0}
-										</TableCell>
+										<TableCell>{banner.position || 0}</TableCell>
 										<TableCell>
 											<Badge
 												className={
@@ -388,7 +370,6 @@ const AdminBanners = () => {
 													variant="outline"
 													size="sm"
 													onClick={() => handleOpenDialog(banner)}
-													className=""
 												>
 													<Pencil className="w-4 h-4" />
 												</Button>
@@ -415,7 +396,7 @@ const AdminBanners = () => {
 							<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
 						</div>
 					) : filteredBanners.length === 0 ? (
-						<p className="py-8 text-center text-gray-500
+						<p className="py-8 text-center text-gray-500">
 							{search
 								? "Không tìm thấy banner nào phù hợp"
 								: "Chưa có banner nào"}
@@ -424,7 +405,7 @@ const AdminBanners = () => {
 						filteredBanners.map((banner) => (
 							<div
 								key={banner._id}
-								className="p-4 bg-white border rounded-lg shadow-sm
+								className="p-4 bg-white border rounded-lg shadow-sm"
 							>
 								<div className="flex gap-4">
 									<img
@@ -437,13 +418,13 @@ const AdminBanners = () => {
 										decoding="async"
 									/>
 									<div className="flex-1 min-w-0">
-										<h3 className="font-semibold text-brand-text
+										<h3 className="font-semibold text-brand-text">
 											{banner.title || "Không có tiêu đề"}
 										</h3>
-										<p className="text-sm text-gray-500
+										<p className="text-sm text-gray-500">
 											{banner.link || "—"}
 										</p>
-										<p className="text-sm text-gray-500
+										<p className="text-sm text-gray-500">
 											Vị trí: {banner.position || 0}
 										</p>
 										<Badge
@@ -457,7 +438,6 @@ const AdminBanners = () => {
 											variant="outline"
 											size="sm"
 											onClick={() => handleOpenDialog(banner)}
-											className=""
 										>
 											<Pencil className="w-4 h-4" />
 										</Button>
@@ -481,19 +461,19 @@ const AdminBanners = () => {
 				open={!!deleteTarget}
 				onOpenChange={() => setDeleteTarget(null)}
 			>
-				<AlertDialogContent className="">
+				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle className="">
+						<AlertDialogTitle>
 							Xác nhận xóa banner
 						</AlertDialogTitle>
-						<AlertDialogDescription className="">
+						<AlertDialogDescription>
 							Bạn có chắc chắn muốn xóa banner "
 							{deleteTarget?.title || "không tên"}"? Hành động này không thể
 							hoàn tác.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel className="">
+						<AlertDialogCancel>
 							Hủy
 						</AlertDialogCancel>
 						<AlertDialogAction
