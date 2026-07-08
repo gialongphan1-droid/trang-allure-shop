@@ -177,17 +177,17 @@ const HomePage = () => {
 	}
 
 	if (error) {
-		return (
-			<div className="py-12 text-center">
-				<p className="text-red-500
-					Lỗi tải dữ liệu: {error}
-				</p>
-				<Button onClick={() => window.location.reload()} className="mt-4">
-					Thử lại
-				</Button>
-			</div>
-		);
-	}
+  return (
+    <div className="py-12 text-center">
+      <p className="text-red-500">
+        Lỗi tải dữ liệu: {error}
+      </p>
+      <Button onClick={() => window.location.reload()} className="mt-4">
+        Thử lại
+      </Button>
+    </div>
+  );
+}
 
 	return (
 		<>
@@ -199,7 +199,7 @@ const HomePage = () => {
 				keywords="mỹ phẩm, trang điểm, chăm sóc da, làm đẹp, TrangAllure Shop"
 			/>
 
-			<div className="container-custom space-y-12">
+			<div className="space-y-12 container-custom">
 				{/* Banner Slider */}
 				{!bannerLoading && banners.length > 0 ? (
 					<div className="container-custom">
@@ -324,7 +324,7 @@ const HomePage = () => {
 
 				{/* Brand Header - Responsive */}
 				<section
-					className="brand-header text-center"
+					className="text-center brand-header"
 					style={{
 						minHeight: "240px",
 						display: "flex",
@@ -378,12 +378,12 @@ const HomePage = () => {
 				</section>
 
 				{/* SLOGAN 3 - Banner quảng bá */}
-				<section className="relative bg-gradient-to-r from-brand-primary/10 to-brand-secondary/20 rounded-2xl p-6 md:p-10 my-4">
+				<section className="relative p-6 my-4 bg-gradient-to-r from-brand-primary/10 to-brand-secondary/20 rounded-2xl md:p-10">
 					<div className="flex flex-col items-center text-center">
 						<h3 className="text-xl md:text-3xl font-bold text-brand-text
 							TRANG ALLURE
 						</h3>
-						<p className="text-base md:text-xl mt-2 text-brand-text/80 font-medium">
+						<p className="mt-2 text-base font-medium md:text-xl text-brand-text/80">
 							Săn ngay hàng Authentic, sale cực đã từ các thương hiệu nổi tiếng!
 						</p>
 						<Link to="/san-pham">
