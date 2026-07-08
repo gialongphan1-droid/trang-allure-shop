@@ -116,14 +116,14 @@ const AdminLayout = () => {
         md:translate-x-0 md:w-64
       `}
 			>
-				<div className="flex items-center justify-between p-4 border-b border-white/20
+				<div className="flex items-center justify-between p-4 border-b border-white/20">
 					<h1 className="text-xl font-bold text-white font-display">
 						🌸 TrangAllure
 					</h1>
 					<Button
 						variant="ghost"
 						size="icon"
-						className="text-white hover:bg-white/20 md:hidden" // ✅ Thêm md:hidden
+						className="text-white hover:bg-white/20 md:hidden"
 						onClick={() => setIsSidebarOpen(false)}
 					>
 						<X className="w-5 h-5" />
@@ -146,7 +146,7 @@ const AdminLayout = () => {
 					))}
 				</nav>
 
-				<div className="px-4 py-2 border-t border-white/20
+				<div className="px-4 py-2 border-t border-white/20">
 					<Button
 						variant="ghost"
 						className="flex items-center justify-start w-full gap-3 text-white hover:bg-white/20"
@@ -158,7 +158,7 @@ const AdminLayout = () => {
 					</Button>
 				</div>
 
-				<div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/20
+				<div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/20">
 					<Button
 						variant="ghost"
 						className="flex items-center justify-start w-full gap-3 text-white hover:bg-white/20"
@@ -172,18 +172,18 @@ const AdminLayout = () => {
 
 			{/* Main Content */}
 			<main className="flex-1 md:ml-64">
-				<header className="sticky top-0 z-30 p-4 transition-colors bg-white shadow-sm
+				<header className="sticky top-0 z-30 p-4 transition-colors bg-white shadow-sm">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-3">
 							<Button
 								variant="ghost"
 								size="icon"
-								className="md:hidden
+								className="md:hidden"
 								onClick={() => setIsSidebarOpen(true)}
 							>
 								<Menu className="w-5 h-5" />
 							</Button>
-							<h2 className="text-lg font-semibold text-brand-text
+							<h2 className="text-lg font-semibold text-brand-text">
 								{menuItems.find(
 									(item) => window.location.pathname === item.path,
 								)?.label || "Dashboard"}
@@ -193,13 +193,13 @@ const AdminLayout = () => {
 						<div className="flex items-center gap-3">
 							<button
 								onClick={toggleTheme}
-								className="p-2 transition rounded-full hover:bg-gray-100
+								className="p-2 transition rounded-full hover:bg-gray-100"
 								aria-label="Toggle theme"
 							>
 								{isDark ? (
 									<Sun className="w-5 h-5 text-yellow-400" />
 								) : (
-									<Moon className="w-5 h-5 text-gray-600 />
+									<Moon className="w-5 h-5 text-gray-600" />
 								)}
 							</button>
 
@@ -207,7 +207,7 @@ const AdminLayout = () => {
 								variant="outline"
 								size="sm"
 								onClick={viewAsCustomer}
-								className="items-center hidden gap-2 md:flex border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white
+								className="items-center hidden gap-2 md:flex border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white"
 							>
 								<Eye className="w-4 h-4" />
 								Xem trang khách hàng
@@ -224,17 +224,17 @@ const AdminLayout = () => {
 
 			{/* Dialog xác nhận đăng xuất */}
 			<AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
-				<AlertDialogContent className="">
+				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle className="">
+						<AlertDialogTitle>
 							Xác nhận đăng xuất
 						</AlertDialogTitle>
-						<AlertDialogDescription className="">
+						<AlertDialogDescription>
 							Bạn có chắc chắn muốn đăng xuất khỏi tài khoản admin?
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel className="">
+						<AlertDialogCancel>
 							Hủy
 						</AlertDialogCancel>
 						<AlertDialogAction
