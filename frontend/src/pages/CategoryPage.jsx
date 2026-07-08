@@ -67,16 +67,18 @@ const CategoryPage = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="py-12 text-center">
-        <p className="text-red-500 tải dữ liệu: {error}</p>
-        <Button onClick={() => window.location.reload()} className="mt-4">
-          Thử lại
-        </Button>
-      </div>
-    );
-  }
+ if (error) {
+  return (
+    <div className="py-12 text-center">
+      <p className="text-red-500">
+        Lỗi tải dữ liệu: {error}
+      </p>
+      <Button onClick={() => window.location.reload()} className="mt-4">
+        Thử lại
+      </Button>
+    </div>
+  );
+}
 
   return (
     <>
@@ -100,7 +102,7 @@ const CategoryPage = () => {
             {categoryName || 'Danh mục sản phẩm'}
           </h1>
           {meta.description && (
-            <p className="mt-3 text-base text-gray-600 max-w-3xl mx-auto">
+            <p className="max-w-3xl mx-auto mt-3 text-base text-gray-600">
               {meta.description}
             </p>
           )}
@@ -137,14 +139,14 @@ const CategoryPage = () => {
                     )}
                   </div>
                   <div className="p-3 sm:p-4">
-                    <h3 className="font-semibold text-brand-text line-clamp-1 text-sm sm:text-base">
+                    <h3 className="text-sm font-semibold text-brand-text line-clamp-1 sm:text-base">
                       {product.name}
                     </h3>
                     <p className="text-xs text-gray-500 sm:text-sm">
                       {product.brand || ''}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="text-sm sm:text-lg font-bold text-brand-primary">
+                      <span className="text-sm font-bold sm:text-lg text-brand-primary">
                         {new Intl.NumberFormat('vi-VN').format(product.price)}đ
                       </span>
                       {product.originalPrice && product.originalPrice > product.price && (
