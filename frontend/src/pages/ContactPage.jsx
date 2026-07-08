@@ -48,21 +48,28 @@ const ContactPage = () => {
   return (
     <>
       <SEO 
-        title="Liên hệ"
+        title="Liên hệ - TrangAllure Shop"
         description="Liên hệ với TrangAllure Shop qua điện thoại, Zalo, Facebook hoặc email. Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7."
         url="https://trangallure.shop/lien-he"
         keywords="liên hệ, mỹ phẩm, tư vấn, hỗ trợ"
       />
       
-      <div className="space-y-8">
-        <div>
-          <h1 className="text-3xl font-bold font-display text-brand-text hệ</h1>
-          <p className="mt-1 text-gray-600 tôi luôn sẵn sàng hỗ trợ bạn</p>
+      <div className="container px-4 py-8 mx-auto space-y-8">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold font-display text-brand-text">
+            Liên hệ với chúng tôi
+          </h1>
+          <p className="mt-1 text-gray-600">
+            Chúng tôi luôn sẵn sàng hỗ trợ bạn
+          </p>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          {/* Left Column - Contact Info */}
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-brand-text tin liên hệ</h2>
+            <h2 className="text-xl font-semibold text-brand-text">
+              Thông tin liên hệ
+            </h2>
             <div className="space-y-4">
               {contactInfo.map((item, index) => (
                 <a
@@ -76,15 +83,17 @@ const ContactPage = () => {
                     {renderIcon(item.icon, "w-5 h-5")}
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500
-                    <p className="font-medium text-brand-text
+                    <p className="text-sm text-gray-500">{item.label}</p>
+                    <p className="font-medium text-brand-text">{item.value}</p>
                   </div>
                 </a>
               ))}
             </div>
 
             <div className="p-6 bg-white shadow-sm rounded-xl">
-              <h3 className="mb-4 font-semibold text-brand-text� Liên hệ nhanh</h3>
+              <h3 className="mb-4 font-semibold text-brand-text">
+                Liên hệ nhanh
+              </h3>
               <div className="flex flex-wrap gap-3">
                 <a
                   href="https://m.me/trangallure.shop"
@@ -108,15 +117,18 @@ const ContactPage = () => {
             </div>
           </div>
 
+          {/* Right Column - Address & Map */}
           <div className="space-y-6">
             <div className="p-6 bg-white shadow-sm rounded-xl">
-              <h2 className="mb-4 text-xl font-semibold text-brand-text� Địa chỉ</h2>
-              <div className="flex items-start gap-3 text-gray-600
+              <h2 className="mb-4 text-xl font-semibold text-brand-text">
+                Địa chỉ
+              </h2>
+              <div className="flex items-start gap-3 text-gray-600">
                 <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <p>TP. Hồ Chí Minh, Việt Nam</p>
               </div>
-              <div className="p-4 mt-4 rounded-lg bg-brand-background
-                <p className="text-sm text-gray-600
+              <div className="p-4 mt-4 rounded-lg bg-brand-background">
+                <p className="text-sm text-gray-600">
                   <span className="font-medium">Giờ làm việc:</span><br />
                   Thứ 2 - Thứ 7: 8:00 - 21:00<br />
                   Chủ nhật: 9:00 - 18:00
@@ -125,8 +137,10 @@ const ContactPage = () => {
             </div>
 
             <div className="p-6 bg-white shadow-sm rounded-xl">
-              <h2 className="mb-4 text-xl font-semibold text-brand-text đồ</h2>
-              <div className="flex items-center justify-center text-gray-400 bg-gray-200 rounded-lg aspect-video
+              <h2 className="mb-4 text-xl font-semibold text-brand-text">
+                Bản đồ
+              </h2>
+              <div className="flex items-center justify-center text-gray-400 bg-gray-200 rounded-lg aspect-video">
                 <div className="text-center">
                   <MapPin className="w-12 h-12 mx-auto text-brand-primary" />
                   <p className="mt-2">TP. Hồ Chí Minh</p>
