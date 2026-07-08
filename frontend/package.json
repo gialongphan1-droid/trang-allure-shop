@@ -5,9 +5,9 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite --host",
-	"build": "vite build",
-		"lint": "eslint .",
-		"preview": "vite preview"
+		"build": "CI=false vite build",
+		"preview": "vite preview",
+		"lint": "eslint ."
 	},
 	"imports": {
 		"#/*": "./src/*"
