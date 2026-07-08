@@ -19,7 +19,7 @@ const ImageUpload = lazy(() => import("@/components/common/ImageUpload"));
 
 // ✅ Loading fallback cho ImageUpload
 const ImageUploadLoader = () => (
-	<div className="flex items-center justify-center p-8 border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600">
+	<div className="flex items-center justify-center p-8 border-2 border-dashed rounded-lg border-gray-300
 		<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
 	</div>
 );
@@ -110,7 +110,7 @@ const ProductForm = ({
 		<form onSubmit={handleSubmit} className="space-y-6">
 			{/* Name */}
 			<div className="space-y-2">
-				<Label htmlFor="name" className="dark:text-gray-300">
+				<Label htmlFor="name" className="">
 					Tên sản phẩm *
 				</Label>
 				<Input
@@ -118,13 +118,13 @@ const ProductForm = ({
 					value={formData.name}
 					onChange={(e) => setFormData({ ...formData, name: e.target.value })}
 					required
-					className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+					className=""
 				/>
 			</div>
 
 			{/* Slug */}
 			<div className="space-y-2">
-				<Label htmlFor="slug" className="dark:text-gray-300">
+				<Label htmlFor="slug" className="">
 					Đường dẫn (Slug)
 				</Label>
 				<Input
@@ -132,16 +132,16 @@ const ProductForm = ({
 					value={formData.slug}
 					onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
 					placeholder="ten-san-pham"
-					className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+					className=""
 				/>
-				<p className="text-xs text-gray-500 dark:text-gray-400">
+				<p className="text-xs text-gray-500
 					Để trống để tự động tạo từ tên sản phẩm
 				</p>
 			</div>
 
 			{/* Description */}
 			<div className="space-y-2">
-				<Label htmlFor="description" className="dark:text-gray-300">
+				<Label htmlFor="description" className="">
 					Mô tả
 				</Label>
 				<Textarea
@@ -151,14 +151,14 @@ const ProductForm = ({
 						setFormData({ ...formData, description: e.target.value })
 					}
 					rows={4}
-					className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+					className=""
 				/>
 			</div>
 
 			{/* Price */}
 			<div className="grid grid-cols-2 gap-4">
 				<div className="space-y-2">
-					<Label htmlFor="price" className="dark:text-gray-300">
+					<Label htmlFor="price" className="">
 						Giá bán *
 					</Label>
 					<Input
@@ -170,11 +170,11 @@ const ProductForm = ({
 						}
 						required
 						min="0"
-						className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+						className=""
 					/>
 				</div>
 				<div className="space-y-2">
-					<Label htmlFor="originalPrice" className="dark:text-gray-300">
+					<Label htmlFor="originalPrice" className="">
 						Giá gốc
 					</Label>
 					<Input
@@ -185,7 +185,7 @@ const ProductForm = ({
 							setFormData({ ...formData, originalPrice: e.target.value })
 						}
 						min="0"
-						className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+						className=""
 					/>
 				</div>
 			</div>
@@ -193,7 +193,7 @@ const ProductForm = ({
 			{/* Category & Brand */}
 			<div className="grid grid-cols-2 gap-4">
 				<div className="space-y-2">
-					<Label htmlFor="category" className="dark:text-gray-300">
+					<Label htmlFor="category" className="">
 						Danh mục *
 					</Label>
 					<Select
@@ -202,7 +202,7 @@ const ProductForm = ({
 							setFormData({ ...formData, category: value })
 						}
 					>
-						<SelectTrigger className="dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+						<SelectTrigger className="">
 							<SelectValue placeholder="Chọn danh mục" />
 						</SelectTrigger>
 						<SelectContent>
@@ -215,7 +215,7 @@ const ProductForm = ({
 					</Select>
 				</div>
 				<div className="space-y-2">
-					<Label htmlFor="brand" className="dark:text-gray-300">
+					<Label htmlFor="brand" className="">
 						Thương hiệu
 					</Label>
 					<Input
@@ -224,14 +224,14 @@ const ProductForm = ({
 						onChange={(e) =>
 							setFormData({ ...formData, brand: e.target.value })
 						}
-						className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+						className=""
 					/>
 				</div>
 			</div>
 
 			{/* Stock */}
 			<div className="space-y-2">
-				<Label htmlFor="stock" className="dark:text-gray-300">
+				<Label htmlFor="stock" className="">
 					Số lượng tồn kho
 				</Label>
 				<Input
@@ -240,13 +240,13 @@ const ProductForm = ({
 					value={formData.stock}
 					onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
 					min="0"
-					className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+					className=""
 				/>
 			</div>
 
 			{/* Images */}
 			<div className="space-y-2">
-				<Label className="dark:text-gray-300">Hình ảnh sản phẩm</Label>
+				<Label className="ảnh sản phẩm</Label>
 				{/* ✅ Lazy load ImageUpload - chỉ tải khi mở form */}
 				<Suspense fallback={<ImageUploadLoader />}>
 					<ImageUpload
@@ -266,18 +266,18 @@ const ProductForm = ({
 						setFormData({ ...formData, isActive: checked })
 					}
 				/>
-				<Label htmlFor="isActive" className="cursor-pointer dark:text-gray-300">
+				<Label htmlFor="isActive" className="cursor-pointer
 					{formData.isActive ? "Hiển thị" : "Ẩn"}
 				</Label>
 			</div>
 
 			{/* Actions */}
-			<div className="flex justify-end gap-3 pt-4 border-t dark:border-gray-700">
+			<div className="flex justify-end gap-3 pt-4 border-t
 				<Button
 					type="button"
 					variant="outline"
 					onClick={onCancel}
-					className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+					className=""
 				>
 					Hủy
 				</Button>

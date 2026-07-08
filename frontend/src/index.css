@@ -3,352 +3,252 @@
 @tailwind utilities;
 
 @layer base {
-	body {
-		font-family:
-			system-ui,
-			-apple-system,
-			"Segoe UI",
-			Roboto,
-			Helvetica,
-			Arial,
-			sans-serif;
-		font-synthesis: none;
-		text-rendering: optimizeLegibility;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-	}
+  body {
+    font-family:
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      Roboto,
+      Helvetica,
+      Arial,
+      sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-	.font-display {
-		font-family:
-			system-ui,
-			-apple-system,
-			"Segoe UI",
-			Roboto,
-			Helvetica,
-			Arial,
-			sans-serif;
-	}
+  .font-display {
+    font-family:
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      Roboto,
+      Helvetica,
+      Arial,
+      sans-serif;
+  }
 
-	:root {
-		--background: 160 30% 96%;
-		--foreground: 160 40% 25%;
-		--card: 0 0% 100%;
-		--card-foreground: 160 40% 25%;
-		--popover: 0 0% 100%;
-		--popover-foreground: 160 40% 25%;
-		--primary: 160 50% 65%;
-		--primary-foreground: 160 40% 25%;
-		--secondary: 340 60% 75%;
-		--secondary-foreground: 340 40% 25%;
-		--muted: 160 20% 90%;
-		--muted-foreground: 160 30% 40%;
-		--accent: 160 40% 55%;
-		--accent-foreground: 160 40% 25%;
-		--destructive: 0 84% 60%;
-		--destructive-foreground: 210 40% 98%;
-		--border: 160 20% 85%;
-		--input: 160 20% 85%;
-		--ring: 160 50% 65%;
-		--radius: 0.5rem;
-	}
+  :root {
+    --background: 160 30% 96%;
+    --foreground: 160 40% 25%;
+    --card: 0 0% 100%;
+    --card-foreground: 160 40% 25%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 40% 25%;
+    --primary: 160 50% 65%;
+    --primary-foreground: 160 40% 25%;
+    --secondary: 340 60% 75%;
+    --secondary-foreground: 340 40% 25%;
+    --muted: 160 20% 90%;
+    --muted-foreground: 160 30% 40%;
+    --accent: 160 40% 55%;
+    --accent-foreground: 160 40% 25%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 160 20% 85%;
+    --input: 160 20% 85%;
+    --ring: 160 50% 65%;
+    --radius: 0.5rem;
+  }
 
-	.dark {
-		--background: 160 40% 10%;
-		--foreground: 160 20% 90%;
-		--card: 160 40% 12%;
-		--card-foreground: 160 20% 90%;
-		--popover: 160 40% 12%;
-		--popover-foreground: 160 20% 90%;
-		--primary: 160 50% 55%;
-		--primary-foreground: 160 40% 10%;
-		--secondary: 340 50% 65%;
-		--secondary-foreground: 340 40% 10%;
-		--muted: 160 30% 20%;
-		--muted-foreground: 160 20% 60%;
-		--accent: 160 40% 45%;
-		--accent-foreground: 160 40% 10%;
-		--destructive: 0 62% 30%;
-		--destructive-foreground: 210 40% 98%;
-		--border: 160 30% 25%;
-		--input: 160 30% 25%;
-		--ring: 160 50% 55%;
-	}
+  .text-gray-400 {
+    color: #9ca3af;
+  }
+  .text-gray-500 {
+    color: #6b7280;
+  }
+  .text-gray-600 {
+    color: #4b5563;
+  }
+  .text-gray-700 {
+    color: #374151;
+  }
+  .text-gray-800 {
+    color: #1f2937;
+  }
 
-	/* ✅ Tăng độ tương phản cho text (Accessibility) */
-	.text-gray-400 {
-		color: #9ca3af;
-	}
-	.text-gray-500 {
-		color: #6b7280;
-	}
-	.text-gray-600 {
-		color: #4b5563;
-	}
-	.text-gray-700 {
-		color: #374151;
-	}
-	.text-gray-800 {
-		color: #1f2937;
-	}
-	.dark .text-gray-400 {
-		color: #d1d5db;
-	}
-	.dark .text-gray-500 {
-		color: #9ca3af;
-	}
-	.dark .text-gray-600 {
-		color: #d1d5db;
-	}
-	.dark .text-gray-700 {
-		color: #e5e7eb;
-	}
+  .brand-header h1 {
+    color: #111827;
+  }
 
-	/* ✅ Tăng contrast cho brand header */
-	.brand-header h1 {
-		color: #111827;
-	}
-	.dark .brand-header h1 {
-		color: #f9fafb;
-	}
+  .text-brand-primary {
+    color: #0d9488;
+  }
+  .text-brand-text {
+    color: #111827;
+  }
 
-	/* ✅ Tăng contrast cho brand primary */
-	.text-brand-primary {
-		color: #0d9488;
-	}
-	.dark .text-brand-primary {
-		color: #5eead4;
-	}
+  .ship-tag {
+    background-color: #059669;
+    color: #ffffff;
+  }
 
-	/* ✅ Tăng contrast cho brand text */
-	.text-brand-text {
-		color: #111827;
-	}
-	.dark .text-brand-text {
-		color: #f9fafb;
-	}
+  footer .text-white\/50 {
+    color: #d1d5db;
+  }
+  footer .text-white\/70 {
+    color: #e5e7eb;
+  }
+  footer .text-white\/80 {
+    color: #f3f4f6;
+  }
 
-	/* ✅ Tăng contrast cho ship tag */
-	.ship-tag {
-		background-color: #059669;
-		color: #ffffff;
-	}
-	.dark .ship-tag {
-		background-color: #047857;
-		color: #ffffff;
-	}
+  .product-price {
+    color: #0d9488;
+    font-weight: 700;
+  }
 
-	/* ✅ Tăng contrast cho footer text */
-	footer .text-white\/50 {
-		color: #d1d5db;
-	}
-	footer .text-white\/70 {
-		color: #e5e7eb;
-	}
-	footer .text-white\/80 {
-		color: #f3f4f6;
-	}
-	.dark footer .text-white\/50 {
-		color: #9ca3af;
-	}
-	.dark footer .text-white\/70 {
-		color: #d1d5db;
-	}
-	.dark footer .text-white\/80 {
-		color: #e5e7eb;
-	}
-
-	/* ✅ Tăng contrast cho giá sản phẩm */
-	.product-price {
-		color: #0d9488;
-		font-weight: 700;
-	}
-	.dark .product-price {
-		color: #5eead4;
-	}
-
-	/* ✅ Tăng contrast cho giá gốc (line-through) */
-	.text-gray-400.line-through {
-		color: #6b7280 !important;
-	}
-	.dark .text-gray-400.line-through {
-		color: #9ca3af !important;
-	}
+  .text-gray-400.line-through {
+    color: #9ca3af;
+  }
 }
 
 @layer base {
-	* {
-		@apply border-gray-200 dark:border-gray-700;
-	}
+  * {
+    @apply border-gray-200;
+  }
 
-	body {
-		@apply bg-background text-foreground;
-	}
+  body {
+    @apply bg-background text-foreground;
+  }
 
-	img,
-	video,
-	iframe {
-		max-width: 100%;
-		height: auto;
-		display: block;
-	}
+  img,
+  video,
+  iframe {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
 
-	/* ✅ Sửa banner cho mobile */
-	.banner-container {
-		position: relative;
-		overflow: hidden;
-		aspect-ratio: 16 / 7;
-		background-color: #e5e7eb;
-		min-height: 140px;
-	}
+  .banner-container {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 7;
+    background-color: #e5e7eb;
+    min-height: 140px;
+  }
 
-	@media (min-width: 640px) {
-		.banner-container {
-			aspect-ratio: 16 / 5;
-			min-height: 200px;
-		}
-	}
+  @media (min-width: 640px) {
+    .banner-container {
+      aspect-ratio: 16 / 5;
+      min-height: 200px;
+    }
+  }
 
-	@media (min-width: 768px) {
-		.banner-container {
-			aspect-ratio: 16 / 4;
-			min-height: 240px;
-		}
-	}
+  @media (min-width: 768px) {
+    .banner-container {
+      aspect-ratio: 16 / 4;
+      min-height: 240px;
+    }
+  }
 
-	.dark .banner-container {
-		background-color: #1f2937;
-	}
+  .brand-header {
+    min-height: 220px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+  }
 
-	/* ✅ Brand header - ỔN ĐỊNH CLS */
-	.brand-header {
-		min-height: 220px !important;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 20px 0;
-	}
+  @media (min-width: 640px) {
+    .brand-header {
+      min-height: 240px !important;
+      padding: 24px 0;
+    }
+  }
 
-	@media (min-width: 640px) {
-		.brand-header {
-			min-height: 240px !important;
-			padding: 24px 0;
-		}
-	}
+  @media (min-width: 768px) {
+    .brand-header {
+      min-height: 280px !important;
+      padding: 32px 0;
+    }
+  }
 
-	@media (min-width: 768px) {
-		.brand-header {
-			min-height: 280px !important;
-			padding: 32px 0;
-		}
-	}
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
 
-	/* ✅ Scrollbar tùy chỉnh */
-	.scrollbar-thin::-webkit-scrollbar {
-		width: 6px;
-		height: 6px;
-	}
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-	.scrollbar-thin::-webkit-scrollbar-track {
-		background: transparent;
-	}
-
-	.scrollbar-thin::-webkit-scrollbar-thumb {
-		background-color: #d1d5db;
-		border-radius: 9999px;
-	}
-
-	.dark .scrollbar-thin::-webkit-scrollbar-thumb {
-		background-color: #4b5563;
-	}
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 9999px;
+  }
 }
 
-/* ✅ Badge có độ tương phản cao */
 .badge-active {
-	background-color: #22c55e;
-	color: #ffffff;
+  background-color: #22c55e;
+  color: #ffffff;
 }
 .badge-inactive {
-	background-color: #ef4444;
-	color: #ffffff;
-}
-.dark .badge-active {
-	background-color: #16a34a;
-	color: #ffffff;
-}
-.dark .badge-inactive {
-	background-color: #dc2626;
-	color: #ffffff;
+  background-color: #ef4444;
+  color: #ffffff;
 }
 
-/* ✅ Button primary - tăng contrast */
 .btn-primary {
-	background-color: #0d9488;
-	color: #ffffff;
+  background-color: #0d9488;
+  color: #ffffff;
 }
 .btn-primary:hover {
-	background-color: #0f766e;
-}
-.dark .btn-primary {
-	background-color: #0d9488;
-	color: #ffffff;
-}
-.dark .btn-primary:hover {
-	background-color: #0f766e;
+  background-color: #0f766e;
 }
 
 @keyframes slideInFromTop {
-	from {
-		transform: translateY(-100%);
-		opacity: 0;
-	}
-	to {
-		transform: translateY(0);
-		opacity: 1;
-	}
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes slideOutToTop {
-	from {
-		transform: translateY(0);
-		opacity: 1;
-	}
-	to {
-		transform: translateY(-100%);
-		opacity: 0;
-	}
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
 }
 
 .animate-in {
-	animation: slideInFromTop 0.3s ease-out;
+  animation: slideInFromTop 0.3s ease-out;
 }
 
 .animate-out {
-	animation: slideOutToTop 0.3s ease-in;
+  animation: slideOutToTop 0.3s ease-in;
 }
 
 @layer components {
-	/* ✅ Container full width trên mobile */
-	.container-custom {
-		width: 100% !important;
-		max-width: 1280px !important;
-		margin-left: auto !important;
-		margin-right: auto !important;
-		padding-left: 16px !important;
-		padding-right: 16px !important;
-	}
+  .container-custom {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 
-	@media (min-width: 640px) {
-		.container-custom {
-			padding-left: 24px;
-			padding-right: 24px;
-		}
-	}
+  @media (min-width: 640px) {
+    .container-custom {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
 
-	@media (min-width: 1024px) {
-		.container-custom {
-			padding-left: 32px;
-			padding-right: 32px;
-		}
-	}
+  @media (min-width: 1024px) {
+    .container-custom {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+  }
 }

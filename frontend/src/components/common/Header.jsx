@@ -10,16 +10,7 @@ import {
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { useTheme } from "@/context/ThemeContext";
-import {
-	ArrowLeft,
-	LogOut,
-	Menu,
-	Moon,
-	ShoppingBag,
-	Sun,
-	X,
-} from "lucide-react";
+import { ArrowLeft, LogOut, Menu, ShoppingBag, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -28,7 +19,6 @@ const Header = () => {
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-	const { isDark, toggleTheme } = useTheme();
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { toast } = useToast();
@@ -120,49 +110,48 @@ const Header = () => {
 
 	return (
 		<>
-			<header className="sticky top-0 z-50 w-full transition-colors bg-white border-b dark:bg-gray-900 dark:border-gray-800">
-				<div className="container-custom py-3">
-					<div className="flex items-center justify-between w-full">
+			<header className="sticky top-0 z-50 w-full transition-colors bg-white border-b">
+				<div className="py-3 container-custom">
+					<div className="flex items-center justify-between">
 						{/* Logo */}
 						<Link
 							to="/"
-							className="flex items-center gap-2 text-2xl font-bold text-brand-primary dark:text-white"
+							className="flex items-center gap-2 text-2xl font-bold text-brand-primary"
 						>
 							<ShoppingBag className="w-6 h-6" />
-							<span className="font-display text-gray-900 dark:text-white">
-								TrangAllure
-							</span>
+							<span className="text-gray-900 font-display">TrangAllure</span>
 						</Link>
+
 						{/* Desktop Navigation */}
 						<nav className="hidden space-x-6 md:flex">
 							<Link
 								to="/"
-								className="text-gray-700 transition hover:text-brand-primary dark:text-gray-300 dark:hover:text-brand-primary"
+								className="text-gray-700 transition hover:text-brand-primary"
 							>
 								Trang chủ
 							</Link>
 							<Link
 								to="/san-pham"
-								className="text-gray-700 transition hover:text-brand-primary dark:text-gray-300 dark:hover:text-brand-primary"
+								className="text-gray-700 transition hover:text-brand-primary"
 							>
 								Sản phẩm
 							</Link>
 							<Link
 								to="/lien-he"
-								className="text-gray-700 transition hover:text-brand-primary dark:text-gray-300 dark:hover:text-brand-primary"
+								className="text-gray-700 transition hover:text-brand-primary"
 							>
 								Liên hệ
 							</Link>
 						</nav>
+
 						{/* Right Section */}
 						<div className="flex items-center gap-2">
 							{showAdminButtons && !isAdminLoginPage && (
 								<>
-									{/* Nút quay lại Admin - chỉ hiện khi ở trang user */}
 									{!isAdminPage && (
 										<button
 											onClick={handleBackToAdmin}
-											className="flex items-center gap-1 px-3 py-2 text-sm font-medium transition rounded-lg text-brand-primary hover:bg-brand-primary/10 dark:text-brand-primary dark:hover:bg-brand-primary/20"
+											className="flex items-center gap-1 px-3 py-2 text-sm font-medium transition rounded-lg text-brand-primary hover:bg-brand-primary/10"
 											aria-label="Quay lại trang admin"
 										>
 											<ArrowLeft className="w-4 h-4" />
@@ -170,10 +159,9 @@ const Header = () => {
 										</button>
 									)}
 
-									{/* Nút Đăng xuất - hiện ở mọi nơi (cả user và admin) */}
 									<button
 										onClick={() => setShowLogoutDialog(true)}
-										className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-red-600 transition rounded-lg hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
+										className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-red-600 transition rounded-lg hover:bg-red-50"
 										aria-label="Đăng xuất"
 									>
 										<LogOut className="w-4 h-4" />
@@ -182,23 +170,10 @@ const Header = () => {
 								</>
 							)}
 
-							{/* Theme Toggle */}
-							<button
-								onClick={toggleTheme}
-								className="p-2 transition rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-								aria-label="Toggle theme"
-							>
-								{isDark ? (
-									<Sun className="w-5 h-5 text-yellow-400" />
-								) : (
-									<Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-								)}
-							</button>
-
 							{/* Mobile Menu Toggle */}
 							<button
 								onClick={() => setIsMenuOpen(!isMenuOpen)}
-								className="p-2 rounded-lg md:hidden hover:bg-gray-100 dark:hover:bg-gray-800"
+								className="p-2 rounded-lg md:hidden hover:bg-gray-100"
 								aria-label="Toggle menu"
 							>
 								{isMenuOpen ? (
@@ -215,21 +190,21 @@ const Header = () => {
 						<nav className="flex flex-col gap-4 pt-4 pb-2 md:hidden">
 							<Link
 								to="/"
-								className="text-gray-700 transition hover:text-brand-primary dark:text-gray-300"
+								className="text-gray-700 transition hover:text-brand-primary"
 								onClick={() => setIsMenuOpen(false)}
 							>
 								Trang chủ
 							</Link>
 							<Link
 								to="/san-pham"
-								className="text-gray-700 transition hover:text-brand-primary dark:text-gray-300"
+								className="text-gray-700 transition hover:text-brand-primary"
 								onClick={() => setIsMenuOpen(false)}
 							>
 								Sản phẩm
 							</Link>
 							<Link
 								to="/lien-he"
-								className="text-gray-700 transition hover:text-brand-primary dark:text-gray-300"
+								className="text-gray-700 transition hover:text-brand-primary"
 								onClick={() => setIsMenuOpen(false)}
 							>
 								Liên hệ
@@ -267,22 +242,18 @@ const Header = () => {
 
 			{/* Dialog xác nhận đăng xuất */}
 			<AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
-				<AlertDialogContent className="dark:bg-gray-900 dark:border-gray-700">
+				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle className="dark:text-white">
-							Xác nhận đăng xuất
-						</AlertDialogTitle>
-						<AlertDialogDescription className="dark:text-gray-400">
+						<AlertDialogTitle>Xác nhận đăng xuất</AlertDialogTitle>
+						<AlertDialogDescription>
 							Bạn có chắc chắn muốn đăng xuất khỏi tài khoản admin?
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel className="dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
-							Hủy
-						</AlertDialogCancel>
+						<AlertDialogCancel>Hủy</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={handleLogout}
-							className="text-white bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+							className="text-white bg-red-600 hover:bg-red-700"
 						>
 							Đăng xuất
 						</AlertDialogAction>

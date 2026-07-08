@@ -56,13 +56,13 @@ const ContactPage = () => {
       
       <div className="space-y-8">
         <div>
-          <h1 className="text-3xl font-bold font-display text-brand-text dark:text-white">Liên hệ</h1>
-          <p className="mt-1 text-gray-600 dark:text-gray-400 dark:text-gray-500">Chúng tôi luôn sẵn sàng hỗ trợ bạn</p>
+          <h1 className="text-3xl font-bold font-display text-brand-text hệ</h1>
+          <p className="mt-1 text-gray-600 tôi luôn sẵn sàng hỗ trợ bạn</p>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-brand-text dark:text-white">Thông tin liên hệ</h2>
+            <h2 className="text-xl font-semibold text-brand-text tin liên hệ</h2>
             <div className="space-y-4">
               {contactInfo.map((item, index) => (
                 <a
@@ -70,21 +70,21 @@ const ContactPage = () => {
                   href={item.href}
                   target={item.href.startsWith('http') ? '_blank' : ''}
                   rel={item.href.startsWith('http') ? 'noopener noreferrer' : ''}
-                  className="flex items-center gap-4 p-4 transition bg-white shadow-sm dark:bg-gray-800 rounded-xl hover:shadow-md"
+                  className="flex items-center gap-4 p-4 transition bg-white shadow-sm rounded-xl hover:shadow-md"
                 >
                   <div className={`${item.color} p-3 rounded-full text-white`}>
                     {renderIcon(item.icon, "w-5 h-5")}
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">{item.label}</p>
-                    <p className="font-medium text-brand-text dark:text-white">{item.value}</p>
+                    <p className="text-sm text-gray-500
+                    <p className="font-medium text-brand-text
                   </div>
                 </a>
               ))}
             </div>
 
-            <div className="p-6 bg-white shadow-sm dark:bg-gray-800 rounded-xl">
-              <h3 className="mb-4 font-semibold text-brand-text dark:text-white">📞 Liên hệ nhanh</h3>
+            <div className="p-6 bg-white shadow-sm rounded-xl">
+              <h3 className="mb-4 font-semibold text-brand-text� Liên hệ nhanh</h3>
               <div className="flex flex-wrap gap-3">
                 <a
                   href="https://m.me/trangallure.shop"
@@ -109,14 +109,14 @@ const ContactPage = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="p-6 bg-white shadow-sm dark:bg-gray-800 rounded-xl">
-              <h2 className="mb-4 text-xl font-semibold text-brand-text dark:text-white">📍 Địa chỉ</h2>
-              <div className="flex items-start gap-3 text-gray-600 dark:text-gray-400 dark:text-gray-500">
+            <div className="p-6 bg-white shadow-sm rounded-xl">
+              <h2 className="mb-4 text-xl font-semibold text-brand-text� Địa chỉ</h2>
+              <div className="flex items-start gap-3 text-gray-600
                 <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <p>TP. Hồ Chí Minh, Việt Nam</p>
               </div>
-              <div className="p-4 mt-4 rounded-lg bg-brand-background dark:bg-gray-700/50">
-                <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+              <div className="p-4 mt-4 rounded-lg bg-brand-background
+                <p className="text-sm text-gray-600
                   <span className="font-medium">Giờ làm việc:</span><br />
                   Thứ 2 - Thứ 7: 8:00 - 21:00<br />
                   Chủ nhật: 9:00 - 18:00
@@ -124,9 +124,9 @@ const ContactPage = () => {
               </div>
             </div>
 
-            <div className="p-6 bg-white shadow-sm dark:bg-gray-800 rounded-xl">
-              <h2 className="mb-4 text-xl font-semibold text-brand-text dark:text-white">Bản đồ</h2>
-              <div className="flex items-center justify-center text-gray-400 bg-gray-200 rounded-lg aspect-video dark:bg-gray-700 dark:text-gray-500 dark:text-gray-400 dark:text-gray-500">
+            <div className="p-6 bg-white shadow-sm rounded-xl">
+              <h2 className="mb-4 text-xl font-semibold text-brand-text đồ</h2>
+              <div className="flex items-center justify-center text-gray-400 bg-gray-200 rounded-lg aspect-video
                 <div className="text-center">
                   <MapPin className="w-12 h-12 mx-auto text-brand-primary" />
                   <p className="mt-2">TP. Hồ Chí Minh</p>

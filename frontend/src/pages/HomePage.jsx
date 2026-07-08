@@ -143,26 +143,26 @@ const HomePage = () => {
 	if (loading) {
 		return (
 			<div className="space-y-8">
-				<div className="w-full h-56 bg-gray-200 dark:bg-gray-700 sm:h-72 md:h-96 rounded-2xl animate-pulse"></div>
+				<div className="w-full h-56 bg-gray-200 sm:h-72 md:h-96 rounded-2xl animate-pulse"></div>
 				<div className="py-8 space-y-4 text-center">
-					<div className="w-64 h-12 mx-auto bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></div>
-					<div className="h-6 mx-auto bg-gray-200 rounded dark:bg-gray-700 w-80 animate-pulse"></div>
+					<div className="w-64 h-12 mx-auto bg-gray-200 rounded animate-pulse"></div>
+					<div className="h-6 mx-auto bg-gray-200 rounded w-80 animate-pulse"></div>
 					<div className="flex justify-center gap-8">
-						<div className="w-20 h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></div>
-						<div className="w-20 h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></div>
-						<div className="w-20 h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></div>
-						<div className="w-20 h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></div>
+						<div className="w-20 h-6 bg-gray-200 rounded animate-pulse"></div>
+						<div className="w-20 h-6 bg-gray-200 rounded animate-pulse"></div>
+						<div className="w-20 h-6 bg-gray-200 rounded animate-pulse"></div>
+						<div className="w-20 h-6 bg-gray-200 rounded animate-pulse"></div>
 					</div>
-					<div className="w-48 h-8 mx-auto bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></div>
-					<div className="w-40 h-10 mx-auto bg-gray-200 rounded-full dark:bg-gray-700 animate-pulse"></div>
+					<div className="w-48 h-8 mx-auto bg-gray-200 rounded animate-pulse"></div>
+					<div className="w-40 h-10 mx-auto bg-gray-200 rounded-full animate-pulse"></div>
 				</div>
 				<div>
-					<div className="w-48 h-8 mx-auto mb-8 bg-gray-200 rounded dark:bg-gray-700 animate-pulse"></div>
+					<div className="w-48 h-8 mx-auto mb-8 bg-gray-200 rounded animate-pulse"></div>
 					<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
 						{[...Array(8)].map((_, i) => (
 							<div
 								key={i}
-								className="p-4 bg-white shadow-sm dark:bg-gray-800 rounded-xl"
+								className="p-4 bg-white shadow-sm rounded-xl"
 							>
 								<Skeleton className="w-full aspect-square" />
 								<Skeleton className="w-3/4 h-4 mt-3" />
@@ -179,7 +179,7 @@ const HomePage = () => {
 	if (error) {
 		return (
 			<div className="py-12 text-center">
-				<p className="text-red-500 dark:text-red-400">
+				<p className="text-red-500
 					Lỗi tải dữ liệu: {error}
 				</p>
 				<Button onClick={() => window.location.reload()} className="mt-4">
@@ -317,7 +317,7 @@ const HomePage = () => {
 				) : (
 					!bannerLoading && (
 						<div className="container-custom">
-							<div className="h-56 bg-gray-200 sm:h-72 md:h-96 dark:bg-gray-700 rounded-2xl animate-pulse"></div>
+							<div className="h-56 bg-gray-200 sm:h-72 md:h-96 rounded-2xl animate-pulse"></div>
 						</div>
 					)
 				)}
@@ -334,15 +334,15 @@ const HomePage = () => {
 						padding: "24px 0",
 					}}
 				>
-					<h1 className="text-3xl font-bold tracking-wider uppercase sm:text-4xl md:text-6xl lg:text-7xl text-brand-text dark:text-white">
+					<h1 className="text-3xl font-bold tracking-wider uppercase sm:text-4xl md:text-6xl lg:text-7xl text-brand-text
 						TRANG ALLURE
 					</h1>
-					<p className="mt-2 text-sm tracking-wide text-gray-700 dark:text-gray-300 sm:text-base md:text-xl">
+					<p className="mt-2 text-sm tracking-wide text-gray-700 sm:text-base md:text-xl">
 						Order – Săn Sale hàng Authentic từ các thương hiệu nổi tiếng
 					</p>
 
 					<div
-						className="flex flex-wrap justify-center gap-3 mt-4 text-sm font-medium text-gray-700 dark:text-gray-300 sm:gap-4 md:gap-8 sm:text-base md:text-lg"
+						className="flex flex-wrap justify-center gap-3 mt-4 text-sm font-medium text-gray-700 sm:gap-4 md:gap-8 sm:text-base md:text-lg"
 						style={{ minHeight: "40px" }}
 					>
 						{categories.length > 0 ? (
@@ -350,40 +350,40 @@ const HomePage = () => {
 								<span key={cat._id}>
 									<Link
 										to={`/danh-muc/${cat.slug}`}
-										className="transition hover:text-brand-primary dark:hover:text-brand-primary"
+										className="transition hover:text-brand-primary
 									>
 										{cat.icon} {cat.name.toUpperCase()}
 									</Link>
 									{index < Math.min(categories.length, 4) - 1 && (
-										<span className="hidden ml-3 text-gray-300 dark:text-gray-600 sm:inline md:ml-8">
+										<span className="hidden ml-3 text-gray-300 sm:inline md:ml-8">
 											•
 										</span>
 									)}
 								</span>
 							))
 						) : (
-							<span className="text-gray-500 dark:text-gray-400">
+							<span className="text-gray-500
 								Đang tải danh mục...
 							</span>
 						)}
 					</div>
-					<p className="mt-4 text-base tracking-wide text-gray-600 dark:text-gray-400 sm:text-lg md:text-2xl">
+					<p className="mt-4 text-base tracking-wide text-gray-600 sm:text-lg md:text-2xl">
 						Hàng đẹp – Giá tốt – Uy tín – Tận tâm
 					</p>
 					<div className="mt-3" style={{ minHeight: "40px" }}>
-						<span className="inline-block px-4 py-1.5 text-sm font-semibold rounded-full text-white bg-green-600 dark:bg-green-700">
+						<span className="inline-block px-4 py-1.5 text-sm font-semibold rounded-full text-white bg-green-600
 							🚀 SHIP TOÀN QUỐC
 						</span>
 					</div>
 				</section>
 
 				{/* SLOGAN 3 - Banner quảng bá */}
-				<section className="relative bg-gradient-to-r from-brand-primary/10 to-brand-secondary/20 dark:from-brand-primary/20 dark:to-brand-secondary/10 rounded-2xl p-6 md:p-10 my-4">
+				<section className="relative bg-gradient-to-r from-brand-primary/10 to-brand-secondary/20 rounded-2xl p-6 md:p-10 my-4">
 					<div className="flex flex-col items-center text-center">
-						<h3 className="text-xl md:text-3xl font-bold text-brand-text dark:text-white">
+						<h3 className="text-xl md:text-3xl font-bold text-brand-text
 							TRANG ALLURE
 						</h3>
-						<p className="text-base md:text-xl mt-2 text-brand-text/80 dark:text-white/80 font-medium">
+						<p className="text-base md:text-xl mt-2 text-brand-text/80 font-medium">
 							Săn ngay hàng Authentic, sale cực đã từ các thương hiệu nổi tiếng!
 						</p>
 						<Link to="/san-pham">
@@ -396,7 +396,7 @@ const HomePage = () => {
 
 				{/* Featured Products */}
 				<section style={{ minHeight: "400px" }}>
-					<h2 className="mb-6 text-xl font-bold tracking-wide text-center sm:mb-8 sm:text-2xl md:text-3xl text-brand-text dark:text-white">
+					<h2 className="mb-6 text-xl font-bold tracking-wide text-center sm:mb-8 sm:text-2xl md:text-3xl text-brand-text
 						SẢN PHẨM NỔI BẬT
 					</h2>
 					{products.length > 0 ? (
@@ -405,11 +405,11 @@ const HomePage = () => {
 								{products.slice(0, 8).map((product) => (
 									<Link key={product._id} to={`/san-pham/${product.slug}`}>
 										<div
-											className="overflow-hidden transition bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-xl hover:shadow-md hover:border-brand-primary/30 dark:hover:border-brand-primary/30"
+											className="overflow-hidden transition bg-white border border-gray-200 rounded-xl hover:shadow-md hover:border-brand-primary/30
 											style={{ minHeight: "280px" }}
 										>
 											<div
-												className="flex items-center justify-center p-3 bg-gray-50 dark:bg-gray-700/50 aspect-square sm:p-4"
+												className="flex items-center justify-center p-3 bg-gray-50 aspect-square sm:p-4"
 												style={{ minHeight: "180px" }}
 											>
 												{product.images?.[0] ? (
@@ -430,14 +430,14 @@ const HomePage = () => {
 												className="p-2 text-center sm:p-3"
 												style={{ minHeight: "80px" }}
 											>
-												<h3 className="text-xs font-medium text-brand-text dark:text-white line-clamp-1 sm:text-sm md:text-base">
+												<h3 className="text-xs font-medium text-brand-text line-clamp-1 sm:text-sm md:text-base">
 													{product.name}
 												</h3>
-												<p className="text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
+												<p className="text-xs text-gray-500 sm:text-sm">
 													{product.brand || ""}
 												</p>
 												<div className="flex items-center justify-center gap-1 mt-1 sm:gap-2">
-													<span className="text-sm font-bold text-brand-primary dark:text-brand-primary sm:text-base md:text-lg">
+													<span className="text-sm font-bold text-brand-primary sm:text-base md:text-lg">
 														{new Intl.NumberFormat("vi-VN").format(
 															product.price,
 														)}
@@ -445,7 +445,7 @@ const HomePage = () => {
 													</span>
 													{product.originalPrice &&
 														product.originalPrice > product.price && (
-															<span className="text-xs text-gray-400 line-through dark:text-gray-500 sm:text-sm">
+															<span className="text-xs text-gray-400 line-through sm:text-sm">
 																{new Intl.NumberFormat("vi-VN").format(
 																	product.originalPrice,
 																)}
@@ -462,7 +462,7 @@ const HomePage = () => {
 								<Link to="/san-pham">
 									<Button
 										variant="outline"
-										className="px-6 py-2 text-sm font-semibold border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white dark:border-brand-primary dark:text-brand-primary dark:hover:bg-brand-primary dark:hover:text-white"
+										className="px-6 py-2 text-sm font-semibold border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white
 									>
 										Xem tất cả sản phẩm
 									</Button>
@@ -471,7 +471,7 @@ const HomePage = () => {
 						</>
 					) : (
 						<div className="py-12 text-center">
-							<p className="text-gray-500 dark:text-gray-400">
+							<p className="text-gray-500
 								Chưa có sản phẩm nào
 							</p>
 						</div>

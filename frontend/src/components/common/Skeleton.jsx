@@ -1,7 +1,7 @@
 // Đảm bảo skeleton có kích thước cố định
 const Skeleton = ({ className = "" }) => (
 	<div
-		className={`animate-pulse bg-gray-200 dark:bg-gray-700 ${className}`}
+		className={`animate-pulse bg-gray-200 ${className}`}
 		style={{ minHeight: "100px" }}
 	/>
 );

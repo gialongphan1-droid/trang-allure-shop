@@ -70,7 +70,7 @@ const CategoryPage = () => {
   if (error) {
     return (
       <div className="py-12 text-center">
-        <p className="text-red-500 dark:text-red-400">Lỗi tải dữ liệu: {error}</p>
+        <p className="text-red-500 tải dữ liệu: {error}</p>
         <Button onClick={() => window.location.reload()} className="mt-4">
           Thử lại
         </Button>
@@ -96,22 +96,22 @@ const CategoryPage = () => {
       <div className="space-y-8">
         {/* Category Header - Có mô tả */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold font-display text-brand-text dark:text-white">
+          <h1 className="text-3xl font-bold font-display text-brand-text
             {categoryName || 'Danh mục sản phẩm'}
           </h1>
           {meta.description && (
-            <p className="mt-3 text-base text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            <p className="mt-3 text-base text-gray-600 max-w-3xl mx-auto">
               {meta.description}
             </p>
           )}
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          <p className="mt-2 text-sm text-gray-500
             {products.length} sản phẩm
           </p>
         </div>
 
         {products.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-gray-500 dark:text-gray-400">Chưa có sản phẩm nào trong danh mục này</p>
+            <p className="text-gray-500 có sản phẩm nào trong danh mục này</p>
             <Link to="/san-pham">
               <Button className="mt-4">Xem tất cả sản phẩm</Button>
             </Link>
@@ -120,8 +120,8 @@ const CategoryPage = () => {
           <div className="grid grid-cols-2 gap-4 sm:gap-6 sm:grid-cols-3 md:grid-cols-4">
             {products.map((product) => (
               <Link key={product._id} to={`/san-pham/${product.slug}`}>
-                <div className="overflow-hidden transition bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md dark:bg-gray-800 dark:border-gray-700">
-                  <div className="flex items-center justify-center bg-gray-100 dark:bg-gray-700/50 aspect-square">
+                <div className="overflow-hidden transition bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md
+                  <div className="flex items-center justify-center bg-gray-100 aspect-square">
                     {product.images?.[0] ? (
                       <img
                         src={optimizeProduct(product.images[0])}
@@ -137,10 +137,10 @@ const CategoryPage = () => {
                     )}
                   </div>
                   <div className="p-3 sm:p-4">
-                    <h3 className="font-semibold text-brand-text dark:text-white line-clamp-1 text-sm sm:text-base">
+                    <h3 className="font-semibold text-brand-text line-clamp-1 text-sm sm:text-base">
                       {product.name}
                     </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
+                    <p className="text-xs text-gray-500 sm:text-sm">
                       {product.brand || ''}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
@@ -148,7 +148,7 @@ const CategoryPage = () => {
                         {new Intl.NumberFormat('vi-VN').format(product.price)}đ
                       </span>
                       {product.originalPrice && product.originalPrice > product.price && (
-                        <span className="text-xs text-gray-400 line-through dark:text-gray-500 sm:text-sm">
+                        <span className="text-xs text-gray-400 line-through sm:text-sm">
                           {new Intl.NumberFormat('vi-VN').format(product.originalPrice)}đ
                         </span>
                       )}

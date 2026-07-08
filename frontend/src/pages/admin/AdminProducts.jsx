@@ -197,10 +197,10 @@ const AdminProducts = () => {
 			{/* Header */}
 			<div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
 				<div>
-					<h1 className="text-2xl font-bold sm:text-3xl font-display text-brand-text dark:text-white">
+					<h1 className="text-2xl font-bold sm:text-3xl font-display text-brand-text
 						Quản lý sản phẩm
 					</h1>
-					<p className="text-sm text-gray-500 dark:text-gray-400 sm:text-base">
+					<p className="text-sm text-gray-500 sm:text-base">
 						Quản lý danh sách sản phẩm của cửa hàng
 					</p>
 				</div>
@@ -222,9 +222,9 @@ const AdminProducts = () => {
 								Thêm sản phẩm
 							</Button>
 						</DialogTrigger>
-						<DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+						<DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto
 							<DialogHeader>
-								<DialogTitle className="dark:text-white">
+								<DialogTitle className="">
 									{editingProduct ? "Sửa sản phẩm" : "Thêm sản phẩm mới"}
 								</DialogTitle>
 							</DialogHeader>
@@ -245,24 +245,24 @@ const AdminProducts = () => {
 			{/* Search */}
 			<div className="flex flex-wrap items-center gap-4">
 				<div className="relative flex-1 max-w-sm">
-					<Search className="absolute w-4 h-4 text-gray-400 -translate-y-1/2 dark:text-gray-500 left-3 top-1/2" />
+					<Search className="absolute w-4 h-4 text-gray-400 -translate-y-1/2 left-3 top-1/2" />
 					<Input
 						placeholder="Tìm kiếm sản phẩm..."
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
-						className="pl-10 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+						className="pl-10 pr-10
 					/>
 					{search && (
 						<button
 							onClick={handleClearSearch}
-							className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+							className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-gray-600
 						>
 							<X className="w-4 h-4" />
 						</button>
 					)}
 				</div>
 				{debouncedSearch && (
-					<div className="flex items-center text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+					<div className="flex items-center text-sm text-gray-500 whitespace-nowrap">
 						Kết quả: {pagination.total} sản phẩm
 					</div>
 				)}
@@ -271,7 +271,7 @@ const AdminProducts = () => {
 						variant="outline"
 						size="sm"
 						onClick={handleClearSearch}
-						className="text-sm dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+						className="text-sm
 					>
 						Hiển thị tất cả
 					</Button>
@@ -279,27 +279,27 @@ const AdminProducts = () => {
 			</div>
 
 			{/* Table */}
-			<div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 rounded-xl">
+			<div className="overflow-hidden bg-white shadow-sm rounded-xl">
 				<div className="hidden overflow-x-auto md:block">
 					<Table>
 						<TableHeader>
-							<TableRow className="dark:border-gray-700">
-								<TableHead className="w-10 dark:text-gray-300">
+							<TableRow className="">
+								<TableHead className="w-10
 									<Checkbox
 										checked={selectAll}
 										onCheckedChange={handleSelectAll}
-										className="dark:border-gray-500"
+										className=""
 									/>
 								</TableHead>
-								<TableHead className="w-16 dark:text-gray-300">STT</TableHead>
-								<TableHead className="w-16 dark:text-gray-300">Ảnh</TableHead>
-								<TableHead className="dark:text-gray-300">
+								<TableHead className="w-16
+								<TableHead className="w-16
+								<TableHead className="">
 									Tên sản phẩm
 								</TableHead>
-								<TableHead className="dark:text-gray-300">Danh mục</TableHead>
-								<TableHead className="dark:text-gray-300">Giá</TableHead>
-								<TableHead className="dark:text-gray-300">Trạng thái</TableHead>
-								<TableHead className="text-right dark:text-gray-300">
+								<TableHead className="mục</TableHead>
+								<TableHead className="">Giá</TableHead>
+								<TableHead className="thái</TableHead>
+								<TableHead className="text-right
 									Thao tác
 								</TableHead>
 							</TableRow>
@@ -317,7 +317,7 @@ const AdminProducts = () => {
 								<TableRow>
 									<TableCell
 										colSpan={8}
-										className="py-8 text-center text-gray-500 dark:text-gray-400"
+										className="py-8 text-center text-gray-500
 									>
 										{debouncedSearch
 											? "Không tìm thấy sản phẩm nào phù hợp"
@@ -326,15 +326,15 @@ const AdminProducts = () => {
 								</TableRow>
 							) : (
 								products.map((product, index) => (
-									<TableRow key={product._id} className="dark:border-gray-700">
+									<TableRow key={product._id} className="">
 										<TableCell>
 											<Checkbox
 												checked={selectedProducts.includes(product._id)}
 												onCheckedChange={() => handleSelectProduct(product._id)}
-												className="dark:border-gray-500"
+												className=""
 											/>
 										</TableCell>
-										<TableCell className="dark:text-gray-300">
+										<TableCell className="">
 											{(page - 1) * 10 + index + 1}
 										</TableCell>
 										<TableCell>
@@ -350,21 +350,21 @@ const AdminProducts = () => {
 												decoding="async"
 											/>
 										</TableCell>
-										<TableCell className="font-medium dark:text-white line-clamp-1">
+										<TableCell className="font-medium line-clamp-1">
 											{product.name}
 										</TableCell>
-										<TableCell className="dark:text-gray-300">
+										<TableCell className="">
 											{product.category?.name || "N/A"}
 										</TableCell>
 										<TableCell>
 											<div className="flex flex-col">
-												<span className="font-medium text-brand-primary dark:text-brand-primary">
+												<span className="font-medium text-brand-primary
 													{new Intl.NumberFormat("vi-VN").format(product.price)}
 													đ
 												</span>
 												{product.originalPrice &&
 													product.originalPrice > product.price && (
-														<span className="text-xs text-gray-400 line-through dark:text-gray-500">
+														<span className="text-xs text-gray-400 line-through
 															{new Intl.NumberFormat("vi-VN").format(
 																product.originalPrice,
 															)}
@@ -388,7 +388,7 @@ const AdminProducts = () => {
 													variant="outline"
 													size="sm"
 													onClick={() => handleEdit(product)}
-													className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+													className=""
 												>
 													<Pencil className="w-4 h-4" />
 												</Button>
@@ -415,7 +415,7 @@ const AdminProducts = () => {
 							<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
 						</div>
 					) : products.length === 0 ? (
-						<p className="py-8 text-center text-gray-500 dark:text-gray-400">
+						<p className="py-8 text-center text-gray-500
 							{debouncedSearch
 								? "Không tìm thấy sản phẩm nào phù hợp"
 								: "Chưa có sản phẩm nào"}
@@ -424,13 +424,13 @@ const AdminProducts = () => {
 						products.map((product) => (
 							<div
 								key={product._id}
-								className="p-4 bg-white border rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
+								className="p-4 bg-white border rounded-lg shadow-sm
 							>
 								<div className="flex items-start gap-4">
 									<Checkbox
 										checked={selectedProducts.includes(product._id)}
 										onCheckedChange={() => handleSelectProduct(product._id)}
-										className="mt-1 dark:border-gray-500"
+										className="mt-1
 									/>
 									<img
 										src={optimizeAdmin(
@@ -444,19 +444,19 @@ const AdminProducts = () => {
 										decoding="async"
 									/>
 									<div className="flex-1 min-w-0">
-										<h3 className="font-semibold text-brand-text dark:text-white line-clamp-1">
+										<h3 className="font-semibold text-brand-text line-clamp-1">
 											{product.name}
 										</h3>
-										<p className="text-sm text-gray-500 dark:text-gray-400">
+										<p className="text-sm text-gray-500
 											{product.category?.name || "N/A"}
 										</p>
 										<div className="flex items-center gap-2 mt-1">
-											<span className="font-bold text-brand-primary dark:text-brand-primary">
+											<span className="font-bold text-brand-primary
 												{new Intl.NumberFormat("vi-VN").format(product.price)}đ
 											</span>
 											{product.originalPrice &&
 												product.originalPrice > product.price && (
-													<span className="text-xs text-gray-400 line-through dark:text-gray-500">
+													<span className="text-xs text-gray-400 line-through
 														{new Intl.NumberFormat("vi-VN").format(
 															product.originalPrice,
 														)}
@@ -475,7 +475,7 @@ const AdminProducts = () => {
 											variant="outline"
 											size="sm"
 											onClick={() => handleEdit(product)}
-											className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+											className=""
 										>
 											<Pencil className="w-4 h-4" />
 										</Button>
@@ -502,11 +502,11 @@ const AdminProducts = () => {
 						onClick={() => setPage((p) => Math.max(1, p - 1))}
 						disabled={page <= 1}
 						size="sm"
-						className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+						className=""
 					>
 						Trước
 					</Button>
-					<span className="flex items-center px-4 text-sm text-gray-700 dark:text-gray-300">
+					<span className="flex items-center px-4 text-sm text-gray-700
 						Trang {page} / {pagination.totalPages}
 					</span>
 					<Button
@@ -516,7 +516,7 @@ const AdminProducts = () => {
 						}
 						disabled={page >= pagination.totalPages}
 						size="sm"
-						className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+						className=""
 					>
 						Sau
 					</Button>
@@ -528,18 +528,18 @@ const AdminProducts = () => {
 				open={!!deleteTarget}
 				onOpenChange={() => setDeleteTarget(null)}
 			>
-				<AlertDialogContent className="dark:bg-gray-800 dark:border-gray-700">
+				<AlertDialogContent className="">
 					<AlertDialogHeader>
-						<AlertDialogTitle className="dark:text-white">
+						<AlertDialogTitle className="">
 							Xác nhận xóa sản phẩm
 						</AlertDialogTitle>
-						<AlertDialogDescription className="dark:text-gray-400">
+						<AlertDialogDescription className="">
 							Bạn có chắc chắn muốn xóa sản phẩm "{deleteTarget?.name}"? Hành
 							động này không thể hoàn tác.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel className="dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600">
+						<AlertDialogCancel className="">
 							Hủy
 						</AlertDialogCancel>
 						<AlertDialogAction
@@ -557,18 +557,18 @@ const AdminProducts = () => {
 				open={isBulkDeleteDialogOpen}
 				onOpenChange={setIsBulkDeleteDialogOpen}
 			>
-				<AlertDialogContent className="dark:bg-gray-800 dark:border-gray-700">
+				<AlertDialogContent className="">
 					<AlertDialogHeader>
-						<AlertDialogTitle className="dark:text-white">
+						<AlertDialogTitle className="">
 							Xác nhận xóa hàng loạt
 						</AlertDialogTitle>
-						<AlertDialogDescription className="dark:text-gray-400">
+						<AlertDialogDescription className="">
 							Bạn có chắc chắn muốn xóa {selectedProducts.length} sản phẩm đã
 							chọn? Hành động này không thể hoàn tác.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel className="dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600">
+						<AlertDialogCancel className="">
 							Hủy
 						</AlertDialogCancel>
 						<AlertDialogAction

@@ -113,7 +113,7 @@ const ProductList = () => {
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="p-4 bg-white shadow-sm dark:bg-gray-800 rounded-xl">
+            <div key={i} className="p-4 bg-white shadow-sm rounded-xl">
               <Skeleton className="w-full aspect-square" />
               <Skeleton className="w-3/4 h-4 mt-3" />
               <Skeleton className="w-1/2 h-4 mt-2" />
@@ -128,7 +128,7 @@ const ProductList = () => {
   if (error) {
     return (
       <div className="py-12 text-center">
-        <p className="text-red-500 dark:text-red-400">Lỗi tải dữ liệu: {error}</p>
+        <p className="text-red-500 tải dữ liệu: {error}</p>
         <Button onClick={() => window.location.reload()} className="mt-4">
           Thử lại
         </Button>
@@ -152,11 +152,11 @@ const ProductList = () => {
       
       <div className="space-y-8">
         <div>
-          <h1 className="text-3xl font-bold font-display text-brand-text dark:text-white">{pageTitle}</h1>
-          <p className="mt-1 text-gray-600 dark:text-gray-400">Khám phá bộ sưu tập mỹ phẩm đa dạng của chúng tôi</p>
+          <h1 className="text-3xl font-bold font-display text-brand-text
+          <p className="mt-1 text-gray-600 phá bộ sưu tập mỹ phẩm đa dạng của chúng tôi</p>
         </div>
 
-        <div className="p-6 bg-white shadow-sm dark:bg-gray-800 rounded-xl">
+        <div className="p-6 bg-white shadow-sm rounded-xl">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
             <div className="md:col-span-2">
               <div className="relative">
@@ -165,7 +165,7 @@ const ProductList = () => {
                   placeholder="Tìm kiếm sản phẩm..."
                   value={filters.search}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
-                  className="w-full py-3 pl-12 text-base bg-white border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 rounded-xl focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+                  className="w-full py-3 pl-12 text-base bg-white border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                 />
               </div>
             </div>
@@ -174,7 +174,7 @@ const ProductList = () => {
               value={filters.category}
               onValueChange={(value) => handleFilterChange('category', value)}
             >
-              <SelectTrigger className="py-3 text-base bg-white border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 rounded-xl">
+              <SelectTrigger className="py-3 text-base bg-white border-2 border-gray-200 rounded-xl">
                 <SelectValue placeholder="Danh mục" />
               </SelectTrigger>
               <SelectContent>
@@ -191,7 +191,7 @@ const ProductList = () => {
               value={filters.sort}
               onValueChange={(value) => handleFilterChange('sort', value)}
             >
-              <SelectTrigger className="py-3 text-base bg-white border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 rounded-xl">
+              <SelectTrigger className="py-3 text-base bg-white border-2 border-gray-200 rounded-xl">
                 <SelectValue placeholder="Sắp xếp" />
               </SelectTrigger>
               <SelectContent>
@@ -216,7 +216,7 @@ const ProductList = () => {
                 setDebouncedSearch('');
                 setHasMore(true);
               }}
-              className="py-3 text-base transition border-2 border-brand-primary text-brand-primary rounded-xl hover:bg-brand-primary hover:text-white dark:border-brand-primary dark:text-brand-primary dark:hover:bg-brand-primary dark:hover:text-white"
+              className="py-3 text-base transition border-2 border-brand-primary text-brand-primary rounded-xl hover:bg-brand-primary hover:text-white
             >
               Xóa bộ lọc
             </Button>
@@ -225,7 +225,7 @@ const ProductList = () => {
 
         {products.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-gray-500 dark:text-gray-400">Không tìm thấy sản phẩm nào</p>
+            <p className="text-gray-500 tìm thấy sản phẩm nào</p>
           </div>
         ) : (
           <InfiniteScroll
@@ -238,7 +238,7 @@ const ProductList = () => {
               </div>
             }
             endMessage={
-              <div className="py-8 text-center text-gray-500 dark:text-gray-400">
+              <div className="py-8 text-center text-gray-500
                 Đã tải hết {pagination.total} sản phẩm
               </div>
             }
@@ -246,8 +246,8 @@ const ProductList = () => {
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {products.map((product) => (
                 <Link key={product._id} to={`/san-pham/${product.slug}`}>
-                  <div className="overflow-hidden transition bg-white border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 rounded-xl hover:shadow-md">
-                    <div className="flex items-center justify-center bg-gray-100 dark:bg-gray-700 aspect-square">
+                  <div className="overflow-hidden transition bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md">
+                    <div className="flex items-center justify-center bg-gray-100 aspect-square">
                       {product.images?.[0] ? (
                         <img
                           src={optimizeProduct(product.images[0])}
@@ -263,14 +263,14 @@ const ProductList = () => {
                       )}
                     </div>
                     <div className="p-4">
-                      <h3 className="font-semibold text-brand-text dark:text-white line-clamp-1">{product.name}</h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{product.brand || ''}</p>
+                      <h3 className="font-semibold text-brand-text line-clamp-1">{product.name}</h3>
+                      <p className="text-sm text-gray-500 || ''}</p>
                       <div className="flex items-center gap-2 mt-2">
                         <span className="text-lg font-bold text-brand-primary">
                           {new Intl.NumberFormat('vi-VN').format(product.price)}đ
                         </span>
                         {product.originalPrice && product.originalPrice > product.price && (
-                          <span className="text-sm text-gray-400 line-through dark:text-gray-500">
+                          <span className="text-sm text-gray-400 line-through
                             {new Intl.NumberFormat('vi-VN').format(product.originalPrice)}đ
                           </span>
                         )}

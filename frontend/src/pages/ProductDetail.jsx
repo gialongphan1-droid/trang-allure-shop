@@ -126,7 +126,7 @@ const ProductDetail = () => {
 	if (!product) {
 		return (
 			<div className="container px-4 py-16 mx-auto text-center">
-				<h2 className="text-2xl font-bold text-gray-600 dark:text-gray-400">
+				<h2 className="text-2xl font-bold text-gray-600
 					Không tìm thấy sản phẩm
 				</h2>
 				<Link
@@ -193,7 +193,7 @@ const ProductDetail = () => {
 
 			<div className="container px-4 py-8 mx-auto">
 				{/* Breadcrumb */}
-				<nav className="flex mb-6 text-sm text-gray-500 dark:text-gray-400">
+				<nav className="flex mb-6 text-sm text-gray-500
 					<Link to="/" className="hover:text-brand-primary">
 						Trang chủ
 					</Link>
@@ -213,7 +213,7 @@ const ProductDetail = () => {
 						</>
 					)}
 					<span className="mx-2">/</span>
-					<span className="text-gray-700 dark:text-gray-300">
+					<span className="text-gray-700
 						{product.name}
 					</span>
 				</nav>
@@ -221,7 +221,7 @@ const ProductDetail = () => {
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 					{/* Image Gallery */}
 					<div className="space-y-4">
-						<div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-square dark:bg-gray-800">
+						<div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-square
 							{product.images?.length > 0 ? (
 								<img
 									src={optimizeDetail(product.images[selectedImage])}
@@ -242,15 +242,15 @@ const ProductDetail = () => {
 								<>
 									<button
 										onClick={prevImage}
-										className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition dark:bg-gray-800/80 dark:hover:bg-gray-700"
+										className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition
 									>
-										<ChevronLeft className="w-5 h-5 dark:text-white" />
+										<ChevronLeft className="w-5 h-5 />
 									</button>
 									<button
 										onClick={nextImage}
-										className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition dark:bg-gray-800/80 dark:hover:bg-gray-700"
+										className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition
 									>
-										<ChevronRight className="w-5 h-5 dark:text-white" />
+										<ChevronRight className="w-5 h-5 />
 									</button>
 								</>
 							)}
@@ -266,7 +266,7 @@ const ProductDetail = () => {
 										className={`overflow-hidden rounded-lg border-2 transition ${
 											selectedImage === index
 												? "border-brand-primary"
-												: "border-transparent hover:border-gray-300 dark:hover:border-gray-600"
+												: "border-transparent hover:border-gray-300
 										}`}
 									>
 										<img
@@ -292,7 +292,7 @@ const ProductDetail = () => {
 									{product.brand}
 								</span>
 							)}
-							<h1 className="text-2xl font-bold md:text-3xl text-brand-text dark:text-white">
+							<h1 className="text-2xl font-bold md:text-3xl text-brand-text
 								{product.name}
 							</h1>
 						</div>
@@ -305,7 +305,7 @@ const ProductDetail = () => {
 								{product.originalPrice &&
 									product.originalPrice > product.price && (
 										<>
-											<span className="ml-3 text-lg text-gray-400 line-through dark:text-gray-500">
+											<span className="ml-3 text-lg text-gray-400 line-through
 												{formatPrice(product.originalPrice)}
 											</span>
 											<span className="ml-2 px-2 py-1 text-sm font-bold text-white bg-red-500 rounded-full">
@@ -317,11 +317,11 @@ const ProductDetail = () => {
 						</div>
 
 						{/* Mô tả với scroll */}
-						<div className="prose prose-sm dark:prose-invert max-h-48 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
-							<h3 className="text-sm font-semibold text-gray-600 dark:text-gray-300">
+						<div className="prose prose-sm max-h-48 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300
+							<h3 className="text-sm font-semibold text-gray-600
 								Mô tả sản phẩm
 							</h3>
-							<p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+							<p className="whitespace-pre-wrap text-gray-700
 								{product.description || "Chưa có mô tả cho sản phẩm này."}
 							</p>
 						</div>
@@ -359,14 +359,14 @@ const ProductDetail = () => {
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
-							<p className="mt-2 text-xs text-center text-gray-400 dark:text-gray-500">
+							<p className="mt-2 text-xs text-center text-gray-400
 								Nhấn để chọn kênh liên hệ đặt hàng
 							</p>
 						</div>
 
 						{product.category && (
-							<div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-								<span className="text-sm text-gray-500 dark:text-gray-400">
+							<div className="pt-4 border-t border-gray-200
+								<span className="text-sm text-gray-500
 									Danh mục:{" "}
 									<Link
 										to={`/danh-muc/${product.category.slug}`}
@@ -383,7 +383,7 @@ const ProductDetail = () => {
 				{/* Related Products */}
 				{relatedProducts.length > 0 && (
 					<section className="mt-16">
-						<h2 className="mb-6 text-2xl font-bold text-center text-brand-text dark:text-white">
+						<h2 className="mb-6 text-2xl font-bold text-center text-brand-text
 							Sản phẩm liên quan
 						</h2>
 						<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
@@ -391,9 +391,9 @@ const ProductDetail = () => {
 								<Link
 									key={related._id}
 									to={`/san-pham/${related.slug}`}
-									className="overflow-hidden transition bg-white border border-gray-200 rounded-xl hover:shadow-md dark:bg-gray-800 dark:border-gray-700"
+									className="overflow-hidden transition bg-white border border-gray-200 rounded-xl hover:shadow-md
 								>
-									<div className="aspect-square p-4 bg-gray-50 dark:bg-gray-700/50">
+									<div className="aspect-square p-4 bg-gray-50
 										{related.images?.[0] ? (
 											<img
 												src={optimizeProduct(related.images[0])}
@@ -411,7 +411,7 @@ const ProductDetail = () => {
 										)}
 									</div>
 									<div className="p-3 text-center">
-										<h3 className="text-sm font-medium line-clamp-1 text-brand-text dark:text-white">
+										<h3 className="text-sm font-medium line-clamp-1 text-brand-text
 											{related.name}
 										</h3>
 										<p className="text-sm font-bold text-brand-primary">

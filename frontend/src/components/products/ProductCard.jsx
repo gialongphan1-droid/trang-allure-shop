@@ -6,10 +6,10 @@ const ProductCard = memo(({ product }) => {
 	return (
 		<Link to={`/san-pham/${product.slug}`}>
 			<div
-				className="overflow-hidden transition bg-white border border-gray-200 rounded-xl hover:shadow-md hover:border-brand-primary/30 dark:bg-gray-800 dark:border-gray-700"
+				className="overflow-hidden transition bg-white border border-gray-200 rounded-xl hover:shadow-md hover:border-brand-primary/30
 				style={{ minHeight: "200px" }}
 			>
-				<div className="flex items-center justify-center bg-gray-50 dark:bg-gray-700/50 aspect-square">
+				<div className="flex items-center justify-center bg-gray-50 aspect-square">
 					{product.images?.[0] ? (
 						<img
 							src={optimizeProduct(product.images[0])}
@@ -25,10 +25,10 @@ const ProductCard = memo(({ product }) => {
 					)}
 				</div>
 				<div className="p-2 text-center sm:p-3">
-					<h3 className="text-xs font-medium text-brand-text dark:text-white line-clamp-1 sm:text-sm md:text-base">
+					<h3 className="text-xs font-medium text-brand-text line-clamp-1 sm:text-sm md:text-base">
 						{product.name}
 					</h3>
-					<p className="text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
+					<p className="text-xs text-gray-500 sm:text-sm">
 						{product.brand || ""}
 					</p>
 					<div className="flex items-center justify-center gap-1 mt-1 sm:gap-2">
@@ -36,7 +36,7 @@ const ProductCard = memo(({ product }) => {
 							{new Intl.NumberFormat("vi-VN").format(product.price)}đ
 						</span>
 						{product.originalPrice && product.originalPrice > product.price && (
-							<span className="text-xs text-gray-400 line-through dark:text-gray-500 sm:text-sm">
+							<span className="text-xs text-gray-400 line-through sm:text-sm">
 								{new Intl.NumberFormat("vi-VN").format(product.originalPrice)}đ
 							</span>
 						)}
