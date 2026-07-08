@@ -31,24 +31,6 @@ const HomePage = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const timerRef = useRef(null);
 
-  useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
-
-    const fetchData = async () => {
-      console.log("🔄 Fetching data sequentially...");
-      try {
-        await dispatch(fetchProducts({ limit: 8, sort: "-createdAt" }));
-        await dispatch(fetchCategories());
-        await fetchBanners();
-      } catch (error) {
-        console.error("❌ Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
   const fetchBanners = async () => {
     try {
       console.log("🔄 Fetching banners...");
@@ -75,6 +57,25 @@ const HomePage = () => {
       setBannerLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+
+    const fetchData = async () => {
+      console.log("🔄 Fetching data sequentially...");
+      try {
+        await dispatch(fetchProducts({ limit: 8, sort: "-createdAt" }));
+        await dispatch(fetchCategories());
+        await fetchBanners();
+      } catch (error) {
+        console.error("❌ Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   const handleNextBanner = useCallback(() => {
     if (isTransitioning || banners.length <= 1) return;

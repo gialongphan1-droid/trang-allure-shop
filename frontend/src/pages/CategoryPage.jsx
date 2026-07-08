@@ -67,18 +67,18 @@ const CategoryPage = () => {
     );
   }
 
- if (error) {
-  return (
-    <div className="py-12 text-center">
-      <p className="text-red-500">
-        Lỗi tải dữ liệu: {error}
-      </p>
-      <Button onClick={() => window.location.reload()} className="mt-4">
-        Thử lại
-      </Button>
-    </div>
-  );
-}
+  if (error) {
+    return (
+      <div className="py-12 text-center">
+        <p className="text-red-500">
+          Lỗi tải dữ liệu: {error}
+        </p>
+        <Button onClick={() => window.location.reload()} className="mt-4">
+          Thử lại
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -98,7 +98,7 @@ const CategoryPage = () => {
       <div className="space-y-8">
         {/* Category Header - Có mô tả */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold font-display text-brand-text
+          <h1 className="text-3xl font-bold font-display text-brand-text">
             {categoryName || 'Danh mục sản phẩm'}
           </h1>
           {meta.description && (
@@ -106,14 +106,14 @@ const CategoryPage = () => {
               {meta.description}
             </p>
           )}
-          <p className="mt-2 text-sm text-gray-500
+          <p className="mt-2 text-sm text-gray-500">
             {products.length} sản phẩm
           </p>
         </div>
 
         {products.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-gray-500 có sản phẩm nào trong danh mục này</p>
+            <p className="text-gray-500">Không có sản phẩm nào trong danh mục này</p>
             <Link to="/san-pham">
               <Button className="mt-4">Xem tất cả sản phẩm</Button>
             </Link>
@@ -122,7 +122,7 @@ const CategoryPage = () => {
           <div className="grid grid-cols-2 gap-4 sm:gap-6 sm:grid-cols-3 md:grid-cols-4">
             {products.map((product) => (
               <Link key={product._id} to={`/san-pham/${product.slug}`}>
-                <div className="overflow-hidden transition bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md
+                <div className="overflow-hidden transition bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md">
                   <div className="flex items-center justify-center bg-gray-100 aspect-square">
                     {product.images?.[0] ? (
                       <img
