@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -10,114 +10,94 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Search } from 'lucide-react';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import SEO from '@/components/common/SEO';
-import Skeleton from '@/components/common/Skeleton';
 import { fetchProducts } from '../store/slices/productSlice';
 import { fetchCategories } from '../store/slices/categorySlice';
 import { optimizeProduct } from '@/utils/imageUtils';
+import { ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
 
 const ProductList = () => {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { items: products, loading, error, pagination } = useSelector((state) => state.products);
+  const { items: products, loading, error, totalPages, currentPage } = useSelector(
+    (state) => state.products
+  );
   const { items: categories } = useSelector((state) => state.categories);
 
   const [filters, setFilters] = useState({
     search: searchParams.get('search') || '',
     category: searchParams.get('category') || '',
-    minPrice: searchParams.get('minPrice') || '',
-    maxPrice: searchParams.get('maxPrice') || '',
     sort: searchParams.get('sort') || '-createdAt',
     page: parseInt(searchParams.get('page')) || 1,
+    limit: 12,
   });
 
-  const [debouncedSearch, setDebouncedSearch] = useState(filters.search);
-  const timerRef = useRef(null);
-  const [hasMore, setHasMore] = useState(true);
-
-  useEffect(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(() => {
-      setDebouncedSearch(filters.search);
-    }, 500);
-
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, [filters.search]);
+  const [searchInput, setSearchInput] = useState(filters.search);
 
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
   useEffect(() => {
-    const params = {
-      ...filters,
-      limit: 12,
-    };
-    if (debouncedSearch && debouncedSearch.trim() !== '') {
-      params.search = debouncedSearch.trim();
-    } else {
-      delete params.search;
-    }
-    if (params.category) {
-      params.category = params.category;
-    }
-    dispatch(fetchProducts(params));
-    
-    const urlParams = {};
-    Object.keys(filters).forEach(key => {
-      const val = filters[key];
-      if (val && key !== 'page' && key !== 'search') {
-        urlParams[key] = val;
-      }
-      if (key === 'search' && val && val.trim() !== '') {
-        urlParams[key] = val;
-      }
-    });
-    if (filters.page > 1) urlParams.page = filters.page;
-    setSearchParams(urlParams);
-  }, [dispatch, filters.category, filters.sort, filters.page, debouncedSearch]);
+    const params = {};
+    if (filters.search) params.search = filters.search;
+    if (filters.category) params.category = filters.category;
+    if (filters.sort) params.sort = filters.sort;
+    if (filters.page > 1) params.page = filters.page;
+    setSearchParams(params);
+  }, [filters, setSearchParams]);
 
-  // Kiểm tra còn dữ liệu để tải thêm không
   useEffect(() => {
-    if (pagination.totalPages > 0) {
-      setHasMore(filters.page < pagination.totalPages);
-    }
-  }, [pagination.totalPages, filters.page]);
+    dispatch(
+      fetchProducts({
+        search: filters.search || undefined,
+        category: filters.category || undefined,
+        sort: filters.sort,
+        page: filters.page,
+        limit: filters.limit,
+      })
+    );
+  }, [dispatch, filters]);
 
-  const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value, page: 1 }));
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setFilters((prev) => ({ ...prev, search: searchInput, page: 1 }));
   };
 
-  const loadMore = () => {
-    if (filters.page < pagination.totalPages) {
-      setFilters(prev => ({ ...prev, page: prev.page + 1 }));
-    } else {
-      setHasMore(false);
+  const clearSearch = () => {
+    setSearchInput('');
+    setFilters((prev) => ({ ...prev, search: '', page: 1 }));
+  };
+
+  const handleCategoryChange = (value) => {
+    setFilters((prev) => ({ ...prev, category: value === 'all' ? '' : value, page: 1 }));
+  };
+
+  const handleSortChange = (value) => {
+    setFilters((prev) => ({ ...prev, sort: value, page: 1 }));
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setFilters((prev) => ({ ...prev, page: newPage }));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  };
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
   };
 
   if (loading && products.length === 0) {
     return (
-      <div className="space-y-8">
-        <div className="space-y-4">
-          <Skeleton className="w-64 h-10" />
-          <Skeleton className="h-6 w-96" />
-        </div>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="container px-4 py-8 mx-auto">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
           {[...Array(8)].map((_, i) => (
             <div key={i} className="p-4 bg-white shadow-sm rounded-xl">
-              <Skeleton className="w-full aspect-square" />
-              <Skeleton className="w-3/4 h-4 mt-3" />
-              <Skeleton className="w-1/2 h-4 mt-2" />
-              <Skeleton className="w-2/3 h-5 mt-2" />
+              <div className="w-full bg-gray-200 rounded-lg aspect-square animate-pulse"></div>
+              <div className="w-3/4 h-4 mt-3 bg-gray-200 rounded animate-pulse"></div>
+              <div className="w-1/2 h-4 mt-2 bg-gray-200 rounded animate-pulse"></div>
+              <div className="w-2/3 h-5 mt-2 bg-gray-200 rounded animate-pulse"></div>
             </div>
           ))}
         </div>
@@ -128,7 +108,7 @@ const ProductList = () => {
   if (error) {
     return (
       <div className="py-12 text-center">
-        <p className="text-red-500 tải dữ liệu: {error}</p>
+        <p className="text-red-500">Lỗi tải dữ liệu: {error}</p>
         <Button onClick={() => window.location.reload()} className="mt-4">
           Thử lại
         </Button>
@@ -136,49 +116,80 @@ const ProductList = () => {
     );
   }
 
-  const pageTitle = filters.search ? `Kết quả tìm kiếm "${filters.search}"` : 'Tất cả sản phẩm';
-  const pageDescription = filters.search 
-    ? `Tìm thấy ${pagination.total} sản phẩm cho từ khóa "${filters.search}" tại TrangAllure Shop. Mỹ phẩm chính hãng, giá tốt.`
-    : 'Khám phá bộ sưu tập mỹ phẩm đa dạng tại TrangAllure Shop. Son môi, kem nền, phấn mắt, mascara, skincare chính hãng.';
+  const pageTitle = filters.search
+    ? `Kết quả tìm kiếm "${filters.search}" - TrangAllure Shop`
+    : filters.category
+    ? `Sản phẩm ${categories.find(c => c.slug === filters.category)?.name || ''} - TrangAllure Shop`
+    : 'Tất cả sản phẩm - TrangAllure Shop';
+
+  const pageDescription = filters.search
+    ? `Tìm thấy ${products.length} sản phẩm cho từ khóa "${filters.search}"`
+    : 'Khám phá bộ sưu tập sản phẩm chất lượng cao tại TrangAllure Shop';
 
   return (
     <>
-      <SEO 
+      <SEO
+        pageType="product-list"
         title={pageTitle}
         description={pageDescription}
         url={`https://trangallure.shop/san-pham${window.location.search}`}
-        keywords="mỹ phẩm, son môi, kem nền, skincare, trang điểm"
+        keywords="sản phẩm, mỹ phẩm, trang điểm, làm đẹp, TrangAllure"
       />
-      
-      <div className="space-y-8">
-        <div>
-          <h1 className="text-3xl font-bold font-display text-brand-text
-          <p className="mt-1 text-gray-600 phá bộ sưu tập mỹ phẩm đa dạng của chúng tôi</p>
-        </div>
 
-        <div className="p-6 bg-white shadow-sm rounded-xl">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
-            <div className="md:col-span-2">
-              <div className="relative">
-                <Search className="absolute w-5 h-5 text-gray-400 -translate-y-1/2 left-4 top-1/2" />
-                <Input
-                  placeholder="Tìm kiếm sản phẩm..."
-                  value={filters.search}
-                  onChange={(e) => handleFilterChange('search', e.target.value)}
-                  className="w-full py-3 pl-12 text-base bg-white border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-                />
-              </div>
+      <div className="container px-4 py-8 mx-auto">
+        {/* Breadcrumb */}
+        <nav className="flex mb-6 text-sm text-gray-500">
+          <Link to="/" className="hover:text-brand-primary">
+            Trang chủ
+          </Link>
+          <span className="mx-2">/</span>
+          <span className="text-gray-700">Sản phẩm</span>
+        </nav>
+
+        <h1 className="mb-6 text-2xl font-bold md:text-3xl text-brand-text">
+          {filters.search
+            ? `Kết quả tìm kiếm: "${filters.search}"`
+            : filters.category
+            ? categories.find(c => c.slug === filters.category)?.name || 'Sản phẩm'
+            : 'Tất cả sản phẩm'}
+        </h1>
+
+        {/* Filters */}
+        <div className="flex flex-col gap-4 mb-8 sm:flex-row sm:items-center sm:justify-between">
+          {/* Search */}
+          <form onSubmit={handleSearch} className="flex-1 max-w-md">
+            <div className="relative">
+              <Search className="absolute w-4 h-4 text-gray-400 -translate-y-1/2 left-3 top-1/2" />
+              <Input
+                type="text"
+                placeholder="Tìm kiếm sản phẩm..."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                className="pl-10 pr-10"
+              />
+              {searchInput && (
+                <button
+                  type="button"
+                  onClick={clearSearch}
+                  className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-gray-600"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
             </div>
+          </form>
 
+          {/* Filters */}
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <Select
-              value={filters.category}
-              onValueChange={(value) => handleFilterChange('category', value)}
+              value={filters.category || 'all'}
+              onValueChange={handleCategoryChange}
             >
-              <SelectTrigger className="py-3 text-base bg-white border-2 border-gray-200 rounded-xl">
+              <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Danh mục" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tất cả</SelectItem>
+                <SelectItem value="all">Tất cả danh mục</SelectItem>
                 {categories.map((cat) => (
                   <SelectItem key={cat._id} value={cat.slug}>
                     {cat.icon} {cat.name}
@@ -187,66 +198,39 @@ const ProductList = () => {
               </SelectContent>
             </Select>
 
-            <Select
-              value={filters.sort}
-              onValueChange={(value) => handleFilterChange('sort', value)}
-            >
-              <SelectTrigger className="py-3 text-base bg-white border-2 border-gray-200 rounded-xl">
+            <Select value={filters.sort} onValueChange={handleSortChange}>
+              <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Sắp xếp" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="-createdAt">Mới nhất</SelectItem>
-                <SelectItem value="price">Giá thấp đến cao</SelectItem>
                 <SelectItem value="-price">Giá cao đến thấp</SelectItem>
-                <SelectItem value="name">Tên A-Z</SelectItem>
+                <SelectItem value="price">Giá thấp đến cao</SelectItem>
+                <SelectItem value="-sold">Bán chạy nhất</SelectItem>
               </SelectContent>
             </Select>
-
-            <Button
-              variant="outline"
-              onClick={() => {
-                setFilters({
-                  search: '',
-                  category: '',
-                  minPrice: '',
-                  maxPrice: '',
-                  sort: '-createdAt',
-                  page: 1,
-                });
-                setDebouncedSearch('');
-                setHasMore(true);
-              }}
-              className="py-3 text-base transition border-2 border-brand-primary text-brand-primary rounded-xl hover:bg-brand-primary hover:text-white
-            >
-              Xóa bộ lọc
-            </Button>
           </div>
         </div>
 
+        {/* Results count */}
+        <p className="mb-4 text-sm text-gray-500">
+          Hiển thị {products.length} sản phẩm
+        </p>
+
+        {/* Products Grid */}
         {products.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-gray-500 tìm thấy sản phẩm nào</p>
+            <p className="text-gray-500">Không tìm thấy sản phẩm nào</p>
+            <Button onClick={clearSearch} className="mt-4">
+              Xóa bộ lọc
+            </Button>
           </div>
         ) : (
-          <InfiniteScroll
-            dataLength={products.length}
-            next={loadMore}
-            hasMore={hasMore}
-            loader={
-              <div className="flex justify-center py-8">
-                <div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
-              </div>
-            }
-            endMessage={
-              <div className="py-8 text-center text-gray-500
-                Đã tải hết {pagination.total} sản phẩm
-              </div>
-            }
-          >
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
               {products.map((product) => (
                 <Link key={product._id} to={`/san-pham/${product.slug}`}>
-                  <div className="overflow-hidden transition bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md">
+                  <div className="overflow-hidden transition bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md hover:border-brand-primary/30">
                     <div className="flex items-center justify-center bg-gray-100 aspect-square">
                       {product.images?.[0] ? (
                         <img
@@ -262,16 +246,20 @@ const ProductList = () => {
                         <span className="text-6xl">💄</span>
                       )}
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-brand-text line-clamp-1">{product.name}</h3>
-                      <p className="text-sm text-gray-500 || ''}</p>
+                    <div className="p-3 sm:p-4">
+                      <h3 className="text-sm font-semibold text-brand-text line-clamp-1 sm:text-base">
+                        {product.name}
+                      </h3>
+                      <p className="text-xs text-gray-500 sm:text-sm">
+                        {product.brand || ''}
+                      </p>
                       <div className="flex items-center gap-2 mt-2">
-                        <span className="text-lg font-bold text-brand-primary">
-                          {new Intl.NumberFormat('vi-VN').format(product.price)}đ
+                        <span className="text-sm font-bold sm:text-lg text-brand-primary">
+                          {formatPrice(product.price)}
                         </span>
                         {product.originalPrice && product.originalPrice > product.price && (
-                          <span className="text-sm text-gray-400 line-through
-                            {new Intl.NumberFormat('vi-VN').format(product.originalPrice)}đ
+                          <span className="text-xs text-gray-400 line-through sm:text-sm">
+                            {formatPrice(product.originalPrice)}
                           </span>
                         )}
                       </div>
@@ -280,7 +268,64 @@ const ProductList = () => {
                 </Link>
               ))}
             </div>
-          </InfiniteScroll>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-8">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage <= 1}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+
+                <div className="flex items-center gap-1">
+                  {[...Array(totalPages)].map((_, i) => {
+                    const page = i + 1;
+                    if (
+                      page === 1 ||
+                      page === totalPages ||
+                      Math.abs(page - currentPage) <= 1
+                    ) {
+                      return (
+                        <Button
+                          key={page}
+                          variant={page === currentPage ? 'default' : 'outline'}
+                          size="sm"
+                          onClick={() => handlePageChange(page)}
+                          className="min-w-[36px]"
+                        >
+                          {page}
+                        </Button>
+                      );
+                    }
+                    if (
+                      (page === 2 && currentPage > 3) ||
+                      (page === totalPages - 1 && currentPage < totalPages - 2)
+                    ) {
+                      return (
+                        <span key={page} className="px-2 text-gray-400">
+                          ...
+                        </span>
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage >= totalPages}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </>

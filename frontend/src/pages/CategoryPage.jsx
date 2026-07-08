@@ -34,13 +34,13 @@ const CategoryPage = () => {
   const dispatch = useDispatch();
   const { items: products, loading, error } = useSelector((state) => state.products);
   const { items: categories } = useSelector((state) => state.categories);
-  const [categoryName, setCategoryName] = useState('');
+  // const [categoryName, setCategoryName] = useState('');
 
   useEffect(() => {
-    const cat = categories.find(c => c.slug === slug);
-    if (cat) {
-      setCategoryName(cat.name);
-    }
+    // const cat = categories.find(c => c.slug === slug);
+    // if (cat) {
+    //   setCategoryName(cat.name);
+    // }
     dispatch(fetchProducts({ category: slug, limit: 20 }));
   }, [dispatch, slug, categories]);
 
