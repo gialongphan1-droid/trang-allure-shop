@@ -69,25 +69,29 @@ const AdminLogin = () => {
     <div className="flex items-center justify-center min-h-screen px-4 transition-colors bg-background text-foreground">
       <button
         onClick={toggleTheme}
-        className="absolute p-2 transition rounded-full top-4 right-4 hover:bg-gray-100
+        className="absolute p-2 transition rounded-full top-4 right-4 hover:bg-gray-100"
         aria-label="Toggle theme"
       >
         {isDark ? (
           <Sun className="w-5 h-5 text-yellow-400" />
         ) : (
-          <Moon className="w-5 h-5 text-gray-600 />
+          <Moon className="w-5 h-5 text-gray-600" />
         )}
       </button>
 
       <div className="w-full max-w-md p-8 transition-colors bg-white shadow-xl rounded-2xl">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold font-display text-brand-text� TrangAllure</h1>
-          <p className="mt-2 text-gray-500 nhập vào trang quản trị</p>
+          <h1 className="text-3xl font-bold font-display text-brand-text">
+            TrangAllure
+          </h1>
+          <p className="mt-2 text-gray-500">
+            Đăng nhập vào trang quản trị
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="email" className="">Email</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
@@ -100,7 +104,7 @@ const AdminLogin = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="khẩu</Label>
+            <Label htmlFor="password">Mật khẩu</Label>
             <Input
               id="password"
               type="password"
@@ -113,7 +117,7 @@ const AdminLogin = () => {
           </div>
 
           {error && (
-            <div className="px-4 py-2 text-sm text-red-600 border border-red-200 rounded-lg bg-red-50
+            <div className="px-4 py-2 text-sm text-red-600 border border-red-200 rounded-lg bg-red-50">
               {error}
             </div>
           )}
@@ -127,7 +131,7 @@ const AdminLogin = () => {
           </Button>
         </form>
 
-        <div className="mt-6 text-sm text-center text-gray-500
+        <div className="mt-6 text-sm text-center text-gray-500">
           <p>Liên hệ quản trị viên nếu quên mật khẩu</p>
         </div>
       </div>
