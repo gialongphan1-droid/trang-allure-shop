@@ -365,7 +365,7 @@ const HomePage = () => {
 				</section>
 
 				{/* SLOGAN 3 - Banner quảng bá */}
-				<section className="relative p-6 my-4 bg-gradient-to-r from-brand-primary/10 to-brand-secondary/20 rounded-2xl md:p-10">
+				<section className="relative p-6 my-4 promo-banner-section bg-gradient-to-r from-brand-primary/10 to-brand-secondary/20 rounded-2xl md:p-10">
 					<div className="flex flex-col items-center text-center">
 						<h3 className="text-xl font-bold md:text-3xl text-brand-text">
 							TRANG ALLURE
