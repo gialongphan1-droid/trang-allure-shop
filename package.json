@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "build": "cd frontend && npm run build"
+  },
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
   }
 }
