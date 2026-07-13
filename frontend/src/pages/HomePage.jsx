@@ -10,6 +10,13 @@ import { bannerApi } from "../api/productApi";
 import { fetchCategories } from "../store/slices/categorySlice";
 import { fetchProducts } from "../store/slices/productSlice";
 
+// ✅ Helper function tối ưu ảnh LCP với Cloudinary
+const getLcpImageUrl = (url) => {
+  if (!url) return '';
+  // Thêm f_auto và q_auto để tối ưu định dạng và chất lượng
+  return url.replace('/upload/', '/upload/f_auto,q_auto/');
+};
+
 const HomePage = () => {
 	const dispatch = useDispatch();
 	const { toast } = useToast();
@@ -217,12 +224,16 @@ const HomePage = () => {
 											className="block"
 										>
 											<div className="relative w-full h-full">
+												{/* ✅ Ảnh LCP được tối ưu với f_auto, q_auto và có width/height */}
 												<img
-													src={optimizeBanner(banner.image)}
+													src={index === 0 ? getLcpImageUrl(banner.image) : optimizeBanner(banner.image)}
 													alt={banner.title || "Banner"}
 													loading={index === 0 ? "eager" : "lazy"}
-													fetchPriority={index === 0 ? "high" : "auto"} // ✅ đúng
+													fetchPriority={index === 0 ? "high" : "auto"}
+													width={index === 0 ? "1200" : "800"}
+													height={index === 0 ? "400" : "400"}
 													className="object-cover w-full h-full"
+													decoding="async"
 												/>
 												{banner.title && (
 													<div className="absolute inset-0 flex items-center justify-center bg-black/30">
