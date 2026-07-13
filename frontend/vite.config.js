@@ -10,6 +10,7 @@ export default defineConfig({
     },
   },
   server: {
+    host: '0.0.0.0', // ✅ Thêm dòng này để truy cập từ mọi địa chỉ IP
     port: 5173,
     proxy: {
       '/api': {
