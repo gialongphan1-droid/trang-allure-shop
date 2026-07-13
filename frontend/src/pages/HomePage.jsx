@@ -2,20 +2,17 @@ import SEO from "@/components/common/SEO";
 import Skeleton from "@/components/common/Skeleton";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { optimizeBanner, optimizeProduct } from "@/utils/imageUtils";
+import {
+	getLcpImageUrl,
+	optimizeBanner,
+	optimizeProduct,
+} from "@/utils/imageUtils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { bannerApi } from "../api/productApi";
 import { fetchCategories } from "../store/slices/categorySlice";
 import { fetchProducts } from "../store/slices/productSlice";
-
-// ✅ Helper function tối ưu ảnh LCP với Cloudinary
-const getLcpImageUrl = (url) => {
-  if (!url) return '';
-  // Thêm f_auto và q_auto để tối ưu định dạng và chất lượng
-  return url.replace('/upload/', '/upload/f_auto,q_auto/');
-};
 
 const HomePage = () => {
 	const dispatch = useDispatch();
@@ -226,7 +223,11 @@ const HomePage = () => {
 											<div className="relative w-full h-full">
 												{/* ✅ Ảnh LCP được tối ưu với f_auto, q_auto và có width/height */}
 												<img
-													src={index === 0 ? getLcpImageUrl(banner.image) : optimizeBanner(banner.image)}
+													src={
+														index === 0
+															? getLcpImageUrl(banner.image)
+															: optimizeBanner(banner.image)
+													}
 													alt={banner.title || "Banner"}
 													loading={index === 0 ? "eager" : "lazy"}
 													fetchPriority={index === 0 ? "high" : "auto"}
@@ -378,11 +379,14 @@ const HomePage = () => {
 				{/* SLOGAN 3 - Banner quảng bá */}
 				<section className="relative p-6 my-4 promo-banner-section bg-gradient-to-r from-brand-primary/10 to-brand-secondary/20 rounded-2xl md:p-10">
 					<div className="flex flex-col items-center text-center">
-						<h3 className="text-xl font-bold md:text-3xl text-brand-text">
-							TRANG ALLURE
+						<span className="px-3 py-1 text-xs font-semibold tracking-wider uppercase bg-brand-primary/20 text-brand-primary rounded-full">
+							Ưu đãi đặc biệt
+						</span>
+						<h3 className="mt-3 text-xl font-bold md:text-3xl text-brand-text">
+							Săn ngay hàng Authentic
 						</h3>
 						<p className="mt-2 text-base font-medium md:text-xl text-brand-text/80">
-							Săn ngay hàng Authentic, sale cực đã từ các thương hiệu nổi tiếng!
+							Sale cực đã từ các thương hiệu nổi tiếng
 						</p>
 						<Link to="/san-pham">
 							<Button className="mt-4 text-white bg-green-700 hover:bg-green-800">

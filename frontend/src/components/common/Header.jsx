@@ -113,7 +113,8 @@ const Header = () => {
   return (
     <>
       <header className="sticky top-0 z-50 w-full transition-colors bg-white border-b">
-        <div className="py-3 container-custom">
+        {/* ✅ Container full width, padding responsive */}
+        <div className="w-full px-4 py-3 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link

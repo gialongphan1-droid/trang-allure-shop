@@ -40,6 +40,11 @@ export const optimizeProduct = (url) => {
   return optimizeImage(url, 400, 400);
 };
 
+export const getLcpImageUrl = (url) => {
+  if (!url) return '';
+  return url.replace('/upload/', '/upload/f_auto,q_auto/w_1200,h_400,c_fill/');
+};
+
 /**
  * Tối ưu ảnh thumbnail (kích thước nhỏ)
  */
