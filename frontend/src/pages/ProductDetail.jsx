@@ -1,6 +1,8 @@
 import SEO from "@/components/common/SEO";
 import Skeleton from "@/components/common/Skeleton";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,7 +48,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [relatedProducts] = useState([]); // Bỏ setter vì chưa dùng
+  const [relatedProducts] = useState([]);
 
   const contact = {
     messenger:
@@ -104,7 +106,7 @@ const ProductDetail = () => {
 
   if (loading) {
     return (
-      <div className="container px-4 py-8 mx-auto">
+      <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <Skeleton className="w-full h-96 rounded-2xl" />
           <div className="space-y-4">
@@ -120,13 +122,13 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <div className="container px-4 py-16 mx-auto text-center">
-        <h2 className="text-2xl font-bold text-gray-600">
+      <div className="container mx-auto px-4 py-16 text-center">
+        <h2 className="text-2xl font-bold text-muted-foreground">
           Không tìm thấy sản phẩm
         </h2>
         <Link
           to="/san-pham"
-          className="mt-4 text-brand-primary hover:underline"
+          className="mt-4 text-brand-primary hover:underline inline-block"
         >
           Quay lại danh sách sản phẩm
         </Link>
@@ -186,14 +188,14 @@ const ProductDetail = () => {
         keywords={`${product.name}, ${product.category?.name}, mỹ phẩm, trang điểm`}
       />
 
-      <div className="container px-4 py-8 mx-auto">
+      <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <nav className="flex mb-6 text-sm text-gray-500">
-          <Link to="/" className="hover:text-brand-primary">
+        <nav className="flex mb-6 text-sm text-muted-foreground">
+          <Link to="/" className="hover:text-brand-primary transition-colors">
             Trang chủ
           </Link>
           <span className="mx-2">/</span>
-          <Link to="/san-pham" className="hover:text-brand-primary">
+          <Link to="/san-pham" className="hover:text-brand-primary transition-colors">
             Sản phẩm
           </Link>
           {product.category && (
@@ -201,14 +203,14 @@ const ProductDetail = () => {
               <span className="mx-2">/</span>
               <Link
                 to={`/danh-muc/${product.category.slug}`}
-                className="hover:text-brand-primary"
+                className="hover:text-brand-primary transition-colors"
               >
                 {product.category.name}
               </Link>
             </>
           )}
           <span className="mx-2">/</span>
-          <span className="text-gray-700">
+          <span className="text-foreground">
             {product.name}
           </span>
         </nav>
@@ -216,7 +218,7 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* Image Gallery */}
           <div className="space-y-4">
-            <div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-square">
+            <div className="relative overflow-hidden bg-gray-50 rounded-2xl aspect-square">
               {product.images?.length > 0 ? (
                 <img
                   src={optimizeDetail(product.images[selectedImage])}
@@ -233,19 +235,29 @@ const ProductDetail = () => {
                 </div>
               )}
 
+              {/* Badge giảm giá */}
+              {discount > 0 && (
+                <Badge 
+                  variant="secondary" 
+                  className="absolute top-4 right-4 text-sm px-3 py-1.5"
+                >
+                  -{discount}%
+                </Badge>
+              )}
+
               {product.images?.length > 1 && (
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute p-2 transition -translate-y-1/2 rounded-full shadow-md left-2 top-1/2 bg-white/80 hover:bg-white"
+                    className="absolute p-2 transition -translate-y-1/2 rounded-full shadow-md left-2 top-1/2 bg-white/80 hover:bg-white hover:scale-110"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-5 h-5 text-foreground" />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute p-2 transition -translate-y-1/2 rounded-full shadow-md right-2 top-1/2 bg-white/80 hover:bg-white"
+                    className="absolute p-2 transition -translate-y-1/2 rounded-full shadow-md right-2 top-1/2 bg-white/80 hover:bg-white hover:scale-110"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-5 h-5 text-foreground" />
                   </button>
                 </>
               )}
@@ -261,7 +273,7 @@ const ProductDetail = () => {
                     className={`overflow-hidden rounded-lg border-2 transition ${
                       selectedImage === index
                         ? "border-brand-primary"
-                        : "border-transparent hover:border-gray-300"
+                        : "border-transparent hover:border-muted-foreground/30"
                     }`}
                   >
                     <img
@@ -283,11 +295,11 @@ const ProductDetail = () => {
           <div className="space-y-6">
             <div>
               {product.brand && (
-                <span className="text-sm text-brand-primary">
+                <span className="text-sm font-medium text-brand-primary">
                   {product.brand}
                 </span>
               )}
-              <h1 className="text-2xl font-bold md:text-3xl text-brand-text">
+              <h1 className="text-2xl font-bold md:text-3xl font-display text-brand-text">
                 {product.name}
               </h1>
             </div>
@@ -300,23 +312,23 @@ const ProductDetail = () => {
                 {product.originalPrice &&
                   product.originalPrice > product.price && (
                     <>
-                      <span className="ml-3 text-lg text-gray-400 line-through">
+                      <span className="ml-3 text-lg text-muted-foreground line-through">
                         {formatPrice(product.originalPrice)}
                       </span>
-                      <span className="px-2 py-1 ml-2 text-sm font-bold text-white bg-red-500 rounded-full">
+                      <Badge variant="destructive" className="ml-2">
                         -{discount}%
-                      </span>
+                      </Badge>
                     </>
                   )}
               </div>
             </div>
 
             {/* Mô tả với scroll */}
-            <div className="pr-2 overflow-y-auto prose-sm prose max-h-48 scrollbar-thin scrollbar-thumb-gray-300">
-              <h3 className="text-sm font-semibold text-gray-600">
+            <div className="pr-2 overflow-y-auto max-h-48 scrollbar-thin scrollbar-thumb-gray-300">
+              <h3 className="text-sm font-semibold text-foreground">
                 Mô tả sản phẩm
               </h3>
-              <p className="text-gray-700 whitespace-pre-wrap">
+              <p className="text-muted-foreground whitespace-pre-wrap text-sm">
                 {product.description || "Chưa có mô tả cho sản phẩm này."}
               </p>
             </div>
@@ -325,7 +337,7 @@ const ProductDetail = () => {
             <div className="pt-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button className="w-full text-white bg-brand-primary hover:bg-brand-accent">
+                  <Button className="w-full">
                     <MessageCircle className="w-4 h-4 mr-2" />
                     Liên hệ đặt hàng
                   </Button>
@@ -333,35 +345,35 @@ const ProductDetail = () => {
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuItem
                     onClick={() => handleContact("messenger")}
-                    className="cursor-pointer"
+                    className="cursor-pointer hover:bg-brand-primary/10"
                   >
                     <MessengerIcon className="w-4 h-4 mr-2" color="#0084FF" />
                     Messenger
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => handleContact("zalo")}
-                    className="cursor-pointer"
+                    className="cursor-pointer hover:bg-brand-primary/10"
                   >
                     <ZaloIcon className="w-4 h-4 mr-2" />
                     Zalo
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => handleContact("facebook")}
-                    className="cursor-pointer"
+                    className="cursor-pointer hover:bg-brand-primary/10"
                   >
                     <FacebookIcon className="w-4 h-4 mr-2 text-blue-700" />
                     Facebook
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <p className="mt-2 text-xs text-center text-gray-400">
+              <p className="mt-2 text-xs text-center text-muted-foreground">
                 Nhấn để chọn kênh liên hệ đặt hàng
               </p>
             </div>
 
             {product.category && (
-              <div className="pt-4 border-t border-gray-200">
-                <span className="text-sm text-gray-500">
+              <div className="pt-4 border-t border-border">
+                <span className="text-sm text-muted-foreground">
                   Danh mục:{" "}
                   <Link
                     to={`/danh-muc/${product.category.slug}`}
@@ -378,7 +390,7 @@ const ProductDetail = () => {
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <section className="mt-16">
-            <h2 className="mb-6 text-2xl font-bold text-center text-brand-text">
+            <h2 className="mb-6 text-2xl font-bold text-center font-display text-brand-text">
               Sản phẩm liên quan
             </h2>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
@@ -386,33 +398,35 @@ const ProductDetail = () => {
                 <Link
                   key={related._id}
                   to={`/san-pham/${related.slug}`}
-                  className="overflow-hidden transition bg-white border border-gray-200 rounded-xl hover:shadow-md"
+                  className="block h-full"
                 >
-                  <div className="p-4 aspect-square bg-gray-50">
-                    {related.images?.[0] ? (
-                      <img
-                        src={optimizeProduct(related.images[0])}
-                        alt={related.name}
-                        loading="lazy"
-                        className="object-cover w-full h-full"
-                        width="400"
-                        height="400"
-                        decoding="async"
-                      />
-                    ) : (
-                      <div className="flex items-center justify-center h-full text-4xl">
-                        💄
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-3 text-center">
-                    <h3 className="text-sm font-medium line-clamp-1 text-brand-text">
-                      {related.name}
-                    </h3>
-                    <p className="text-sm font-bold text-brand-primary">
-                      {formatPrice(related.price)}
-                    </p>
-                  </div>
+                  <Card className="h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group overflow-hidden">
+                    <div className="relative overflow-hidden aspect-square bg-gray-50">
+                      {related.images?.[0] ? (
+                        <img
+                          src={optimizeProduct(related.images[0])}
+                          alt={related.name}
+                          loading="lazy"
+                          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                          width="400"
+                          height="400"
+                          decoding="async"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center w-full h-full text-6xl">
+                          💄
+                        </div>
+                      )}
+                    </div>
+                    <CardContent className="p-3 text-center">
+                      <h3 className="text-sm font-semibold text-brand-text line-clamp-1 hover:text-brand-primary transition-colors">
+                        {related.name}
+                      </h3>
+                      <p className="text-sm font-bold text-brand-primary mt-1">
+                        {formatPrice(related.price)}
+                      </p>
+                    </CardContent>
+                  </Card>
                 </Link>
               ))}
             </div>

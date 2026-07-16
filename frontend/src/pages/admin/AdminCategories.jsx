@@ -142,14 +142,14 @@ const AdminCategories = () => {
 					<h1 className="text-2xl font-bold sm:text-3xl font-display text-brand-text">
 						Quản lý danh mục
 					</h1>
-					<p className="text-sm text-gray-500 sm:text-base">
+					<p className="text-sm text-muted-foreground sm:text-base">
 						Quản lý danh mục sản phẩm của cửa hàng
 					</p>
 				</div>
 				<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 					<DialogTrigger asChild>
 						<Button
-							className="w-full text-white sm:w-auto bg-brand-primary hover:bg-brand-accent"
+							className="w-full text-white sm:w-auto bg-brand-primary hover:bg-brand-accent transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
 							onClick={() => handleOpenDialog()}
 						>
 							<Plus className="w-4 h-4 mr-2" />
@@ -158,13 +158,15 @@ const AdminCategories = () => {
 					</DialogTrigger>
 					<DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
 						<DialogHeader>
-							<DialogTitle>
+							<DialogTitle className="font-display text-brand-text">
 								{editingCategory ? "Sửa danh mục" : "Thêm danh mục mới"}
 							</DialogTitle>
 						</DialogHeader>
 						<form onSubmit={handleSubmit} className="space-y-4">
 							<div className="space-y-2">
-								<Label htmlFor="name">Tên danh mục *</Label>
+								<Label htmlFor="name" className="text-brand-text">
+									Tên danh mục <span className="text-destructive">*</span>
+								</Label>
 								<Input
 									id="name"
 									value={formData.name}
@@ -172,10 +174,13 @@ const AdminCategories = () => {
 										setFormData({ ...formData, name: e.target.value })
 									}
 									required
+									className="transition-all duration-200 focus:ring-2 focus:ring-brand-primary"
 								/>
 							</div>
 							<div className="space-y-2">
-								<Label htmlFor="icon">Icon (Emoji)</Label>
+								<Label htmlFor="icon" className="text-brand-text">
+									Icon (Emoji)
+								</Label>
 								<Input
 									id="icon"
 									value={formData.icon}
@@ -183,10 +188,13 @@ const AdminCategories = () => {
 										setFormData({ ...formData, icon: e.target.value })
 									}
 									placeholder="VD: 💄, 🧴, 👁️"
+									className="transition-all duration-200 focus:ring-2 focus:ring-brand-primary"
 								/>
 							</div>
 							<div className="space-y-2">
-								<Label htmlFor="description">Mô tả</Label>
+								<Label htmlFor="description" className="text-brand-text">
+									Mô tả
+								</Label>
 								<Textarea
 									id="description"
 									value={formData.description}
@@ -194,6 +202,7 @@ const AdminCategories = () => {
 										setFormData({ ...formData, description: e.target.value })
 									}
 									rows={3}
+									className="transition-all duration-200 focus:ring-2 focus:ring-brand-primary"
 								/>
 							</div>
 							<div className="flex items-center space-x-2">
@@ -204,26 +213,27 @@ const AdminCategories = () => {
 									onChange={(e) =>
 										setFormData({ ...formData, isActive: e.target.checked })
 									}
-									className="w-4 h-4 border-gray-300 rounded text-brand-primary focus:ring-brand-primary"
+									className="w-4 h-4 border-border rounded text-brand-primary focus:ring-brand-primary focus:ring-2 transition-all duration-200"
 								/>
 								<Label
 									htmlFor="isActive"
-									className="cursor-pointer"
+									className="cursor-pointer text-muted-foreground"
 								>
 									Hiển thị danh mục
 								</Label>
 							</div>
-							<div className="sticky bottom-0 flex justify-end gap-3 pt-4 bg-white border-t">
+							<div className="sticky bottom-0 flex justify-end gap-3 pt-4 bg-white border-t border-border">
 								<Button
 									type="button"
 									variant="outline"
 									onClick={() => setIsDialogOpen(false)}
+									className="hover:border-brand-primary hover:text-brand-primary hover:bg-brand-primary/10 transition-all duration-200"
 								>
 									Hủy
 								</Button>
 								<Button
 									type="submit"
-									className="text-white bg-brand-primary hover:bg-brand-accent"
+									className="text-white bg-brand-primary hover:bg-brand-accent transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
 								>
 									{editingCategory ? "Cập nhật" : "Thêm mới"}
 								</Button>
@@ -236,35 +246,35 @@ const AdminCategories = () => {
 			{/* Search */}
 			<div className="flex flex-wrap items-center gap-4">
 				<div className="relative flex-1 max-w-sm">
-					<Search className="absolute w-4 h-4 text-gray-400 -translate-y-1/2 left-3 top-1/2" />
+					<Search className="absolute w-4 h-4 text-muted-foreground -translate-y-1/2 left-3 top-1/2" />
 					<Input
 						placeholder="Tìm kiếm danh mục..."
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
-						className="pl-10 pr-10"
+						className="pl-10 pr-10 transition-all duration-200 focus:ring-2 focus:ring-brand-primary"
 					/>
 					{search && (
 						<button
 							onClick={handleClearSearch}
-							className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-gray-600"
+							className="absolute text-muted-foreground -translate-y-1/2 right-3 top-1/2 hover:text-foreground transition-colors"
 						>
 							<X className="w-4 h-4" />
 						</button>
 					)}
 				</div>
 				{search && (
-					<div className="text-sm text-gray-500">
+					<div className="text-sm text-muted-foreground">
 						Kết quả: {filteredCategories.length} danh mục
 					</div>
 				)}
 			</div>
 
 			{/* Table */}
-			<div className="overflow-hidden bg-white shadow-sm rounded-xl">
+			<div className="overflow-hidden bg-white border border-border shadow-sm rounded-xl">
 				<div className="hidden overflow-x-auto md:block">
 					<Table>
 						<TableHeader>
-							<TableRow>
+							<TableRow className="bg-muted/30">
 								<TableHead className="w-16">STT</TableHead>
 								<TableHead className="w-16">Icon</TableHead>
 								<TableHead>Tên danh mục</TableHead>
@@ -277,9 +287,9 @@ const AdminCategories = () => {
 						<TableBody>
 							{loading ? (
 								<TableRow>
-									<TableCell colSpan={7} className="py-8 text-center">
+									<TableCell colSpan={7} className="py-12 text-center">
 										<div className="flex items-center justify-center">
-											<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
+											<div className="w-8 h-8 border-4 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin"></div>
 										</div>
 									</TableCell>
 								</TableRow>
@@ -287,7 +297,7 @@ const AdminCategories = () => {
 								<TableRow>
 									<TableCell
 										colSpan={7}
-										className="py-8 text-center text-gray-500"
+										className="py-12 text-center text-muted-foreground"
 									>
 										{search
 											? "Không tìm thấy danh mục nào phù hợp"
@@ -296,23 +306,27 @@ const AdminCategories = () => {
 								</TableRow>
 							) : (
 								filteredCategories.map((cat, index) => (
-									<TableRow key={cat._id}>
+									<TableRow key={cat._id} className="hover:bg-brand-primary/5 transition-colors">
 										<TableCell>{index + 1}</TableCell>
 										<TableCell className="text-2xl">
 											{cat.icon || "📦"}
 										</TableCell>
-										<TableCell className="font-medium">
+										<TableCell className="font-medium text-brand-text">
 											{cat.name}
 										</TableCell>
-										<TableCell className="text-sm text-gray-500">
+										<TableCell className="text-sm text-muted-foreground">
 											{cat.slug}
 										</TableCell>
-										<TableCell className="max-w-xs truncate">
+										<TableCell className="max-w-xs truncate text-muted-foreground">
 											{cat.description || "—"}
 										</TableCell>
 										<TableCell>
 											<Badge
-												className={cat.isActive ? "bg-green-500" : "bg-red-500"}
+												className={
+													cat.isActive 
+														? "bg-green-500 hover:bg-green-600" 
+														: "bg-destructive hover:bg-destructive/90"
+												}
 											>
 												{cat.isActive ? "Hiển thị" : "Ẩn"}
 											</Badge>
@@ -323,6 +337,7 @@ const AdminCategories = () => {
 													variant="outline"
 													size="sm"
 													onClick={() => handleOpenDialog(cat)}
+													className="hover:border-brand-primary hover:text-brand-primary hover:bg-brand-primary/10 transition-all duration-200"
 												>
 													<Pencil className="w-4 h-4" />
 												</Button>
@@ -330,6 +345,7 @@ const AdminCategories = () => {
 													variant="destructive"
 													size="sm"
 													onClick={() => setDeleteTarget(cat)}
+													className="hover:scale-110 transition-transform duration-200"
 												>
 													<Trash2 className="w-4 h-4" />
 												</Button>
@@ -345,11 +361,11 @@ const AdminCategories = () => {
 				{/* Mobile Cards */}
 				<div className="p-4 space-y-4 md:hidden">
 					{loading ? (
-						<div className="flex items-center justify-center py-8">
-							<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
+						<div className="flex items-center justify-center py-12">
+							<div className="w-8 h-8 border-4 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin"></div>
 						</div>
 					) : filteredCategories.length === 0 ? (
-						<p className="py-8 text-center text-gray-500">
+						<p className="py-12 text-center text-muted-foreground">
 							{search
 								? "Không tìm thấy danh mục nào phù hợp"
 								: "Chưa có danh mục nào"}
@@ -358,7 +374,7 @@ const AdminCategories = () => {
 						filteredCategories.map((cat) => (
 							<div
 								key={cat._id}
-								className="p-4 bg-white border rounded-lg shadow-sm"
+								className="p-4 bg-white border border-border rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
 							>
 								<div className="flex items-center gap-4">
 									<div className="text-3xl">{cat.icon || "📦"}</div>
@@ -366,12 +382,18 @@ const AdminCategories = () => {
 										<h3 className="font-semibold text-brand-text">
 											{cat.name}
 										</h3>
-										<p className="text-sm text-gray-500">{cat.slug}</p>
+										<p className="text-sm text-muted-foreground">{cat.slug}</p>
 										{cat.description && (
-											<p className="text-sm text-gray-500">{cat.description}</p>
+											<p className="text-sm text-muted-foreground line-clamp-2">
+												{cat.description}
+											</p>
 										)}
 										<Badge
-											className={`mt-1 ${cat.isActive ? "bg-green-500" : "bg-red-500"}`}
+											className={`mt-1 ${
+												cat.isActive 
+													? "bg-green-500 hover:bg-green-600" 
+													: "bg-destructive hover:bg-destructive/90"
+											}`}
 										>
 											{cat.isActive ? "Hiển thị" : "Ẩn"}
 										</Badge>
@@ -381,6 +403,7 @@ const AdminCategories = () => {
 											variant="outline"
 											size="sm"
 											onClick={() => handleOpenDialog(cat)}
+											className="hover:border-brand-primary hover:text-brand-primary hover:bg-brand-primary/10 transition-all duration-200"
 										>
 											<Pencil className="w-4 h-4" />
 										</Button>
@@ -388,6 +411,7 @@ const AdminCategories = () => {
 											variant="destructive"
 											size="sm"
 											onClick={() => setDeleteTarget(cat)}
+											className="hover:scale-110 transition-transform duration-200"
 										>
 											<Trash2 className="w-4 h-4" />
 										</Button>
@@ -406,19 +430,19 @@ const AdminCategories = () => {
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Xác nhận xóa danh mục</AlertDialogTitle>
+						<AlertDialogTitle className="font-display text-brand-text">
+							Xác nhận xóa danh mục
+						</AlertDialogTitle>
 						<AlertDialogDescription>
-							Bạn có chắc chắn muốn xóa danh mục "{deleteTarget?.name}"? Hành
+							Bạn có chắc chắn muốn xóa danh mục "<span className="font-medium text-foreground">{deleteTarget?.name}</span>"? Hành
 							động này không thể hoàn tác.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>
-							Hủy
-						</AlertDialogCancel>
+						<AlertDialogCancel>Hủy</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={handleDelete}
-							className="bg-red-500 hover:bg-red-600"
+							className="bg-destructive text-white hover:bg-destructive/90"
 						>
 							Xóa
 						</AlertDialogAction>

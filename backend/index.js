@@ -31,94 +31,94 @@ connectDB();
 
 // ============ HEALTH CHECK ============
 app.get("/api/health", (req, res) => {
-  res.json({
-    status: "OK",
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || "development",
-  });
+	res.json({
+		status: "OK",
+		timestamp: new Date().toISOString(),
+		environment: process.env.NODE_ENV || "development",
+	});
 });
 
 // ============ ROOT API ============
 app.get("/api", (req, res) => {
-  res.json({
-    success: true,
-    message: "TrangAllure Shop API",
-    version: "1.0.0",
-    endpoints: {
-      health: "/api/health",
-      products: "/api/products",
-      categories: "/api/categories",
-      banners: "/api/banners",
-      admin: "/api/admin",
-      sitemap: "/sitemap.xml",
-    },
-  });
+	res.json({
+		success: true,
+		message: "TrangAllure Shop API",
+		version: "1.0.0",
+		endpoints: {
+			health: "/api/health",
+			products: "/api/products",
+			categories: "/api/categories",
+			banners: "/api/banners",
+			admin: "/api/admin",
+			sitemap: "/sitemap.xml",
+		},
+	});
 });
 
 // ============ CẤU HÌNH RATE LIMIT ============
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 1000,
-  message: "Quá nhiều request, vui lòng thử lại sau",
-  skip: (req) => {
-    const userAgent = req.headers["user-agent"] || "";
-    if (userAgent.includes("UptimeRobot")) {
-      return true;
-    }
-    const token =
-      req.cookies?.token || req.headers.authorization?.split(" ")[1];
-    if (token) {
-      try {
-        const jwt = require("jsonwebtoken");
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        if (decoded && decoded.id) {
-          return true;
-        }
-      } catch (error) {
-        return false;
-      }
-    }
-    return false;
-  },
+	windowMs: 15 * 60 * 1000,
+	max: 1000,
+	message: "Quá nhiều request, vui lòng thử lại sau",
+	skip: (req) => {
+		const userAgent = req.headers["user-agent"] || "";
+		if (userAgent.includes("UptimeRobot")) {
+			return true;
+		}
+		const token =
+			req.cookies?.token || req.headers.authorization?.split(" ")[1];
+		if (token) {
+			try {
+				const jwt = require("jsonwebtoken");
+				const decoded = jwt.verify(token, process.env.JWT_SECRET);
+				if (decoded && decoded.id) {
+					return true;
+				}
+			} catch (error) {
+				return false;
+			}
+		}
+		return false;
+	},
 });
 
 // ============ CẤU HÌNH HELMET ============
 app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        imgSrc: [
-          "'self'",
-          "data:",
-          "blob:",
-          "https://res.cloudinary.com",
-          "https://*.cloudinary.com",
-          "https://images.unsplash.com",
-          "https://*.unsplash.com",
-        ],
-        scriptSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        fontSrc: ["'self'", "data:"],
-        connectSrc: [
-          "'self'",
-          "http://localhost:5173",
-          "http://localhost:5174",
-          "http://192.168.1.174:5173",
-          "https://trangallure.shop",
-          "https://www.trangallure.shop",
-          "https://trang-allure-shop.vercel.app",
-          process.env.FRONTEND_URL || "http://localhost:5173",
-        ],
-        frameAncestors: ["'none'"],
-        formAction: ["'self'"],
-        baseUri: ["'self'"],
-        objectSrc: ["'none'"],
-      },
-    },
-    crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: { policy: "cross-origin" },
-  }),
+	helmet({
+		contentSecurityPolicy: {
+			directives: {
+				defaultSrc: ["'self'"],
+				imgSrc: [
+					"'self'",
+					"data:",
+					"blob:",
+					"https://res.cloudinary.com",
+					"https://*.cloudinary.com",
+					"https://images.unsplash.com",
+					"https://*.unsplash.com",
+				],
+				scriptSrc: ["'self'"],
+				styleSrc: ["'self'", "'unsafe-inline'"],
+				fontSrc: ["'self'", "data:"],
+				connectSrc: [
+					"'self'",
+					"http://localhost:5173",
+					"http://localhost:5174",
+					"http://192.168.1.174:5173",
+					"https://trangallure.shop",
+					"https://www.trangallure.shop",
+					"https://trang-allure-shop.vercel.app",
+					process.env.FRONTEND_URL || "http://localhost:5173",
+				],
+				frameAncestors: ["'none'"],
+				formAction: ["'self'"],
+				baseUri: ["'self'"],
+				objectSrc: ["'none'"],
+			},
+		},
+		crossOriginEmbedderPolicy: false,
+		crossOriginResourcePolicy: { policy: "cross-origin" },
+	}),
 );
 
 // ============ MIDDLEWARE ============
@@ -127,38 +127,45 @@ app.use(compression());
 // ============ CẤU HÌNH CORS ============
 const isProduction = process.env.NODE_ENV === "production";
 
-const allowedOrigins = isProduction
-  ? [
-      "https://trangallure.shop",
-      "https://www.trangallure.shop",
-      "https://trang-allure-shop.vercel.app",
-      process.env.FRONTEND_URL,
-    ].filter(Boolean)
-  : [
-      "http://192.168.1.174:5173",
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "http://192.168.1.174:5000",
-      "http://localhost:5000",
-      process.env.FRONTEND_URL || "http://localhost:5173",
-    ].filter(Boolean);
+if (!isProduction) {
+	// ✅ DEVELOPMENT MODE: Cho phép tất cả origins
+	console.log("🔓 Development mode: CORS allowed for all origins");
+	app.use(
+		cors({
+			origin: "*",
+			credentials: true,
+			methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+			allowedHeaders: ["Content-Type", "Authorization", "Cookie", "X-Requested-With"],
+		})
+	);
+} else {
+	// ✅ PRODUCTION MODE: Chỉ cho phép các domain cụ thể
+	const allowedOrigins = [
+		"https://trangallure.shop",
+		"https://www.trangallure.shop",
+		"https://trang-allure-shop.vercel.app",
+		process.env.FRONTEND_URL,
+	].filter(Boolean);
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.warn(`❌ CORS blocked: ${origin}`);
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-  }),
-);
+	console.log("🔒 Production mode: CORS allowed for:", allowedOrigins);
+
+	app.use(
+		cors({
+			origin: function (origin, callback) {
+				if (!origin) return callback(null, true);
+				if (allowedOrigins.includes(origin)) {
+					callback(null, true);
+				} else {
+					console.warn(`❌ CORS blocked: ${origin}`);
+					callback(new Error("Not allowed by CORS"));
+				}
+			},
+			credentials: true,
+			methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+			allowedHeaders: ["Content-Type", "Authorization", "Cookie", "X-Requested-With"],
+		})
+	);
+}
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
@@ -172,22 +179,22 @@ app.use("/", sitemapRoutes);
 
 // ============ UPLOAD ẢNH ============
 app.post(
-  "/api/admin/upload",
-  protect,
-  upload.single("image"),
-  async (req, res) => {
-    try {
-      if (!req.file) {
-        return res
-          .status(400)
-          .json({ success: false, message: "Không có file ảnh" });
-      }
-      res.json({ success: true, url: req.file.path });
-    } catch (error) {
-      console.error("Upload error:", error);
-      res.status(500).json({ success: false, message: error.message });
-    }
-  },
+	"/api/admin/upload",
+	protect,
+	upload.single("image"),
+	async (req, res) => {
+		try {
+			if (!req.file) {
+				return res
+					.status(400)
+					.json({ success: false, message: "Không có file ảnh" });
+			}
+			res.json({ success: true, url: req.file.path });
+		} catch (error) {
+			console.error("Upload error:", error);
+			res.status(500).json({ success: false, message: error.message });
+		}
+	}
 );
 
 // ============ PUBLIC ROUTES ============
@@ -210,15 +217,14 @@ module.exports = app;
 
 // ============ START SERVER ============
 if (require.main === module) {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`🚀 Server đang chạy trên cổng ${PORT}`);
-    console.log(`📌 Environment: ${process.env.NODE_ENV || "development"}`);
-    console.log(`🔗 API URL: http://localhost:${PORT}/api`);
-    console.log(`🗺️  Sitemap: http://localhost:${PORT}/sitemap.xml`);
-    console.log(`✅ CORS allowed origins:`, allowedOrigins);
-    console.log(
-      `✅ Rate limit: ${limiter.max} requests per ${limiter.windowMs / 60000} minutes`,
-    );
-  });
+	const PORT = process.env.PORT || 5000;
+	app.listen(PORT, () => {
+		console.log(`🚀 Server đang chạy trên cổng ${PORT}`);
+		console.log(`📌 Environment: ${process.env.NODE_ENV || "development"}`);
+		console.log(`🔗 API URL: http://localhost:${PORT}/api`);
+		console.log(`🗺️  Sitemap: http://localhost:${PORT}/sitemap.xml`);
+		console.log(
+			`✅ Rate limit: ${limiter.max} requests per ${limiter.windowMs / 60000} minutes`
+		);
+	});
 }

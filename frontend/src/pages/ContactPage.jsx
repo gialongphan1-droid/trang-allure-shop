@@ -1,4 +1,6 @@
 import { MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import SEO from '@/components/common/SEO';
 
 const ContactPage = () => {
@@ -8,28 +10,28 @@ const ContactPage = () => {
       label: 'Điện thoại',
       value: '0905 990 862',
       href: 'tel:0905990862',
-      color: 'bg-green-500',
+      color: 'bg-green-500 hover:bg-green-600',
     },
     {
       icon: MessageCircle,
       label: 'Zalo',
       value: '0905 990 862',
       href: 'https://zalo.me/0905990862',
-      color: 'bg-blue-600',
+      color: 'bg-blue-600 hover:bg-blue-700',
     },
     {
       icon: 'facebook',
       label: 'Facebook',
       value: 'TrangAllure Shop',
       href: 'https://www.facebook.com/trangallure.shop',
-      color: 'bg-blue-700',
+      color: 'bg-blue-700 hover:bg-blue-800',
     },
     {
       icon: Mail,
       label: 'Email',
       value: 'gialongphan1@gmail.com',
       href: 'mailto:gialongphan1@gmail.com',
-      color: 'bg-red-500',
+      color: 'bg-red-500 hover:bg-red-600',
     },
   ];
 
@@ -54,12 +56,12 @@ const ContactPage = () => {
         keywords="liên hệ, mỹ phẩm, tư vấn, hỗ trợ"
       />
       
-      <div className="container px-4 py-8 mx-auto space-y-8">
+      <div className="container mx-auto px-4 py-8 space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold font-display text-brand-text">
             Liên hệ với chúng tôi
           </h1>
-          <p className="mt-1 text-gray-600">
+          <p className="mt-2 text-muted-foreground">
             Chúng tôi luôn sẵn sàng hỗ trợ bạn
           </p>
         </div>
@@ -77,29 +79,29 @@ const ContactPage = () => {
                   href={item.href}
                   target={item.href.startsWith('http') ? '_blank' : ''}
                   rel={item.href.startsWith('http') ? 'noopener noreferrer' : ''}
-                  className="flex items-center gap-4 p-4 transition bg-white shadow-sm rounded-xl hover:shadow-md"
+                  className="flex items-center gap-4 p-4 transition-all duration-200 bg-white border border-border rounded-xl hover:shadow-lg hover:-translate-y-0.5"
                 >
-                  <div className={`${item.color} p-3 rounded-full text-white`}>
+                  <div className={`${item.color} p-3 rounded-full text-white transition-colors`}>
                     {renderIcon(item.icon, "w-5 h-5")}
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">{item.label}</p>
+                    <p className="text-sm text-muted-foreground">{item.label}</p>
                     <p className="font-medium text-brand-text">{item.value}</p>
                   </div>
                 </a>
               ))}
             </div>
 
-            <div className="p-6 bg-white shadow-sm rounded-xl">
-              <h3 className="mb-4 font-semibold text-brand-text">
-                Liên hệ nhanh
-              </h3>
-              <div className="flex flex-wrap gap-3">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Liên hệ nhanh</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-wrap gap-3">
                 <a
                   href="https://m.me/trangallure.shop"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 min-w-[120px] flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                  className="flex-1 min-w-[120px] flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200 hover:scale-105"
                 >
                   <MessageCircle className="w-4 h-4" />
                   Messenger
@@ -108,45 +110,49 @@ const ContactPage = () => {
                   href="https://zalo.me/0905990862"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 min-w-[120px] flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                  className="flex-1 min-w-[120px] flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 hover:scale-105"
                 >
                   <Phone className="w-4 h-4" />
                   Zalo
                 </a>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Right Column - Address & Map */}
           <div className="space-y-6">
-            <div className="p-6 bg-white shadow-sm rounded-xl">
-              <h2 className="mb-4 text-xl font-semibold text-brand-text">
-                Địa chỉ
-              </h2>
-              <div className="flex items-start gap-3 text-gray-600">
-                <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                <p>TP. Hồ Chí Minh, Việt Nam</p>
-              </div>
-              <div className="p-4 mt-4 rounded-lg bg-brand-background">
-                <p className="text-sm text-gray-600">
-                  <span className="font-medium">Giờ làm việc:</span><br />
-                  Thứ 2 - Thứ 7: 8:00 - 21:00<br />
-                  Chủ nhật: 9:00 - 18:00
-                </p>
-              </div>
-            </div>
-
-            <div className="p-6 bg-white shadow-sm rounded-xl">
-              <h2 className="mb-4 text-xl font-semibold text-brand-text">
-                Bản đồ
-              </h2>
-              <div className="flex items-center justify-center text-gray-400 bg-gray-200 rounded-lg aspect-video">
-                <div className="text-center">
-                  <MapPin className="w-12 h-12 mx-auto text-brand-primary" />
-                  <p className="mt-2">TP. Hồ Chí Minh</p>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Địa chỉ</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-start gap-3 text-muted-foreground">
+                  <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5 text-brand-primary" />
+                  <p>TP. Hồ Chí Minh, Việt Nam</p>
                 </div>
-              </div>
-            </div>
+                <div className="p-4 rounded-lg bg-brand-background/50 border border-brand-primary/10">
+                  <p className="text-sm text-muted-foreground">
+                    <span className="font-medium text-brand-text">Giờ làm việc:</span><br />
+                    Thứ 2 - Thứ 7: <span className="text-foreground">8:00 - 21:00</span><br />
+                    Chủ nhật: <span className="text-foreground">9:00 - 18:00</span>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Bản đồ</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-center bg-muted/30 rounded-lg aspect-video border border-border">
+                  <div className="text-center">
+                    <MapPin className="w-12 h-12 mx-auto text-brand-primary/50" />
+                    <p className="mt-2 text-muted-foreground">TP. Hồ Chí Minh</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

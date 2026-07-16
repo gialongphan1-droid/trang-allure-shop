@@ -1,0 +1,35 @@
+  .
+  |-- .git
+  |-- .vercel
+  |-- .vscode
+  |-- backend
+  |-- |-- config
+  |-- |-- controllers
+  |-- |-- |-- admin
+  |-- |-- |-- public
+  |-- |-- middleware
+  |-- |-- models
+  |-- |-- node_modules
+  |-- |-- routes
+  |-- |-- |-- admin
+  |-- |-- |-- public
+  |-- |-- seed
+  |-- frontend
+  |-- |-- dist
+  |-- |-- node_modules
+  |-- |-- public
+  |-- |-- src
+  |-- |-- |-- api
+  |-- |-- |-- assets
+  |-- |-- |-- components
+  |-- |-- |-- |-- common
+  |-- |-- |-- |-- layout
+  |-- |-- |-- |-- products
+  |-- |-- |-- |-- ui
+  |-- |-- |-- lib
+  |-- |-- |-- pages
+  |-- |-- |-- |-- admin
+  |-- |-- |-- store
+  |-- |-- |-- |-- slices
+  |-- |-- |-- utils
+  |-- node_modules

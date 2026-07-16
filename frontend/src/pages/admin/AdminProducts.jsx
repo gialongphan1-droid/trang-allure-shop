@@ -73,13 +73,10 @@ const AdminProducts = () => {
 		};
 	}, [search]);
 
-	// ✅ useEffect với eslint-disable cho setState
 	useEffect(() => {
-		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setPage(1);
 	}, [search]);
 
-	// ✅ useEffect với eslint-disable cho setState
 	useEffect(() => {
 		const params = {
 			page,
@@ -89,9 +86,7 @@ const AdminProducts = () => {
 			params.search = debouncedSearch.trim();
 		}
 		dispatch(fetchProducts(params));
-		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setSelectedProducts([]);
-		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setSelectAll(false);
 	}, [dispatch, page, debouncedSearch]);
 
@@ -99,13 +94,10 @@ const AdminProducts = () => {
 		dispatch(fetchCategories());
 	}, [dispatch]);
 
-	// ✅ useEffect với eslint-disable cho setState
 	useEffect(() => {
 		if (selectAll) {
-			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setSelectedProducts(products.map((p) => p._id));
 		} else {
-			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setSelectedProducts([]);
 		}
 	}, [selectAll, products]);
@@ -145,7 +137,6 @@ const AdminProducts = () => {
 			}
 			dispatch(fetchProducts(params));
 		} catch {
-			// ❌ Bỏ biến error không dùng
 			toast({
 				title: "Lỗi xóa hàng loạt",
 				variant: "destructive",
@@ -170,7 +161,6 @@ const AdminProducts = () => {
 			}
 			dispatch(fetchProducts(params));
 		} catch {
-			// ❌ Bỏ biến error không dùng
 			toast({
 				title: "Lỗi xóa sản phẩm",
 				variant: "destructive",
@@ -210,7 +200,7 @@ const AdminProducts = () => {
 					<h1 className="text-2xl font-bold sm:text-3xl font-display text-brand-text">
 						Quản lý sản phẩm
 					</h1>
-					<p className="text-sm text-gray-500 sm:text-base">
+					<p className="text-sm text-muted-foreground sm:text-base">
 						Quản lý danh sách sản phẩm của cửa hàng
 					</p>
 				</div>
@@ -227,14 +217,14 @@ const AdminProducts = () => {
 					)}
 					<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 						<DialogTrigger asChild>
-							<Button className="text-white bg-brand-primary hover:bg-brand-accent">
+							<Button className="text-white bg-brand-primary hover:bg-brand-accent transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]">
 								<Plus className="w-4 h-4 mr-2" />
 								Thêm sản phẩm
 							</Button>
 						</DialogTrigger>
 						<DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
 							<DialogHeader>
-								<DialogTitle>
+								<DialogTitle className="font-display text-brand-text">
 									{editingProduct ? "Sửa sản phẩm" : "Thêm sản phẩm mới"}
 								</DialogTitle>
 							</DialogHeader>
@@ -255,24 +245,24 @@ const AdminProducts = () => {
 			{/* Search */}
 			<div className="flex flex-wrap items-center gap-4">
 				<div className="relative flex-1 max-w-sm">
-					<Search className="absolute w-4 h-4 text-gray-400 -translate-y-1/2 left-3 top-1/2" />
+					<Search className="absolute w-4 h-4 text-muted-foreground -translate-y-1/2 left-3 top-1/2" />
 					<Input
 						placeholder="Tìm kiếm sản phẩm..."
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
-						className="pl-10 pr-10"
+						className="pl-10 pr-10 transition-all duration-200 focus:ring-2 focus:ring-brand-primary"
 					/>
 					{search && (
 						<button
 							onClick={handleClearSearch}
-							className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-gray-600"
+							className="absolute text-muted-foreground -translate-y-1/2 right-3 top-1/2 hover:text-foreground transition-colors"
 						>
 							<X className="w-4 h-4" />
 						</button>
 					)}
 				</div>
 				{debouncedSearch && (
-					<div className="flex items-center text-sm text-gray-500 whitespace-nowrap">
+					<div className="flex items-center text-sm text-muted-foreground whitespace-nowrap">
 						Kết quả: {pagination.total} sản phẩm
 					</div>
 				)}
@@ -289,11 +279,11 @@ const AdminProducts = () => {
 			</div>
 
 			{/* Table */}
-			<div className="overflow-hidden bg-white shadow-sm rounded-xl">
+			<div className="overflow-hidden bg-white border border-border shadow-sm rounded-xl">
 				<div className="hidden overflow-x-auto md:block">
 					<Table>
 						<TableHeader>
-							<TableRow>
+							<TableRow className="bg-muted/30">
 								<TableHead className="w-10">
 									<Checkbox
 										checked={selectAll}
@@ -312,9 +302,9 @@ const AdminProducts = () => {
 						<TableBody>
 							{loading ? (
 								<TableRow>
-									<TableCell colSpan={8} className="py-8 text-center">
+									<TableCell colSpan={8} className="py-12 text-center">
 										<div className="flex items-center justify-center">
-											<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
+											<div className="w-8 h-8 border-4 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin"></div>
 										</div>
 									</TableCell>
 								</TableRow>
@@ -322,7 +312,7 @@ const AdminProducts = () => {
 								<TableRow>
 									<TableCell
 										colSpan={8}
-										className="py-8 text-center text-gray-500"
+										className="py-12 text-center text-muted-foreground"
 									>
 										{debouncedSearch
 											? "Không tìm thấy sản phẩm nào phù hợp"
@@ -331,7 +321,7 @@ const AdminProducts = () => {
 								</TableRow>
 							) : (
 								products.map((product, index) => (
-									<TableRow key={product._id}>
+									<TableRow key={product._id} className="hover:bg-brand-primary/5 transition-colors">
 										<TableCell>
 											<Checkbox
 												checked={selectedProducts.includes(product._id)}
@@ -347,17 +337,17 @@ const AdminProducts = () => {
 													product.images?.[0] || "/placeholder.jpg",
 												)}
 												alt={product.name}
-												className="object-cover w-12 h-12 rounded-lg"
+												className="object-cover w-12 h-12 rounded-lg border border-border"
 												width="48"
 												height="48"
 												loading="lazy"
 												decoding="async"
 											/>
 										</TableCell>
-										<TableCell className="font-medium line-clamp-1">
+										<TableCell className="font-medium text-brand-text line-clamp-1">
 											{product.name}
 										</TableCell>
-										<TableCell>
+										<TableCell className="text-muted-foreground">
 											{product.category?.name || "N/A"}
 										</TableCell>
 										<TableCell>
@@ -368,7 +358,7 @@ const AdminProducts = () => {
 												</span>
 												{product.originalPrice &&
 													product.originalPrice > product.price && (
-														<span className="text-xs text-gray-400 line-through">
+														<span className="text-xs text-muted-foreground line-through">
 															{new Intl.NumberFormat("vi-VN").format(
 																product.originalPrice,
 															)}
@@ -380,7 +370,9 @@ const AdminProducts = () => {
 										<TableCell>
 											<Badge
 												className={
-													product.isActive ? "bg-green-500" : "bg-red-500"
+													product.isActive 
+														? "bg-green-500 hover:bg-green-600" 
+														: "bg-destructive hover:bg-destructive/90"
 												}
 											>
 												{product.isActive ? "Hiển thị" : "Ẩn"}
@@ -392,6 +384,7 @@ const AdminProducts = () => {
 													variant="outline"
 													size="sm"
 													onClick={() => handleEdit(product)}
+													className="hover:border-brand-primary hover:text-brand-primary hover:bg-brand-primary/10 transition-all duration-200"
 												>
 													<Pencil className="w-4 h-4" />
 												</Button>
@@ -399,6 +392,7 @@ const AdminProducts = () => {
 													variant="destructive"
 													size="sm"
 													onClick={() => setDeleteTarget(product)}
+													className="hover:scale-110 transition-transform duration-200"
 												>
 													<Trash2 className="w-4 h-4" />
 												</Button>
@@ -414,11 +408,11 @@ const AdminProducts = () => {
 				{/* Mobile Cards */}
 				<div className="p-4 space-y-4 md:hidden">
 					{loading ? (
-						<div className="flex items-center justify-center py-8">
-							<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
+						<div className="flex items-center justify-center py-12">
+							<div className="w-8 h-8 border-4 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin"></div>
 						</div>
 					) : products.length === 0 ? (
-						<p className="py-8 text-center text-gray-500">
+						<p className="py-12 text-center text-muted-foreground">
 							{debouncedSearch
 								? "Không tìm thấy sản phẩm nào phù hợp"
 								: "Chưa có sản phẩm nào"}
@@ -427,7 +421,7 @@ const AdminProducts = () => {
 						products.map((product) => (
 							<div
 								key={product._id}
-								className="p-4 bg-white border rounded-lg shadow-sm"
+								className="p-4 bg-white border border-border rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
 							>
 								<div className="flex items-start gap-4">
 									<Checkbox
@@ -440,7 +434,7 @@ const AdminProducts = () => {
 											product.images?.[0] || "/placeholder.jpg",
 										)}
 										alt={product.name}
-										className="flex-shrink-0 object-cover w-20 h-20 rounded-lg"
+										className="flex-shrink-0 object-cover w-20 h-20 rounded-lg border border-border"
 										width="80"
 										height="80"
 										loading="lazy"
@@ -450,7 +444,7 @@ const AdminProducts = () => {
 										<h3 className="font-semibold text-brand-text line-clamp-1">
 											{product.name}
 										</h3>
-										<p className="text-sm text-gray-500">
+										<p className="text-sm text-muted-foreground">
 											{product.category?.name || "N/A"}
 										</p>
 										<div className="flex items-center gap-2 mt-1">
@@ -459,7 +453,7 @@ const AdminProducts = () => {
 											</span>
 											{product.originalPrice &&
 												product.originalPrice > product.price && (
-													<span className="text-xs text-gray-400 line-through">
+													<span className="text-xs text-muted-foreground line-through">
 														{new Intl.NumberFormat("vi-VN").format(
 															product.originalPrice,
 														)}
@@ -468,7 +462,11 @@ const AdminProducts = () => {
 												)}
 										</div>
 										<Badge
-											className={`mt-1 ${product.isActive ? "bg-green-500" : "bg-red-500"}`}
+											className={`mt-1 ${
+												product.isActive 
+													? "bg-green-500 hover:bg-green-600" 
+													: "bg-destructive hover:bg-destructive/90"
+											}`}
 										>
 											{product.isActive ? "Hiển thị" : "Ẩn"}
 										</Badge>
@@ -478,6 +476,7 @@ const AdminProducts = () => {
 											variant="outline"
 											size="sm"
 											onClick={() => handleEdit(product)}
+											className="hover:border-brand-primary hover:text-brand-primary hover:bg-brand-primary/10 transition-all duration-200"
 										>
 											<Pencil className="w-4 h-4" />
 										</Button>
@@ -485,6 +484,7 @@ const AdminProducts = () => {
 											variant="destructive"
 											size="sm"
 											onClick={() => setDeleteTarget(product)}
+											className="hover:scale-110 transition-transform duration-200"
 										>
 											<Trash2 className="w-4 h-4" />
 										</Button>
@@ -504,11 +504,12 @@ const AdminProducts = () => {
 						onClick={() => setPage((p) => Math.max(1, p - 1))}
 						disabled={page <= 1}
 						size="sm"
+						className="hover:border-brand-primary hover:text-brand-primary hover:bg-brand-primary/10 transition-all duration-200"
 					>
 						Trước
 					</Button>
-					<span className="flex items-center px-4 text-sm text-gray-700">
-						Trang {page} / {pagination.totalPages}
+					<span className="flex items-center px-4 text-sm text-muted-foreground">
+						Trang <span className="font-semibold text-brand-text mx-1">{page}</span> / {pagination.totalPages}
 					</span>
 					<Button
 						variant="outline"
@@ -517,6 +518,7 @@ const AdminProducts = () => {
 						}
 						disabled={page >= pagination.totalPages}
 						size="sm"
+						className="hover:border-brand-primary hover:text-brand-primary hover:bg-brand-primary/10 transition-all duration-200"
 					>
 						Sau
 					</Button>
@@ -530,21 +532,19 @@ const AdminProducts = () => {
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>
+						<AlertDialogTitle className="font-display text-brand-text">
 							Xác nhận xóa sản phẩm
 						</AlertDialogTitle>
 						<AlertDialogDescription>
-							Bạn có chắc chắn muốn xóa sản phẩm "{deleteTarget?.name}"? Hành
+							Bạn có chắc chắn muốn xóa sản phẩm "<span className="font-medium text-foreground">{deleteTarget?.name}</span>"? Hành
 							động này không thể hoàn tác.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>
-							Hủy
-						</AlertDialogCancel>
+						<AlertDialogCancel>Hủy</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={handleDelete}
-							className="bg-red-500 hover:bg-red-600"
+							className="bg-destructive text-white hover:bg-destructive/90"
 						>
 							Xóa
 						</AlertDialogAction>
@@ -559,21 +559,19 @@ const AdminProducts = () => {
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>
+						<AlertDialogTitle className="font-display text-brand-text">
 							Xác nhận xóa hàng loạt
 						</AlertDialogTitle>
 						<AlertDialogDescription>
-							Bạn có chắc chắn muốn xóa {selectedProducts.length} sản phẩm đã
+							Bạn có chắc chắn muốn xóa <span className="font-medium text-foreground">{selectedProducts.length}</span> sản phẩm đã
 							chọn? Hành động này không thể hoàn tác.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>
-							Hủy
-						</AlertDialogCancel>
+						<AlertDialogCancel>Hủy</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={handleBulkDelete}
-							className="bg-red-500 hover:bg-red-600"
+							className="bg-destructive text-white hover:bg-destructive/90"
 						>
 							Xóa tất cả
 						</AlertDialogAction>

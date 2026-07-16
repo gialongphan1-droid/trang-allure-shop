@@ -5,9 +5,9 @@ import BackToTop from '../common/BackToTop';
 
 const MainLayout = () => {
   return (
-    <div className="flex flex-col min-h-screen transition-colors bg-background text-foreground">
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
-      <main className="flex-1 py-8 container-custom">
+      <main className="flex-1 container mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <Outlet />
       </main>
       <Footer />

@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import SEO from '@/components/common/SEO';
 import { fetchProducts } from '../store/slices/productSlice';
 import { fetchCategories } from '../store/slices/categorySlice';
@@ -58,10 +60,18 @@ const CategoryPage = () => {
 
   const meta = getCategoryMeta(slug);
 
+  // Tính % giảm giá
+  const getDiscountPercent = (product) => {
+    if (product.originalPrice && product.originalPrice > product.price) {
+      return Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+    }
+    return 0;
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="w-12 h-12 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
+        <div className="w-12 h-12 border-4 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -69,7 +79,7 @@ const CategoryPage = () => {
   if (error) {
     return (
       <div className="py-12 text-center">
-        <p className="text-red-500">
+        <p className="text-destructive">
           Lỗi tải dữ liệu: {error}
         </p>
         <Button onClick={() => window.location.reload()} className="mt-4">
@@ -101,63 +111,80 @@ const CategoryPage = () => {
             {categoryName || 'Danh mục sản phẩm'}
           </h1>
           {meta.description && (
-            <p className="max-w-3xl mx-auto mt-3 text-base text-gray-600">
+            <p className="max-w-3xl mx-auto mt-3 text-base text-muted-foreground">
               {meta.description}
             </p>
           )}
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-muted-foreground">
             {products.length} sản phẩm
           </p>
         </div>
 
         {products.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-gray-500">Không có sản phẩm nào trong danh mục này</p>
+            <p className="text-muted-foreground">Không có sản phẩm nào trong danh mục này</p>
             <Link to="/san-pham">
               <Button className="mt-4">Xem tất cả sản phẩm</Button>
             </Link>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:gap-6 sm:grid-cols-3 md:grid-cols-4">
-            {products.map((product) => (
-              <Link key={product._id} to={`/san-pham/${product.slug}`}>
-                <div className="overflow-hidden transition bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md">
-                  <div className="flex items-center justify-center bg-gray-100 aspect-square">
-                    {product.images?.[0] ? (
-                      <img
-                        src={optimizeProduct(product.images[0])}
-                        alt={product.name}
-                        loading="lazy"
-                        className="object-cover w-full h-full"
-                        width="400"
-                        height="400"
-                        decoding="async"
-                      />
-                    ) : (
-                      <span className="text-6xl">💄</span>
-                    )}
-                  </div>
-                  <div className="p-3 sm:p-4">
-                    <h3 className="text-sm font-semibold text-brand-text line-clamp-1 sm:text-base">
-                      {product.name}
-                    </h3>
-                    <p className="text-xs text-gray-500 sm:text-sm">
-                      {product.brand || ''}
-                    </p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-sm font-bold sm:text-lg text-brand-primary">
-                        {new Intl.NumberFormat('vi-VN').format(product.price)}đ
-                      </span>
-                      {product.originalPrice && product.originalPrice > product.price && (
-                        <span className="text-xs text-gray-400 line-through sm:text-sm">
-                          {new Intl.NumberFormat('vi-VN').format(product.originalPrice)}đ
-                        </span>
+            {products.map((product) => {
+              const discountPercent = getDiscountPercent(product);
+              return (
+                <Link key={product._id} to={`/san-pham/${product.slug}`} className="block h-full">
+                  <Card className="h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group overflow-hidden">
+                    <div className="relative overflow-hidden aspect-square bg-gray-50">
+                      {product.images?.[0] ? (
+                        <img
+                          src={optimizeProduct(product.images[0])}
+                          alt={product.name}
+                          loading="lazy"
+                          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                          width="400"
+                          height="400"
+                          decoding="async"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center w-full h-full">
+                          <span className="text-6xl">💄</span>
+                        </div>
+                      )}
+
+                      {discountPercent > 0 && (
+                        <Badge 
+                          variant="secondary" 
+                          className="absolute top-2 right-2 text-xs"
+                        >
+                          -{discountPercent}%
+                        </Badge>
                       )}
                     </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
+
+                    <CardContent className="p-3 sm:p-4">
+                      <h3 className="text-sm font-semibold text-brand-text line-clamp-1 sm:text-base hover:text-brand-primary transition-colors">
+                        {product.name}
+                      </h3>
+                      {product.brand && (
+                        <p className="text-xs text-muted-foreground sm:text-sm">
+                          {product.brand}
+                        </p>
+                      )}
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-sm font-bold sm:text-lg text-brand-primary">
+                          {new Intl.NumberFormat('vi-VN').format(product.price)}đ
+                        </span>
+                        {product.originalPrice && product.originalPrice > product.price && (
+                          <span className="text-xs text-muted-foreground line-through sm:text-sm">
+                            {new Intl.NumberFormat('vi-VN').format(product.originalPrice)}đ
+                          </span>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>

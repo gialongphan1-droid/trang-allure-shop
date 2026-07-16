@@ -1,14 +1,12 @@
 import { Heart, Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-
-// ✅ Import icons từ react-icons
 import { FaFacebook, FaFacebookMessenger } from "react-icons/fa";
 import { SiZalo } from "react-icons/si";
 
 const Footer = () => {
   return (
-    <footer className="mt-auto text-white transition-colors bg-brand-text">
-      <div className="container-custom py-12">
+    <footer className="mt-auto text-white bg-brand-text">
+      <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Column 1 - Brand */}
           <div>
@@ -44,7 +42,7 @@ const Footer = () => {
                 fill="#FFB7C5"
               />
             </p>
-            <p className="mt-1 text-sm text-gray-300">
+            <p className="mt-1 text-sm text-white/60">
               Mua sắm &amp; bán lẻ
             </p>
           </div>
@@ -54,7 +52,7 @@ const Footer = () => {
             <h4 className="mb-4 font-semibold text-white/90">
               Liên kết nhanh
             </h4>
-            <ul className="space-y-2 text-sm opacity-80 text-white/80">
+            <ul className="space-y-2 text-sm text-white/70">
               <li>
                 <Link
                   to="/"
@@ -87,7 +85,7 @@ const Footer = () => {
             <h4 className="mb-4 font-semibold text-white/90">
               Thông tin liên hệ
             </h4>
-            <div className="space-y-3 text-sm text-white/80">
+            <div className="space-y-3 text-sm text-white/70">
               <p className="flex items-center gap-2">
                 <Phone className="flex-shrink-0 w-4 h-4" />
                 <span>0905 990 862</span>
@@ -108,13 +106,13 @@ const Footer = () => {
             <h4 className="mb-4 font-semibold text-white/90">
               Kết nối với chúng tôi
             </h4>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3">
               {/* Facebook */}
               <a
                 href="https://www.facebook.com/trangallure.shop"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 transition rounded-full bg-white/10 hover:bg-white/20"
+                className="p-3 transition rounded-full bg-white/10 hover:bg-white/20 hover:scale-110 duration-200"
                 aria-label="Facebook"
               >
                 <FaFacebook className="w-5 h-5" aria-hidden="true" />
@@ -125,7 +123,7 @@ const Footer = () => {
                 href="https://m.me/trangallure.shop"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 transition rounded-full bg-white/10 hover:bg-white/20"
+                className="p-3 transition rounded-full bg-white/10 hover:bg-white/20 hover:scale-110 duration-200"
                 aria-label="Messenger"
               >
                 <FaFacebookMessenger className="w-5 h-5" aria-hidden="true" />
@@ -136,7 +134,7 @@ const Footer = () => {
                 href="https://zalo.me/0905990862"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 transition rounded-full bg-white/10 hover:bg-white/20"
+                className="p-3 transition rounded-full bg-white/10 hover:bg-white/20 hover:scale-110 duration-200"
                 aria-label="Zalo"
               >
                 <SiZalo className="w-5 h-5" aria-hidden="true" />
@@ -145,7 +143,7 @@ const Footer = () => {
               {/* Hotline */}
               <a
                 href="tel:0905990862"
-                className="p-3 transition rounded-full bg-white/10 hover:bg-white/20"
+                className="p-3 transition rounded-full bg-white/10 hover:bg-white/20 hover:scale-110 duration-200"
                 aria-label="Hotline"
               >
                 <Phone className="w-5 h-5" aria-hidden="true" />
@@ -161,9 +159,9 @@ const Footer = () => {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-6 mt-8 text-sm text-center border-t border-white/20 text-gray-300">
+        <div className="pt-6 mt-8 text-sm text-center border-t border-white/20 text-white/50">
           <p>© {new Date().getFullYear()} TrangAllure Shop. All rights reserved.</p>
-          <p className="mt-1 text-xs text-gray-300">
+          <p className="mt-1 text-xs text-white/40">
             Thiết kế bởi Phan Gia Long | Mỹ phẩm chính hãng
           </p>
         </div>

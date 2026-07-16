@@ -16,18 +16,15 @@ import {
 import { Suspense, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-// ✅ Lazy load recharts - đúng cách
-// const Recharts = lazy(() => import("recharts"));
-
 const ChartLoader = () => (
 	<div className="flex items-center justify-center h-[300px]">
-		<div className="w-8 h-8 border-t-2 border-b-2 rounded-full animate-spin border-brand-primary"></div>
+		<div className="w-8 h-8 border-4 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin"></div>
 	</div>
 );
 
-// Màu sắc cho biểu đồ
+// Màu sắc cho biểu đồ - Brand colors
 const COLORS = [
-	"#5BB8A6",
+	"#98D8C8",
 	"#FFB7C5",
 	"#7BC6B4",
 	"#FF9A9E",
@@ -53,7 +50,6 @@ const AdminDashboard = () => {
 			try {
 				setLoading(true);
 
-				// ✅ Fetch tất cả dữ liệu cùng lúc
 				const [statsResponse, productsResult, categoriesResult] =
 					await Promise.all([
 						adminApi.getDashboardStats().catch(() => ({ data: null })),
@@ -67,7 +63,6 @@ const AdminDashboard = () => {
 
 				setStats(statsResponse?.data || null);
 
-				// ✅ Tạo dữ liệu chart từ stats nếu có
 				if (statsResponse?.data?.chartData) {
 					setChartData(statsResponse.data.chartData);
 				} else {
@@ -81,7 +76,6 @@ const AdminDashboard = () => {
 					]);
 				}
 
-				// ✅ Đếm số lượng sản phẩm theo danh mục
 				if (
 					productsResult?.data?.length > 0 &&
 					categoriesResult?.data?.length > 0
@@ -134,15 +128,15 @@ const AdminDashboard = () => {
 			title: "Tổng sản phẩm",
 			value: stats?.totalProducts ?? products.length ?? 0,
 			icon: Package,
-			color: "text-blue-500",
-			bg: "bg-blue-100",
+			color: "text-brand-primary",
+			bg: "bg-brand-primary/10",
 		},
 		{
 			title: "Tổng danh mục",
 			value: stats?.totalCategories ?? categories.length ?? 0,
 			icon: Tag,
-			color: "text-green-500",
-			bg: "bg-green-100",
+			color: "text-brand-secondary",
+			bg: "bg-brand-secondary/10",
 		},
 		{
 			title: "Tổng banner",
@@ -169,7 +163,6 @@ const AdminDashboard = () => {
 			? ((totalRevenue - previousRevenue) / previousRevenue) * 100
 			: 0;
 
-	// Lọc danh mục có sản phẩm
 	const categoriesWithProducts = categoryProductCount.filter(
 		(item) => item.value > 0,
 	);
@@ -181,12 +174,12 @@ const AdminDashboard = () => {
 				{statsData.map((stat, index) => (
 					<Card
 						key={index}
-						className="overflow-hidden transition hover:shadow-md"
+						className="overflow-hidden transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
 					>
 						<CardContent className="p-6">
 							<div className="flex items-center justify-between">
 								<div className="space-y-1">
-									<p className="text-sm font-medium text-gray-500">
+									<p className="text-sm font-medium text-muted-foreground">
 										{stat.title}
 									</p>
 									<p className="text-2xl font-bold text-brand-text">
@@ -207,7 +200,7 @@ const AdminDashboard = () => {
 				{/* Revenue Chart */}
 				<Card>
 					<CardHeader>
-						<div className="flex items-center justify-between">
+						<div className="flex flex-wrap items-center justify-between gap-2">
 							<CardTitle className="text-brand-text">
 								Doanh thu theo tháng
 							</CardTitle>
@@ -216,7 +209,9 @@ const AdminDashboard = () => {
 									{new Intl.NumberFormat("vi-VN").format(totalRevenue)}đ
 								</span>
 								<span
-									className={`flex items-center text-sm ${revenueChange >= 0 ? "text-green-500" : "text-red-500"}`}
+									className={`flex items-center text-sm font-medium ${
+										revenueChange >= 0 ? "text-green-500" : "text-destructive"
+									}`}
 								>
 									{revenueChange >= 0 ? (
 										<ArrowUp className="w-4 h-4" />
@@ -261,9 +256,9 @@ const AdminDashboard = () => {
 											<Line
 												type="monotone"
 												dataKey="revenue"
-												stroke="#5BB8A6"
+												stroke="#98D8C8"
 												strokeWidth={2}
-												dot={{ fill: "#5BB8A6" }}
+												dot={{ fill: "#98D8C8" }}
 											/>
 										</LineChart>
 									</ResponsiveContainer>
@@ -280,12 +275,12 @@ const AdminDashboard = () => {
 							<CardTitle className="text-brand-text">
 								Sản phẩm theo danh mục
 							</CardTitle>
-							<PieChart className="w-5 h-5 text-gray-400" />
+							<PieChart className="w-5 h-5 text-muted-foreground" />
 						</div>
 					</CardHeader>
 					<CardContent>
 						{categoriesWithProducts.length === 0 ? (
-							<div className="flex items-center justify-center h-[300px] text-gray-500">
+							<div className="flex items-center justify-center h-[300px] text-muted-foreground">
 								<p>Chưa có sản phẩm nào trong danh mục</p>
 							</div>
 						) : (
@@ -344,36 +339,38 @@ const AdminDashboard = () => {
 				</CardHeader>
 				<CardContent>
 					{products.length === 0 ? (
-						<p className="py-4 text-center text-gray-500">
+						<p className="py-4 text-center text-muted-foreground">
 							Chưa có sản phẩm nào
 						</p>
 					) : (
 						<div className="overflow-x-auto">
 							<table className="w-full text-sm">
 								<thead>
-									<tr className="border-b border-gray-200">
-										<th className="px-4 py-2 text-left text-gray-500">
+									<tr className="border-b border-border">
+										<th className="px-4 py-2 text-left text-muted-foreground font-medium">
 											Tên sản phẩm
 										</th>
-										<th className="px-4 py-2 text-left text-gray-500">
+										<th className="px-4 py-2 text-left text-muted-foreground font-medium">
 											Danh mục
 										</th>
-										<th className="px-4 py-2 text-left text-gray-500">Giá</th>
-										<th className="px-4 py-2 text-left text-gray-500">
+										<th className="px-4 py-2 text-left text-muted-foreground font-medium">
+											Giá
+										</th>
+										<th className="px-4 py-2 text-left text-muted-foreground font-medium">
 											Trạng thái
 										</th>
 									</tr>
 								</thead>
 								<tbody>
 									{products.slice(0, 5).map((product) => (
-										<tr key={product._id} className="border-b border-gray-100">
+										<tr key={product._id} className="border-b border-border/50 hover:bg-brand-primary/5 transition-colors">
 											<td className="px-4 py-3 font-medium text-brand-text">
 												{product.name}
 											</td>
-											<td className="px-4 py-3 text-gray-500">
+											<td className="px-4 py-3 text-muted-foreground">
 												{product.category?.name || "Chưa phân loại"}
 											</td>
-											<td className="px-4 py-3 text-brand-primary">
+											<td className="px-4 py-3 text-brand-primary font-medium">
 												{new Intl.NumberFormat("vi-VN").format(product.price)}đ
 											</td>
 											<td className="px-4 py-3">
@@ -381,7 +378,7 @@ const AdminDashboard = () => {
 													className={`px-2 py-1 text-xs font-medium rounded-full ${
 														product.isActive
 															? "bg-green-100 text-green-700"
-															: "bg-red-100 text-red-700"
+															: "bg-destructive/10 text-destructive"
 													}`}
 												>
 													{product.isActive ? "Hiển thị" : "Ẩn"}

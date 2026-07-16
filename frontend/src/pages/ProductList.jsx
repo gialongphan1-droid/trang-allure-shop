@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import {
   Select,
   SelectContent,
@@ -88,17 +90,31 @@ const ProductList = () => {
     return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
   };
 
+  // Tính % giảm giá
+  const getDiscountPercent = (product) => {
+    if (product.originalPrice && product.originalPrice > product.price) {
+      return Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+    }
+    return 0;
+  };
+
+  // Skeleton loading
   if (loading && products.length === 0) {
     return (
-      <div className="container px-4 py-8 mx-auto">
+      <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="p-4 bg-white shadow-sm rounded-xl">
-              <div className="w-full bg-gray-200 rounded-lg aspect-square animate-pulse"></div>
-              <div className="w-3/4 h-4 mt-3 bg-gray-200 rounded animate-pulse"></div>
-              <div className="w-1/2 h-4 mt-2 bg-gray-200 rounded animate-pulse"></div>
-              <div className="w-2/3 h-5 mt-2 bg-gray-200 rounded animate-pulse"></div>
-            </div>
+            <Card key={i} className="h-full">
+              <div className="aspect-square bg-gray-200 skeleton" />
+              <CardContent className="p-3 sm:p-4">
+                <div className="h-4 bg-gray-200 rounded skeleton w-3/4" />
+                <div className="h-3 bg-gray-200 rounded skeleton w-1/2 mt-2" />
+                <div className="flex gap-2 mt-3">
+                  <div className="h-5 bg-gray-200 rounded skeleton w-1/3" />
+                  <div className="h-5 bg-gray-200 rounded skeleton w-1/4" />
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>
@@ -108,7 +124,7 @@ const ProductList = () => {
   if (error) {
     return (
       <div className="py-12 text-center">
-        <p className="text-red-500">Lỗi tải dữ liệu: {error}</p>
+        <p className="text-destructive">Lỗi tải dữ liệu: {error}</p>
         <Button onClick={() => window.location.reload()} className="mt-4">
           Thử lại
         </Button>
@@ -136,17 +152,17 @@ const ProductList = () => {
         keywords="sản phẩm, mỹ phẩm, trang điểm, làm đẹp, TrangAllure"
       />
 
-      <div className="container px-4 py-8 mx-auto">
+      <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <nav className="flex mb-6 text-sm text-gray-500">
-          <Link to="/" className="hover:text-brand-primary">
+        <nav className="flex mb-6 text-sm text-muted-foreground">
+          <Link to="/" className="hover:text-brand-primary transition-colors">
             Trang chủ
           </Link>
           <span className="mx-2">/</span>
-          <span className="text-gray-700">Sản phẩm</span>
+          <span className="text-foreground">Sản phẩm</span>
         </nav>
 
-        <h1 className="mb-6 text-2xl font-bold md:text-3xl text-brand-text">
+        <h1 className="mb-6 text-2xl font-bold md:text-3xl font-display text-brand-text">
           {filters.search
             ? `Kết quả tìm kiếm: "${filters.search}"`
             : filters.category
@@ -159,7 +175,7 @@ const ProductList = () => {
           {/* Search */}
           <form onSubmit={handleSearch} className="flex-1 max-w-md">
             <div className="relative">
-              <Search className="absolute w-4 h-4 text-gray-400 -translate-y-1/2 left-3 top-1/2" />
+              <Search className="absolute w-4 h-4 text-muted-foreground -translate-y-1/2 left-3 top-1/2" />
               <Input
                 type="text"
                 placeholder="Tìm kiếm sản phẩm..."
@@ -171,7 +187,7 @@ const ProductList = () => {
                 <button
                   type="button"
                   onClick={clearSearch}
-                  className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-gray-600"
+                  className="absolute text-muted-foreground -translate-y-1/2 right-3 top-1/2 hover:text-foreground transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -213,14 +229,14 @@ const ProductList = () => {
         </div>
 
         {/* Results count */}
-        <p className="mb-4 text-sm text-gray-500">
+        <p className="mb-4 text-sm text-muted-foreground">
           Hiển thị {products.length} sản phẩm
         </p>
 
         {/* Products Grid */}
         {products.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-gray-500">Không tìm thấy sản phẩm nào</p>
+            <p className="text-muted-foreground">Không tìm thấy sản phẩm nào</p>
             <Button onClick={clearSearch} className="mt-4">
               Xóa bộ lọc
             </Button>
@@ -228,45 +244,65 @@ const ProductList = () => {
         ) : (
           <>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-              {products.map((product) => (
-                <Link key={product._id} to={`/san-pham/${product.slug}`}>
-                  <div className="overflow-hidden transition bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md hover:border-brand-primary/30">
-                    <div className="flex items-center justify-center bg-gray-100 aspect-square">
-                      {product.images?.[0] ? (
-                        <img
-                          src={optimizeProduct(product.images[0])}
-                          alt={product.name}
-                          loading="lazy"
-                          className="object-cover w-full h-full"
-                          width="400"
-                          height="400"
-                          decoding="async"
-                        />
-                      ) : (
-                        <span className="text-6xl">💄</span>
-                      )}
-                    </div>
-                    <div className="p-3 sm:p-4">
-                      <h3 className="text-sm font-semibold text-brand-text line-clamp-1 sm:text-base">
-                        {product.name}
-                      </h3>
-                      <p className="text-xs text-gray-500 sm:text-sm">
-                        {product.brand || ''}
-                      </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="text-sm font-bold sm:text-lg text-brand-primary">
-                          {formatPrice(product.price)}
-                        </span>
-                        {product.originalPrice && product.originalPrice > product.price && (
-                          <span className="text-xs text-gray-400 line-through sm:text-sm">
-                            {formatPrice(product.originalPrice)}
-                          </span>
+              {products.map((product) => {
+                const discountPercent = getDiscountPercent(product);
+                return (
+                  <Link key={product._id} to={`/san-pham/${product.slug}`} className="block h-full">
+                    <Card className="h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group overflow-hidden">
+                      {/* Hình ảnh */}
+                      <div className="relative overflow-hidden aspect-square bg-gray-50">
+                        {product.images?.[0] ? (
+                          <img
+                            src={optimizeProduct(product.images[0])}
+                            alt={product.name}
+                            loading="lazy"
+                            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                            width="400"
+                            height="400"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div className="flex items-center justify-center w-full h-full">
+                            <span className="text-6xl">💄</span>
+                          </div>
+                        )}
+
+                        {/* Badge giảm giá */}
+                        {discountPercent > 0 && (
+                          <Badge 
+                            variant="secondary" 
+                            className="absolute top-2 right-2 text-xs"
+                          >
+                            -{discountPercent}%
+                          </Badge>
                         )}
                       </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+
+                      {/* Nội dung */}
+                      <CardContent className="p-3 sm:p-4">
+                        <h3 className="text-sm font-semibold text-brand-text line-clamp-1 sm:text-base hover:text-brand-primary transition-colors">
+                          {product.name}
+                        </h3>
+                        {product.brand && (
+                          <p className="text-xs text-muted-foreground sm:text-sm">
+                            {product.brand}
+                          </p>
+                        )}
+                        <div className="flex items-center gap-2 mt-2">
+                          <span className="text-sm font-bold sm:text-lg text-brand-primary">
+                            {formatPrice(product.price)}
+                          </span>
+                          {product.originalPrice && product.originalPrice > product.price && (
+                            <span className="text-xs text-muted-foreground line-through sm:text-sm">
+                              {formatPrice(product.originalPrice)}
+                            </span>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Pagination */}
@@ -306,7 +342,7 @@ const ProductList = () => {
                       (page === totalPages - 1 && currentPage < totalPages - 2)
                     ) {
                       return (
-                        <span key={page} className="px-2 text-gray-400">
+                        <span key={page} className="px-2 text-muted-foreground">
                           ...
                         </span>
                       );

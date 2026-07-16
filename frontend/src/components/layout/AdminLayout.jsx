@@ -95,11 +95,11 @@ const AdminLayout = () => {
 	];
 
 	return (
-		<div className="flex min-h-screen transition-colors bg-background text-foreground">
+		<div className="flex min-h-screen bg-background text-foreground">
 			{/* Overlay cho mobile */}
 			{isMobile && isSidebarOpen && (
 				<div
-					className="fixed inset-0 z-40 bg-black/50"
+					className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
 					onClick={() => setIsSidebarOpen(false)}
 				/>
 			)}
@@ -107,69 +107,74 @@ const AdminLayout = () => {
 			{/* Sidebar */}
 			<aside
 				className={`
-        fixed top-0 left-0 h-full bg-brand-text text-white transition-all duration-300 z-50
-        ${isSidebarOpen ? "w-64 translate-x-0" : "w-64 -translate-x-full"}
-        md:translate-x-0 md:w-64
-      `}
+					fixed top-0 left-0 h-full bg-brand-text text-white shadow-2xl transition-all duration-300 z-50
+					${isSidebarOpen ? "w-64 translate-x-0" : "w-64 -translate-x-full"}
+					md:translate-x-0 md:w-64
+				`}
 			>
-				<div className="flex items-center justify-between p-4 border-b border-white/20">
+				<div className="flex items-center justify-between p-4 border-b border-white/10">
 					<h1 className="text-xl font-bold text-white font-display">
 						🌸 TrangAllure
 					</h1>
 					<Button
 						variant="ghost"
 						size="icon"
-						className="text-white hover:bg-white/20 md:hidden"
+						className="text-white/70 hover:text-white hover:bg-white/10 md:hidden"
 						onClick={() => setIsSidebarOpen(false)}
 					>
 						<X className="w-5 h-5" />
 					</Button>
 				</div>
 
-				<nav className="p-4 space-y-2">
+				<nav className="p-3 space-y-1">
 					{menuItems.map((item) => (
 						<Link
 							key={item.path}
 							to={item.path}
-							className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/20 transition ${
-								window.location.pathname === item.path ? "bg-white/20" : ""
-							}`}
+							className={`
+								flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200
+								hover:bg-white/10 hover:translate-x-1
+								${window.location.pathname === item.path ? "bg-white/15 shadow-inner" : ""}
+							`}
 							onClick={() => isMobile && setIsSidebarOpen(false)}
 						>
-							<item.icon className="flex-shrink-0 w-5 h-5" />
-							<span>{item.label}</span>
+							<item.icon className="flex-shrink-0 w-5 h-5 opacity-70" />
+							<span className="font-medium text-white/90">{item.label}</span>
+							{window.location.pathname === item.path && (
+								<span className="ml-auto w-1.5 h-1.5 rounded-full bg-brand-secondary" />
+							)}
 						</Link>
 					))}
 				</nav>
 
-				<div className="px-4 py-2 border-t border-white/20">
+				<div className="px-3 py-2 border-t border-white/10">
 					<Button
 						variant="ghost"
-						className="flex items-center justify-start w-full gap-3 text-white hover:bg-white/20"
+						className="flex items-center justify-start w-full gap-3 text-white/70 hover:text-white hover:bg-white/10"
 						onClick={viewAsCustomer}
 					>
 						<Eye className="w-5 h-5" />
-						<span>Xem trang khách hàng</span>
-						<span className="ml-auto text-xs opacity-50">↗</span>
+						<span className="font-medium">Xem trang khách hàng</span>
+						<span className="ml-auto text-xs opacity-40">↗</span>
 					</Button>
 				</div>
 
-				<div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/20">
+				<div className="absolute bottom-0 left-0 right-0 p-3 border-t border-white/10">
 					<Button
 						variant="ghost"
-						className="flex items-center justify-start w-full gap-3 text-white hover:bg-white/20"
+						className="flex items-center justify-start w-full gap-3 text-white/70 hover:text-white hover:bg-white/10"
 						onClick={() => setShowLogoutDialog(true)}
 					>
 						<LogOut className="w-5 h-5" />
-						Đăng xuất
+						<span className="font-medium">Đăng xuất</span>
 					</Button>
 				</div>
 			</aside>
 
 			{/* Main Content */}
 			<main className="flex-1 md:ml-64">
-				<header className="sticky top-0 z-30 p-4 transition-colors bg-white shadow-sm">
-					<div className="flex items-center justify-between">
+				<header className="sticky top-0 z-30 bg-white/80 backdrop-blur-sm border-b border-border shadow-sm">
+					<div className="flex items-center justify-between px-4 py-3 md:px-6">
 						<div className="flex items-center gap-3">
 							<Button
 								variant="ghost"
@@ -187,17 +192,15 @@ const AdminLayout = () => {
 						</div>
 
 						<div className="flex items-center gap-3">
-							{/* ❌ Đã xóa button toggle theme */}
-
 							<Button
 								variant="outline"
 								size="sm"
 								onClick={viewAsCustomer}
-								className="items-center hidden gap-2 md:flex border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white"
+								className="items-center hidden gap-2 md:flex border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all duration-200"
 							>
 								<Eye className="w-4 h-4" />
 								Xem trang khách hàng
-								<span className="text-xs">↗</span>
+								<span className="text-xs opacity-60">↗</span>
 							</Button>
 						</div>
 					</div>
@@ -221,7 +224,7 @@ const AdminLayout = () => {
 						<AlertDialogCancel>Hủy</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={handleLogout}
-							className="text-white bg-brand-primary hover:bg-brand-accent"
+							className="bg-brand-primary text-white hover:bg-brand-accent"
 						>
 							Đăng xuất
 						</AlertDialogAction>
