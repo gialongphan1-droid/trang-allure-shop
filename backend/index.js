@@ -178,6 +178,8 @@ app.use("/api", limiter);
 app.use("/", sitemapRoutes);
 
 // ============ UPLOAD ẢNH ============
+
+// ✅ Upload ảnh đơn (giữ nguyên)
 app.post(
 	"/api/admin/upload",
 	protect,
@@ -193,6 +195,37 @@ app.post(
 		} catch (error) {
 			console.error("Upload error:", error);
 			res.status(500).json({ success: false, message: error.message });
+		}
+	}
+);
+
+// ✅ Upload nhiều ảnh sản phẩm
+app.post(
+	"/api/admin/products/upload",
+	protect,
+	upload.array("images", 10), // Tối đa 10 ảnh
+	async (req, res) => {
+		try {
+			if (!req.files || req.files.length === 0) {
+				return res.status(400).json({
+					success: false,
+					message: "Không có file ảnh",
+				});
+			}
+
+			const urls = req.files.map((file) => file.path);
+			console.log(`✅ Uploaded ${urls.length} images`);
+
+			res.json({
+				success: true,
+				data: { urls },
+			});
+		} catch (error) {
+			console.error("Upload error:", error);
+			res.status(500).json({
+				success: false,
+				message: error.message,
+			});
 		}
 	}
 );

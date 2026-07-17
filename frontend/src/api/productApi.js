@@ -1,16 +1,48 @@
 import axiosClient from './axiosClient';
 
 export const productApi = {
-  // Public
+  // ==================== PUBLIC ====================
   getProducts: (params) => axiosClient.get('/products', { params }),
   getProductBySlug: (slug) => axiosClient.get(`/products/slug/${slug}`),
   getFeatured: (limit = 8) => axiosClient.get(`/products/featured?limit=${limit}`),
   getNew: (limit = 8) => axiosClient.get(`/products/new?limit=${limit}`),
   
-  // Admin
+  // ==================== ADMIN ====================
   createProduct: (data) => axiosClient.post('/admin/products', data),
   updateProduct: (id, data) => axiosClient.put(`/admin/products/${id}`, data),
   deleteProduct: (id) => axiosClient.delete(`/admin/products/${id}`),
+  
+  // ✅ Upload ảnh sản phẩm
+  uploadProductImages: async (formData) => {
+    try {
+      const response = await axiosClient.post('/admin/products/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response;
+    } catch (error) {
+      console.error('❌ Upload images error:', error);
+      throw error;
+    }
+  },
+  
+  // Upload ảnh đơn (nếu cần)
+  uploadProductImage: async (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+      const response = await axiosClient.post('/admin/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response;
+    } catch (error) {
+      console.error('❌ Upload image error:', error);
+      throw error;
+    }
+  },
 };
 
 export const categoryApi = {
