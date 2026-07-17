@@ -1,8 +1,7 @@
 import SEO from "@/components/common/SEO";
-import Skeleton from "@/components/common/Skeleton";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
 import {
 	getLcpImageUrl,
@@ -12,31 +11,62 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { bannerApi } from "../api/productApi";
+import { bannerApi, productApi } from "../api/productApi";
 import { fetchCategories } from "../store/slices/categorySlice";
-import { fetchProducts } from "../store/slices/productSlice";
 
 const HomePage = () => {
 	const dispatch = useDispatch();
 	const { toast } = useToast();
 
-	const productsState = useSelector((state) => state.products);
+	// ✅ State cho danh mục (từ Redux)
 	const categoriesState = useSelector((state) => state.categories);
-
-	const products = productsState?.items || [];
-	const loading = productsState?.loading || false;
-	const error = productsState?.error || null;
-
 	const categories = categoriesState?.items || [];
 
+	// ✅ State cho sản phẩm nổi bật (chỉ lấy 4 sản phẩm mới nhất)
+	const [featuredProducts, setFeaturedProducts] = useState([]);
+	const [featuredLoading, setFeaturedLoading] = useState(true);
+	const [featuredError, setFeaturedError] = useState(null);
+	const FEATURED_LIMIT = 4;
+
+	// ✅ State cho banner
 	const [banners, setBanners] = useState([]);
 	const [bannerLoading, setBannerLoading] = useState(true);
-	const hasFetched = useRef(false);
 
+	// ✅ State cho slider banner
 	const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
 	const [isTransitioning, setIsTransitioning] = useState(false);
 	const timerRef = useRef(null);
+	const hasFetched = useRef(false);
 
+	// ✅ Fetch sản phẩm nổi bật (chỉ 4 sản phẩm)
+	const fetchFeaturedProducts = useCallback(async () => {
+		try {
+			setFeaturedLoading(true);
+			setFeaturedError(null);
+			const response = await productApi.getProducts({
+				page: 1,
+				limit: FEATURED_LIMIT,
+				sort: "-createdAt",
+			});
+			if (response && response.success) {
+				setFeaturedProducts(response.data || []);
+			} else {
+				throw new Error("Không thể tải sản phẩm");
+			}
+		} catch (error) {
+			console.error("❌ Lỗi tải sản phẩm nổi bật:", error);
+			setFeaturedError(error.message);
+			toast({
+				title: "Lỗi tải sản phẩm",
+				description: error.message || "Không thể tải sản phẩm",
+				variant: "destructive",
+			});
+		} finally {
+			setFeaturedLoading(false);
+		}
+	}, [toast]);
+
+	// ✅ Fetch banners
 	const fetchBanners = async () => {
 		try {
 			console.log("🔄 Fetching banners...");
@@ -64,6 +94,7 @@ const HomePage = () => {
 		}
 	};
 
+	// ✅ Fetch dữ liệu ban đầu
 	useEffect(() => {
 		if (hasFetched.current) return;
 		hasFetched.current = true;
@@ -71,8 +102,8 @@ const HomePage = () => {
 		const fetchData = async () => {
 			console.log("🔄 Fetching data sequentially...");
 			try {
-				await dispatch(fetchProducts({ limit: 8, sort: "-createdAt" }));
 				await dispatch(fetchCategories());
+				await fetchFeaturedProducts();
 				await fetchBanners();
 			} catch (error) {
 				console.error("❌ Error fetching data:", error);
@@ -83,6 +114,7 @@ const HomePage = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch]);
 
+	// ✅ Banner slider
 	const handleNextBanner = useCallback(() => {
 		if (isTransitioning || banners.length <= 1) return;
 
@@ -127,6 +159,7 @@ const HomePage = () => {
 		[isTransitioning, currentBannerIndex, banners.length],
 	);
 
+	// ✅ Tự động chuyển banner
 	useEffect(() => {
 		if (banners.length <= 1) return;
 
@@ -145,17 +178,21 @@ const HomePage = () => {
 		};
 	}, [banners.length, handleNextBanner]);
 
-	// Tính % giảm giá
+	// ✅ Tính % giảm giá
 	const getDiscountPercent = (product) => {
 		if (product.originalPrice && product.originalPrice > product.price) {
-			return Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+			return Math.round(
+				((product.originalPrice - product.price) / product.originalPrice) * 100,
+			);
 		}
 		return 0;
 	};
 
-	if (loading) {
+	const hasBanners = banners.length > 0;
+
+	if (featuredLoading && featuredProducts.length === 0 && bannerLoading) {
 		return (
-			<div className="space-y-8 container mx-auto px-4 py-8">
+			<div className="container px-4 py-8 mx-auto space-y-8">
 				<div className="w-full h-56 bg-gray-200 sm:h-72 md:h-96 rounded-2xl animate-pulse"></div>
 				<div className="py-8 space-y-4 text-center">
 					<div className="w-64 h-12 mx-auto bg-gray-200 rounded animate-pulse"></div>
@@ -172,15 +209,15 @@ const HomePage = () => {
 				<div>
 					<div className="w-48 h-8 mx-auto mb-8 bg-gray-200 rounded animate-pulse"></div>
 					<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-						{[...Array(8)].map((_, i) => (
+						{[...Array(4)].map((_, i) => (
 							<Card key={i} className="h-full">
-								<div className="aspect-square bg-gray-200 skeleton" />
+								<div className="bg-gray-200 aspect-square skeleton" />
 								<CardContent className="p-3 sm:p-4">
-									<div className="h-4 bg-gray-200 rounded skeleton w-3/4" />
-									<div className="h-3 bg-gray-200 rounded skeleton w-1/2 mt-2" />
+									<div className="w-3/4 h-4 bg-gray-200 rounded skeleton" />
+									<div className="w-1/2 h-3 mt-2 bg-gray-200 rounded skeleton" />
 									<div className="flex gap-2 mt-3">
-										<div className="h-5 bg-gray-200 rounded skeleton w-1/3" />
-										<div className="h-5 bg-gray-200 rounded skeleton w-1/4" />
+										<div className="w-1/3 h-5 bg-gray-200 rounded skeleton" />
+										<div className="w-1/4 h-5 bg-gray-200 rounded skeleton" />
 									</div>
 								</CardContent>
 							</Card>
@@ -191,19 +228,16 @@ const HomePage = () => {
 		);
 	}
 
-	if (error) {
+	if (featuredError && featuredProducts.length === 0) {
 		return (
 			<div className="py-12 text-center">
-				<p className="text-destructive">Lỗi tải dữ liệu: {error}</p>
+				<p className="text-destructive">Lỗi tải dữ liệu: {featuredError}</p>
 				<Button onClick={() => window.location.reload()} className="mt-4">
 					Thử lại
 				</Button>
 			</div>
 		);
 	}
-
-	// ✅ Kiểm tra có banner để hiển thị
-	const hasBanners = banners.length > 0;
 
 	return (
 		<>
@@ -214,8 +248,8 @@ const HomePage = () => {
 				keywords="mỹ phẩm, trang điểm, chăm sóc da, làm đẹp, TrangAllure Shop"
 			/>
 
-			<div className="space-y-12 container mx-auto px-4 py-8">
-				{/* ✅ Banner Slider - Chỉ hiển thị khi có banner */}
+			<div className="container px-4 py-8 mx-auto space-y-12">
+				{/* Banner Slider */}
 				{!bannerLoading && hasBanners ? (
 					<section className="relative overflow-hidden rounded-2xl group banner-container">
 						<div
@@ -328,7 +362,6 @@ const HomePage = () => {
 						)}
 					</section>
 				) : (
-					// ✅ Khi không có banner, không hiển thị gì, bỏ qua phần này
 					!bannerLoading && null
 				)}
 
@@ -359,14 +392,16 @@ const HomePage = () => {
 								</span>
 							))
 						) : (
-							<span className="text-muted-foreground">Đang tải danh mục...</span>
+							<span className="text-muted-foreground">
+								Đang tải danh mục...
+							</span>
 						)}
 					</div>
-					
+
 					<p className="mt-4 text-base tracking-wide text-muted-foreground sm:text-lg md:text-2xl">
 						Hàng đẹp – Giá tốt – Uy tín – Tận tâm
 					</p>
-					
+
 					<div className="mt-3">
 						<Badge variant="success" className="text-sm px-4 py-1.5">
 							🚀 SHIP TOÀN QUỐC
@@ -374,40 +409,40 @@ const HomePage = () => {
 					</div>
 				</section>
 
-				{/* Promo Banner - Luôn hiển thị */}
-				<section className="relative p-6 my-4 promo-banner-section bg-gradient-to-r from-brand-primary/10 to-brand-secondary/20 rounded-2xl md:p-10">
-					<div className="flex flex-col items-center text-center">
-						<Badge variant="outline" className="text-xs font-semibold tracking-wider uppercase">
-							Ưu đãi đặc biệt
-						</Badge>
-						<h3 className="mt-3 text-xl font-bold md:text-3xl font-display text-brand-text">
-							Săn ngay hàng Authentic
-						</h3>
-						<p className="mt-2 text-base font-medium md:text-xl text-brand-text/80">
-							Sale cực đã từ các thương hiệu nổi tiếng
-						</p>
-						<Link to="/san-pham">
-							<Button variant="default" className="mt-4">
-								Khám phá ngay
-							</Button>
-						</Link>
-					</div>
-				</section>
-
-				{/* Featured Products - Luôn hiển thị */}
+				{/* Featured Products - Chỉ hiển thị 4 sản phẩm */}
 				<section className="min-h-[400px]">
 					<h2 className="mb-6 text-xl font-bold tracking-wide text-center sm:mb-8 sm:text-2xl md:text-3xl font-display text-brand-text">
 						SẢN PHẨM NỔI BẬT
 					</h2>
-					
-					{products.length > 0 ? (
+
+					{featuredLoading && featuredProducts.length === 0 ? (
+						<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+							{[...Array(4)].map((_, i) => (
+								<Card key={i} className="h-full">
+									<div className="bg-gray-200 aspect-square skeleton" />
+									<CardContent className="p-3 sm:p-4">
+										<div className="w-3/4 h-4 bg-gray-200 rounded skeleton" />
+										<div className="w-1/2 h-3 mt-2 bg-gray-200 rounded skeleton" />
+										<div className="flex gap-2 mt-3">
+											<div className="w-1/3 h-5 bg-gray-200 rounded skeleton" />
+											<div className="w-1/4 h-5 bg-gray-200 rounded skeleton" />
+										</div>
+									</CardContent>
+								</Card>
+							))}
+						</div>
+					) : featuredProducts.length > 0 ? (
 						<>
 							<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-								{products.slice(0, 8).map((product) => {
+								{featuredProducts.map((product) => {
 									const discountPercent = getDiscountPercent(product);
 									return (
-										<Link key={product._id} to={`/san-pham/${product.slug}`} className="block h-full">
-											<Card className="h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group overflow-hidden">
+										<Link
+											key={product._id}
+											to={`/san-pham/${product.slug}`}
+											className="block h-full"
+										>
+											<Card className="h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group">
 												<div className="relative overflow-hidden aspect-square bg-gray-50">
 													{product.images?.[0] ? (
 														<img
@@ -424,18 +459,18 @@ const HomePage = () => {
 															<span className="text-6xl">💄</span>
 														</div>
 													)}
-													
+
 													{discountPercent > 0 && (
-														<Badge 
-															variant="secondary" 
-															className="absolute top-2 right-2 text-xs"
+														<Badge
+															variant="secondary"
+															className="absolute text-xs top-2 right-2"
 														>
 															-{discountPercent}%
 														</Badge>
 													)}
 												</div>
 												<CardContent className="p-3 sm:p-4">
-													<h3 className="text-xs font-semibold text-brand-text line-clamp-1 sm:text-sm md:text-base hover:text-brand-primary transition-colors">
+													<h3 className="text-xs font-semibold transition-colors text-brand-text line-clamp-1 sm:text-sm md:text-base hover:text-brand-primary">
 														{product.name}
 													</h3>
 													<p className="text-xs text-muted-foreground sm:text-sm">
@@ -450,7 +485,7 @@ const HomePage = () => {
 														</span>
 														{product.originalPrice &&
 															product.originalPrice > product.price && (
-																<span className="text-xs text-muted-foreground line-through sm:text-sm">
+																<span className="text-xs line-through text-muted-foreground sm:text-sm">
 																	{new Intl.NumberFormat("vi-VN").format(
 																		product.originalPrice,
 																	)}
@@ -464,11 +499,13 @@ const HomePage = () => {
 									);
 								})}
 							</div>
+
+							{/* ✅ Nút Xem tất cả sản phẩm */}
 							<div className="mt-8 text-center sm:mt-10">
 								<Link to="/san-pham">
 									<Button
 										variant="outline"
-										className="px-6 py-2 text-sm font-semibold"
+										className="px-8 py-3 text-sm font-semibold transition-all duration-300 border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white hover:scale-105"
 									>
 										Xem tất cả sản phẩm
 									</Button>
