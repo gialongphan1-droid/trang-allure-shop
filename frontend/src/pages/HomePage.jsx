@@ -374,16 +374,14 @@ const HomePage = () => {
 						Order – Săn Sale hàng Authentic từ các thương hiệu nổi tiếng
 					</p>
 
+					{/* ✅ Danh mục - KHÔNG nhấn được, chỉ đổi màu khi hover */}
 					<div className="flex flex-wrap justify-center gap-3 mt-4 text-sm font-medium text-muted-foreground sm:gap-4 md:gap-8 sm:text-base md:text-lg">
 						{categories.length > 0 ? (
 							categories.slice(0, 4).map((cat, index) => (
 								<span key={cat._id}>
-									<Link
-										to={`/danh-muc/${cat.slug}`}
-										className="transition hover:text-brand-primary"
-									>
+									<span className="transition cursor-default hover:text-brand-primary">
 										{cat.icon} {cat.name.toUpperCase()}
-									</Link>
+									</span>
 									{index < Math.min(categories.length, 4) - 1 && (
 										<span className="hidden ml-3 text-border sm:inline md:ml-8">
 											•
@@ -507,7 +505,7 @@ const HomePage = () => {
 										variant="outline"
 										className="px-8 py-3 text-sm font-semibold transition-all duration-300 border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white hover:scale-105"
 									>
-										Xem tất cả sản phẩm
+										Xem thêm
 									</Button>
 								</Link>
 							</div>
