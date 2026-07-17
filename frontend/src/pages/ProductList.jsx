@@ -8,7 +8,6 @@ import { ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useSearchParams } from "react-router-dom";
-import { fetchCategories } from "../store/slices/categorySlice";
 import { fetchProducts } from "../store/slices/productSlice";
 
 const ProductList = () => {
@@ -22,7 +21,6 @@ const ProductList = () => {
 		currentPage,
 		pagination,
 	} = useSelector((state) => state.products);
-	const { items: categories } = useSelector((state) => state.categories);
 
 	const [filters, setFilters] = useState({
 		search: searchParams.get("search") || "",
@@ -46,10 +44,6 @@ const ProductList = () => {
 		effectiveTotalPages,
 		productsLength: products.length,
 	});
-
-	useEffect(() => {
-		dispatch(fetchCategories());
-	}, [dispatch]);
 
 	useEffect(() => {
 		const params = {};
