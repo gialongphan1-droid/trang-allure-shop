@@ -5,13 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import SEO from '@/components/common/SEO';
 import { fetchProducts } from '../store/slices/productSlice';
 import { fetchCategories } from '../store/slices/categorySlice';
@@ -28,8 +21,6 @@ const ProductList = () => {
 
   const [filters, setFilters] = useState({
     search: searchParams.get('search') || '',
-    category: searchParams.get('category') || '',
-    sort: searchParams.get('sort') || '-createdAt',
     page: parseInt(searchParams.get('page')) || 1,
     limit: 12,
   });
@@ -43,8 +34,6 @@ const ProductList = () => {
   useEffect(() => {
     const params = {};
     if (filters.search) params.search = filters.search;
-    if (filters.category) params.category = filters.category;
-    if (filters.sort) params.sort = filters.sort;
     if (filters.page > 1) params.page = filters.page;
     setSearchParams(params);
   }, [filters, setSearchParams]);
@@ -53,8 +42,6 @@ const ProductList = () => {
     dispatch(
       fetchProducts({
         search: filters.search || undefined,
-        category: filters.category || undefined,
-        sort: filters.sort,
         page: filters.page,
         limit: filters.limit,
       })
@@ -71,14 +58,6 @@ const ProductList = () => {
     setFilters((prev) => ({ ...prev, search: '', page: 1 }));
   };
 
-  const handleCategoryChange = (value) => {
-    setFilters((prev) => ({ ...prev, category: value === 'all' ? '' : value, page: 1 }));
-  };
-
-  const handleSortChange = (value) => {
-    setFilters((prev) => ({ ...prev, sort: value, page: 1 }));
-  };
-
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setFilters((prev) => ({ ...prev, page: newPage }));
@@ -90,7 +69,6 @@ const ProductList = () => {
     return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
   };
 
-  // Tính % giảm giá
   const getDiscountPercent = (product) => {
     if (product.originalPrice && product.originalPrice > product.price) {
       return Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
@@ -98,20 +76,19 @@ const ProductList = () => {
     return 0;
   };
 
-  // Skeleton loading
   if (loading && products.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container px-4 py-8 mx-auto">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
           {[...Array(8)].map((_, i) => (
             <Card key={i} className="h-full">
-              <div className="aspect-square bg-gray-200 skeleton" />
+              <div className="bg-gray-200 aspect-square skeleton" />
               <CardContent className="p-3 sm:p-4">
-                <div className="h-4 bg-gray-200 rounded skeleton w-3/4" />
-                <div className="h-3 bg-gray-200 rounded skeleton w-1/2 mt-2" />
+                <div className="w-3/4 h-4 bg-gray-200 rounded skeleton" />
+                <div className="w-1/2 h-3 mt-2 bg-gray-200 rounded skeleton" />
                 <div className="flex gap-2 mt-3">
-                  <div className="h-5 bg-gray-200 rounded skeleton w-1/3" />
-                  <div className="h-5 bg-gray-200 rounded skeleton w-1/4" />
+                  <div className="w-1/3 h-5 bg-gray-200 rounded skeleton" />
+                  <div className="w-1/4 h-5 bg-gray-200 rounded skeleton" />
                 </div>
               </CardContent>
             </Card>
@@ -134,8 +111,6 @@ const ProductList = () => {
 
   const pageTitle = filters.search
     ? `Kết quả tìm kiếm "${filters.search}" - TrangAllure Shop`
-    : filters.category
-    ? `Sản phẩm ${categories.find(c => c.slug === filters.category)?.name || ''} - TrangAllure Shop`
     : 'Tất cả sản phẩm - TrangAllure Shop';
 
   const pageDescription = filters.search
@@ -152,10 +127,10 @@ const ProductList = () => {
         keywords="sản phẩm, mỹ phẩm, trang điểm, làm đẹp, TrangAllure"
       />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container px-4 py-8 mx-auto">
         {/* Breadcrumb */}
         <nav className="flex mb-6 text-sm text-muted-foreground">
-          <Link to="/" className="hover:text-brand-primary transition-colors">
+          <Link to="/" className="transition-colors hover:text-brand-primary">
             Trang chủ
           </Link>
           <span className="mx-2">/</span>
@@ -165,17 +140,14 @@ const ProductList = () => {
         <h1 className="mb-6 text-2xl font-bold md:text-3xl font-display text-brand-text">
           {filters.search
             ? `Kết quả tìm kiếm: "${filters.search}"`
-            : filters.category
-            ? categories.find(c => c.slug === filters.category)?.name || 'Sản phẩm'
             : 'Tất cả sản phẩm'}
         </h1>
 
-        {/* Filters */}
+        {/* Search */}
         <div className="flex flex-col gap-4 mb-8 sm:flex-row sm:items-center sm:justify-between">
-          {/* Search */}
           <form onSubmit={handleSearch} className="flex-1 max-w-md">
             <div className="relative">
-              <Search className="absolute w-4 h-4 text-muted-foreground -translate-y-1/2 left-3 top-1/2" />
+              <Search className="absolute w-4 h-4 -translate-y-1/2 text-muted-foreground left-3 top-1/2" />
               <Input
                 type="text"
                 placeholder="Tìm kiếm sản phẩm..."
@@ -187,45 +159,13 @@ const ProductList = () => {
                 <button
                   type="button"
                   onClick={clearSearch}
-                  className="absolute text-muted-foreground -translate-y-1/2 right-3 top-1/2 hover:text-foreground transition-colors"
+                  className="absolute transition-colors -translate-y-1/2 text-muted-foreground right-3 top-1/2 hover:text-foreground"
                 >
                   <X className="w-4 h-4" />
                 </button>
               )}
             </div>
           </form>
-
-          {/* Filters */}
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <Select
-              value={filters.category || 'all'}
-              onValueChange={handleCategoryChange}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Danh mục" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tất cả danh mục</SelectItem>
-                {categories.map((cat) => (
-                  <SelectItem key={cat._id} value={cat.slug}>
-                    {cat.icon} {cat.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={filters.sort} onValueChange={handleSortChange}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sắp xếp" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="-createdAt">Mới nhất</SelectItem>
-                <SelectItem value="-price">Giá cao đến thấp</SelectItem>
-                <SelectItem value="price">Giá thấp đến cao</SelectItem>
-                <SelectItem value="-sold">Bán chạy nhất</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
         </div>
 
         {/* Results count */}
@@ -248,8 +188,7 @@ const ProductList = () => {
                 const discountPercent = getDiscountPercent(product);
                 return (
                   <Link key={product._id} to={`/san-pham/${product.slug}`} className="block h-full">
-                    <Card className="h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group overflow-hidden">
-                      {/* Hình ảnh */}
+                    <Card className="h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group">
                       <div className="relative overflow-hidden aspect-square bg-gray-50">
                         {product.images?.[0] ? (
                           <img
@@ -267,20 +206,18 @@ const ProductList = () => {
                           </div>
                         )}
 
-                        {/* Badge giảm giá */}
                         {discountPercent > 0 && (
                           <Badge 
                             variant="secondary" 
-                            className="absolute top-2 right-2 text-xs"
+                            className="absolute text-xs top-2 right-2"
                           >
                             -{discountPercent}%
                           </Badge>
                         )}
                       </div>
 
-                      {/* Nội dung */}
                       <CardContent className="p-3 sm:p-4">
-                        <h3 className="text-sm font-semibold text-brand-text line-clamp-1 sm:text-base hover:text-brand-primary transition-colors">
+                        <h3 className="text-sm font-semibold transition-colors text-brand-text line-clamp-1 sm:text-base hover:text-brand-primary">
                           {product.name}
                         </h3>
                         {product.brand && (
@@ -293,7 +230,7 @@ const ProductList = () => {
                             {formatPrice(product.price)}
                           </span>
                           {product.originalPrice && product.originalPrice > product.price && (
-                            <span className="text-xs text-muted-foreground line-through sm:text-sm">
+                            <span className="text-xs line-through text-muted-foreground sm:text-sm">
                               {formatPrice(product.originalPrice)}
                             </span>
                           )}
