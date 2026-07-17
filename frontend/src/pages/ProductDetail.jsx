@@ -50,13 +50,11 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [relatedProducts] = useState([]);
 
+  // ✅ URL liên hệ - KHỚP VỚI FOOTER
   const contact = {
-    messenger:
-      import.meta.env.VITE_MESSENGER_LINK || "https://m.me/trangallure.shop",
-    zalo: import.meta.env.VITE_ZALO_LINK || "https://zalo.me/0987654321",
-    facebook:
-      import.meta.env.VITE_FACEBOOK_PAGE ||
-      "https://facebook.com/trangallure.shop",
+    messenger: "https://m.me/thuy.trang.nguyen.501282",
+    zalo: "https://zalo.me/0905990862",
+    facebook: "https://www.facebook.com/thuy.trang.nguyen.501282",
   };
 
   useEffect(() => {
@@ -151,6 +149,7 @@ const ProductDetail = () => {
     return `🛍️ ${product.name}\n💰 Giá: ${price}\n🔗 Xem chi tiết: https://trangallure.shop/san-pham/${product.slug}`;
   };
 
+  // ✅ Xử lý liên hệ - KHỚP VỚI FOOTER
   const handleContact = (platform) => {
     const url = `https://trangallure.shop/san-pham/${product.slug}`;
     const text = getShareText();
@@ -164,7 +163,8 @@ const ProductDetail = () => {
         link = `${contact.zalo}?text=${encodeURIComponent(text + "\n" + url)}`;
         break;
       case "facebook":
-        link = `${contact.facebook}?text=${encodeURIComponent(text + "\n" + url)}`;
+        // Facebook chỉ mở trang cá nhân, không share trực tiếp
+        link = contact.facebook;
         break;
       default:
         return;
@@ -210,9 +210,7 @@ const ProductDetail = () => {
             </>
           )}
           <span className="mx-2">/</span>
-          <span className="text-foreground">
-            {product.name}
-          </span>
+          <span className="text-foreground">{product.name}</span>
         </nav>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -323,7 +321,7 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Mô tả với scroll */}
+            {/* Mô tả */}
             <div className="pr-2 overflow-y-auto max-h-48 scrollbar-thin scrollbar-thumb-gray-300">
               <h3 className="text-sm font-semibold text-foreground">
                 Mô tả sản phẩm
